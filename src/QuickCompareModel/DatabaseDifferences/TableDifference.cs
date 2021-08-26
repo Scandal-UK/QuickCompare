@@ -86,7 +86,7 @@
                 {
                     if (colDiff.Value.IsDifferent)
                     {
-                        sb.Append($"{TabIndent}{colDiff.Key} {colDiff.Value}");
+                        sb.Append($"{TabIndent}[{colDiff.Key}] {colDiff.Value}");
                     }
                 }
             }

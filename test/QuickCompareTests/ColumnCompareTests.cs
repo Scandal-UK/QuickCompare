@@ -30,7 +30,7 @@
             diff.ExistsInDatabase2.Should().BeTrue();
 
             builder.Differences.TableDifferences[tableName]
-                .ToString().Should().Contain($"{columnName} does not exist in database 1");
+                .ToString().Should().Contain($"[{columnName}] does not exist in database 1");
         }
 
         [Fact]
@@ -57,7 +57,7 @@
             diff.ExistsInDatabase2.Should().BeFalse();
 
             builder.Differences.TableDifferences[tableName]
-                .ToString().Should().Contain($"{columnName} does not exist in database 2");
+                .ToString().Should().Contain($"[{columnName}] does not exist in database 2");
         }
 
         [Fact]

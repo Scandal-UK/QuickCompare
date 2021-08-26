@@ -45,7 +45,7 @@
             }
             else
             {
-                sb.Append("\r\n"); // (only extended-property differences exist)
+                sb.Append("\r\n"); // (only ItemWithPropertiesDifference has output)
             }
 
             return sb.ToString();
