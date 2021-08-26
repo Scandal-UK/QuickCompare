@@ -43,22 +43,22 @@
             = new Dictionary<string, BaseDifference>();
 
         /// <summary> Gets a value indicating whether the column difference set has tracked any differences. </summary>
-        public bool HasColumnDifferences => ColumnDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
+        public bool HasColumnDifferences => ColumnDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a value indicating whether the relation difference set has tracked any differences. </summary>
-        public bool HasRelationshipDifferences => RelationshipDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
+        public bool HasRelationshipDifferences => RelationshipDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a value indicating whether the index difference set has tracked any differences. </summary>
-        public bool HasIndexDifferences => IndexDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
+        public bool HasIndexDifferences => IndexDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a value indicating whether the trigger difference set has tracked any differences. </summary>
-        public bool HasTriggerDifferences => TriggerDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
+        public bool HasTriggerDifferences => TriggerDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a value indicating whether the permission difference set has tracked any differences. </summary>
-        public bool HasPermissionDifferences => PermissionDifferences.Values.Where(x => !x.ExistsInBothDatabases).Count() > 0;
+        public bool HasPermissionDifferences => PermissionDifferences.Values.Any(x => !x.ExistsInBothDatabases);
 
         /// <summary> Gets a value indicating whether the extended property difference set has tracked any differences. </summary>
-        public bool HasExtendedPropertyDifferences => ExtendedPropertyDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
+        public bool HasExtendedPropertyDifferences => ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
         public bool IsDifferent => !ExistsInBothDatabases || HasColumnDifferences ||

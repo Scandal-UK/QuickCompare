@@ -1,6 +1,7 @@
 ﻿namespace QuickCompareModel
 {
     using System;
+    using System.Linq;
     using System.Threading;
     using Microsoft.Extensions.Options;
     using QuickCompareModel.DatabaseDifferences;
@@ -199,17 +200,7 @@
         {
             foreach (var table1 in Database1.Tables.Keys)
             {
-                var diff = new TableDifference(true, false);
-                foreach (var table2 in Database2.Tables.Keys)
-                {
-                    if (table2 == table1)
-                    {
-                        diff.ExistsInDatabase2 = true;
-                        break;
-                    }
-                }
-
-                Differences.TableDifferences.Add(table1, diff);
+                Differences.TableDifferences.Add(table1, new TableDifference(true, Database2.Tables.Keys.Any(x => x == table1)));
             }
 
             foreach (var table2 in Database2.Tables.Keys)
