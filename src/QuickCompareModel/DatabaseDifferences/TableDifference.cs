@@ -1,6 +1,7 @@
 ﻿namespace QuickCompareModel.DatabaseDifferences
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
 
     /// <summary> Model to represent the table element and track the differences across two databases. </summary>
@@ -42,117 +43,27 @@
             = new Dictionary<string, BaseDifference>();
 
         /// <summary> Gets a value indicating whether the column difference set has tracked any differences. </summary>
-        public bool HasColumnDifferences
-        {
-            get
-            {
-                foreach (var column in ColumnDifferences.Values)
-                {
-                    if (column.IsDifferent)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public bool HasColumnDifferences => ColumnDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
 
         /// <summary> Gets a value indicating whether the relation difference set has tracked any differences. </summary>
-        public bool HasRelationshipDifferences
-        {
-            get
-            {
-                foreach (var relation in RelationshipDifferences.Values)
-                {
-                    if (relation.IsDifferent)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public bool HasRelationshipDifferences => RelationshipDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
 
         /// <summary> Gets a value indicating whether the index difference set has tracked any differences. </summary>
-        public bool HasIndexDifferences
-        {
-            get
-            {
-                foreach (var index in IndexDifferences.Values)
-                {
-                    if (index.IsDifferent)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public bool HasIndexDifferences => IndexDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
 
         /// <summary> Gets a value indicating whether the trigger difference set has tracked any differences. </summary>
-        public bool HasTriggerDifferences
-        {
-            get
-            {
-                foreach (var trigger in TriggerDifferences.Values)
-                {
-                    if (trigger.IsDifferent)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public bool HasTriggerDifferences => TriggerDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
 
         /// <summary> Gets a value indicating whether the permission difference set has tracked any differences. </summary>
-        public bool HasPermissionDifferences
-        {
-            get
-            {
-                foreach (var permission in PermissionDifferences.Values)
-                {
-                    if (!permission.ExistsInBothDatabases)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public bool HasPermissionDifferences => PermissionDifferences.Values.Where(x => !x.ExistsInBothDatabases).Count() > 0;
 
         /// <summary> Gets a value indicating whether the extended property difference set has tracked any differences. </summary>
-        public bool HasExtendedPropertyDifferences
-        {
-            get
-            {
-                foreach (var prop in ExtendedPropertyDifferences.Values)
-                {
-                    if (prop.IsDifferent)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public bool HasExtendedPropertyDifferences => ExtendedPropertyDifferences.Values.Where(x => x.IsDifferent).Count() > 0;
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public bool IsDifferent
-        {
-            get
-            {
-                return !ExistsInBothDatabases || HasColumnDifferences ||
+        public bool IsDifferent => !ExistsInBothDatabases || HasColumnDifferences ||
                     HasRelationshipDifferences || HasIndexDifferences || HasTriggerDifferences ||
                     HasExtendedPropertyDifferences || HasPermissionDifferences;
-            }
-        }
 
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
         public override string ToString()

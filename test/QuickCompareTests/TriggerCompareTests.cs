@@ -28,7 +28,9 @@
             var diff = builder.Differences.TableDifferences[tableName].TriggerDifferences[triggerName];
             diff.ExistsInDatabase1.Should().BeFalse();
             diff.ExistsInDatabase2.Should().BeTrue();
-            diff.ToString().Should().Be("does not exist in database 1\r\n");
+
+            builder.Differences.TableDifferences[tableName]
+                .ToString().Should().Contain($"Trigger: {triggerName} does not exist in database 1");
         }
 
         [Fact]
@@ -53,7 +55,9 @@
             var diff = builder.Differences.TableDifferences[tableName].TriggerDifferences[triggerName];
             diff.ExistsInDatabase1.Should().BeTrue();
             diff.ExistsInDatabase2.Should().BeFalse();
-            diff.ToString().Should().Be("does not exist in database 2\r\n");
+
+            builder.Differences.TableDifferences[tableName]
+                .ToString().Should().Contain($"Trigger: {triggerName} does not exist in database 2");
         }
 
         [Fact]

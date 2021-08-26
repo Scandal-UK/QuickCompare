@@ -37,7 +37,11 @@ namespace QuickCompareModel.DatabaseSchema
         };
 
         public override string ToString() => PermissionType == "REFERENCES"
-                ? $"REFERENCES column: [{ColumnName}] {(PermissionState == "GRANT" ? string.Empty : "DENIED ")}for {(string.IsNullOrEmpty(RoleName) ? "user" : "role")}: [{(string.IsNullOrEmpty(RoleName) ? UserName : RoleName)}]"
-                : $"[{PermissionType}] {(PermissionState == "GRANT" ? string.Empty : "DENIED ")}for {(string.IsNullOrEmpty(RoleName) ? "user" : "role")}: [{(string.IsNullOrEmpty(RoleName) ? UserName : RoleName)}]";
+                ? $"REFERENCES column: [{ColumnName}] {(PermissionState == "GRANT" ? string.Empty : "DENIED ")}for {TargetType}: [{TargetName}]"
+                : $"[{PermissionType}] {(PermissionState == "GRANT" ? string.Empty : "DENIED ")}for {TargetType}: [{TargetName}]";
+
+        private string TargetName => string.IsNullOrEmpty(RoleName) ? UserName : RoleName;
+
+        private string TargetType => string.IsNullOrEmpty(RoleName) ? "user" : "role";
     }
 }
