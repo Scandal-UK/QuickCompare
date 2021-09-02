@@ -20,27 +20,31 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Margin="5,10,5,0">
-                <Label Margin="5,0">Connection string 1</Label>
-                <TextBox x:Name="ConnectionString1" Margin="10,0"></TextBox>
+                <Label Margin="5,0" Content="Connection string 1" />
+                <TextBox x:Name="ConnectionString1" Margin="10,0" />
 
-                <Label Margin="5,20,5,0">Connection string 2</Label>
-                <TextBox x:Name="ConnectionString2"  Margin="10,0"></TextBox>
+                <Label Margin="5,20,5,0" Content="Connection string 2" />
+                <TextBox x:Name="ConnectionString2"  Margin="10,0" />
             </StackPanel>
 
-            <Button Grid.Row="1" Margin="20">
-                Run comparison
-            </Button>
+            <Button Grid.Row="1" Margin="20" Content="Run comparison" Click="Button_Click" />
         </Grid>
 
         <TabControl Grid.Column="1">
             <TabItem Header="Results">
-                <RichTextBox x:Name="OutputTextBox" IsReadOnly="True" />
+                <RichTextBox x:Name="OutputTextBox" IsReadOnly="True">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
             </TabItem>
 
             <TabItem Header="Definition differences">
                 <StackPanel Margin="0,5">
-                    <ComboBox></ComboBox>
-                    <diffplex:DiffViewer x:Name="diffViewer1" OldTextHeader="Database 1" NewTextHeader="Database 2" />
+                    <ComboBox x:Name="ComboBox1" />
+                    <diffplex:DiffViewer x:Name="DiffViewer1" OldTextHeader="Database 1" NewTextHeader="Database 2" />
                 </StackPanel>
             </TabItem>
         </TabControl>

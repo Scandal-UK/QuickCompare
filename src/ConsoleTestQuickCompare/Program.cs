@@ -1,4 +1,4 @@
-﻿namespace TestQuickCompare
+﻿namespace ConsoleTestQuickCompare
 {
     using System;
     using System.Diagnostics;
@@ -46,7 +46,7 @@
         private static void OnComparisonStatusChanged(object sender, StatusChangedEventArgs e)
         {
             Console.Write($"\r{e.StatusMessage,-70}");
-            Trace.WriteLine(e.StatusMessage);
+            Trace.WriteLine($"[{DateTime.UtcNow:HH:mm:ss.ff}] {e.StatusMessage}");
         }
     }
 }

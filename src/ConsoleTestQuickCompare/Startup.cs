@@ -1,4 +1,4 @@
-﻿namespace TestQuickCompare
+﻿namespace ConsoleTestQuickCompare
 {
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -9,15 +9,12 @@
     /// </summary>
     internal class Startup
     {
-        IConfigurationRoot Configuration { get; }
+        private IConfigurationRoot Configuration { get; }
 
-        public Startup()
-        {
-            var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
-        }
+        public Startup() =>
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
 
         public void ConfigureServices(IServiceCollection services) =>
             services
