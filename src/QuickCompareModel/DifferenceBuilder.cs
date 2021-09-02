@@ -1,6 +1,7 @@
 ﻿namespace QuickCompareModel
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using Microsoft.Extensions.Options;
@@ -47,6 +48,9 @@
 
         /// <inheritdoc/>
         public Differences Differences { get; set; }
+
+        /// <inheritdoc/>
+        public Dictionary<string, (string, string)> DefinitionDifferences { get; set; } = new Dictionary<string, (string, string)>();
 
         /// <inheritdoc/>
         public void BuildDifferences()
@@ -921,6 +925,11 @@
                         diff.ObjectDefinition1 = Database1.Views[view2];
                         diff.ObjectDefinition2 = Database2.Views[view2];
 
+                        if (diff.DefinitionsAreDifferent)
+                        {
+                            DefinitionDifferences.Add(view1, (diff.ObjectDefinition1, diff.ObjectDefinition2));
+                        }
+
                         diff.ExistsInDatabase2 = true;
                         break;
                     }
@@ -960,6 +969,11 @@
 
                         diff.ObjectDefinition1 = Database1.UserRoutines[routine2].RoutineDefinition;
                         diff.ObjectDefinition2 = Database2.UserRoutines[routine2].RoutineDefinition;
+
+                        if (diff.DefinitionsAreDifferent)
+                        {
+                            DefinitionDifferences.Add(routine1, (diff.ObjectDefinition1, diff.ObjectDefinition2));
+                        }
 
                         diff.ExistsInDatabase2 = true;
                         break;
