@@ -1,0 +1,48 @@
+﻿<Window x:Class="QuickCompare.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuickCompare"
+        xmlns:diffplex="clr-namespace:DiffPlex.Wpf.Controls;assembly=DiffPlex.Wpf"
+        mc:Ignorable="d"
+        Title="QuickCompare UI" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="255"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="5,10,5,0">
+                <Label Margin="5,0">Connection string 1</Label>
+                <TextBox x:Name="ConnectionString1" Margin="10,0"></TextBox>
+
+                <Label Margin="5,20,5,0">Connection string 2</Label>
+                <TextBox x:Name="ConnectionString2"  Margin="10,0"></TextBox>
+            </StackPanel>
+
+            <Button Grid.Row="1" Margin="20">
+                Run comparison
+            </Button>
+        </Grid>
+
+        <TabControl Grid.Column="1">
+            <TabItem Header="Results">
+                <RichTextBox x:Name="OutputTextBox" IsReadOnly="True" />
+            </TabItem>
+
+            <TabItem Header="Definition differences">
+                <StackPanel Margin="0,5">
+                    <ComboBox></ComboBox>
+                    <diffplex:DiffViewer x:Name="diffViewer1" OldTextHeader="Database 1" NewTextHeader="Database 2" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
