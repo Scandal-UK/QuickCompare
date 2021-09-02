@@ -118,16 +118,14 @@
                 throw new InvalidOperationException("Connection strings must target different database instances");
             }
 
-            // Populate both schema models on their own threads
-            var thread1 = ExecuteDatabaseLoaderAsync(Database1, 1);
-            var thread2 = ExecuteDatabaseLoaderAsync(Database2, 2);
+            var thread1 = ExecuteDatabaseLoaderOnNewThread(Database1, 1);
+            var thread2 = ExecuteDatabaseLoaderOnNewThread(Database2, 2);
 
-            // Block current thread until the others have completed
             thread1.Join();
-            thread2.Join();
+            thread2.Join(); // Await both threads to complete
         }
 
-        private Thread ExecuteDatabaseLoaderAsync(SqlDatabase database, int instanceNumber)
+        private Thread ExecuteDatabaseLoaderOnNewThread(SqlDatabase database, int instanceNumber)
         {
             database.LoaderStatusChanged += (object sender, StatusChangedEventArgs e) =>
                 RaiseStatusChanged($"{e.StatusMessage} for database {instanceNumber}");
