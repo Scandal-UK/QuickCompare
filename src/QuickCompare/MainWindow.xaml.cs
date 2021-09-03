@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using Microsoft.Extensions.Options;
 using QuickCompareModel;
 
@@ -23,6 +24,11 @@ namespace QuickCompare
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (OutputExists())
+            {
+                ClearForm();
+            }
+
             var builder = new DifferenceBuilder(GetOptions());
             builder.BuildDifferences();
 
@@ -34,9 +40,12 @@ namespace QuickCompare
 
         private void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var definitionDifference = definitionDifferences[e.AddedItems[0].ToString()];
-            DiffViewer1.OldText = definitionDifference.Item1;
-            DiffViewer1.NewText = definitionDifference.Item2;
+            if (e.AddedItems.Count == 1)
+            {
+                var definitionDifference = definitionDifferences[e.AddedItems[0].ToString()];
+                DiffViewer1.OldText = definitionDifference.Item1;
+                DiffViewer1.NewText = definitionDifference.Item2;
+            }
         }
 
         private IOptions<QuickCompareOptions> GetOptions()
@@ -48,6 +57,17 @@ namespace QuickCompare
             };
 
             return Options.Create(settings);
+        }
+
+        private bool OutputExists() =>
+            new TextRange(OutputTextBox.Document.ContentStart, OutputTextBox.Document.ContentEnd).Text.Length > 2;
+
+        private void ClearForm()
+        {
+            OutputTextBox.Document.Blocks.Clear();
+            ComboBox1.SelectedItem = null;
+            DiffViewer1.OldText = string.Empty;
+            DiffViewer1.NewText = string.Empty;
         }
     }
 }
