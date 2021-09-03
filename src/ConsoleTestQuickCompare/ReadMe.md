@@ -1,6 +1,6 @@
 ﻿## QuickCompare example
 
-[Return to main project](../../ReadMe.md)
+[Return to main project](/)
 
 #### Instructions
 
