@@ -1,6 +1,6 @@
 ﻿## QuickCompare example
 
-[Return to main project](/)
+[Return to main project](/../../)
 
 #### Instructions
 
