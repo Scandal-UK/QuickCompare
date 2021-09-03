@@ -43,7 +43,7 @@
 
             <TabItem Header="Definition differences">
                 <StackPanel Margin="0,5">
-                    <ComboBox x:Name="ComboBox1" />
+                    <ComboBox x:Name="ComboBox1" SelectionChanged="ComboBox1_SelectionChanged" />
                     <diffplex:DiffViewer x:Name="DiffViewer1" OldTextHeader="Database 1" NewTextHeader="Database 2" />
                 </StackPanel>
             </TabItem>

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Extensions.Options;
 using QuickCompareModel;
 
@@ -9,6 +11,8 @@ namespace QuickCompare
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Dictionary<string, (string, string)> definitionDifferences;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -19,18 +23,31 @@ namespace QuickCompare
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            var builder = new DifferenceBuilder(GetOptions());
+            builder.BuildDifferences();
+
+            definitionDifferences = builder.DefinitionDifferences;
+
+            OutputTextBox.AppendText(builder.Differences.ToString());
+            ComboBox1.ItemsSource = definitionDifferences.Keys;
+        }
+
+        private void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var definitionDifference = definitionDifferences[e.AddedItems[0].ToString()];
+            DiffViewer1.OldText = definitionDifference.Item1;
+            DiffViewer1.NewText = definitionDifference.Item2;
+        }
+
+        private IOptions<QuickCompareOptions> GetOptions()
+        {
             var settings = new QuickCompareOptions
             {
                 ConnectionString1 = ConnectionString1.Text,
                 ConnectionString2 = ConnectionString2.Text,
             };
 
-            IOptions<QuickCompareOptions> options = Options.Create(settings);
-
-            var builder = new DifferenceBuilder(options);
-            builder.BuildDifferences();
-
-            OutputTextBox.AppendText(builder.Differences.ToString());
+            return Options.Create(settings);
         }
     }
 }
