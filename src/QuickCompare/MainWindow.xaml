@@ -32,13 +32,11 @@
 
         <TabControl Grid.Column="1">
             <TabItem Header="Results">
-                <RichTextBox x:Name="OutputTextBox" IsReadOnly="True">
-                    <RichTextBox.Resources>
-                        <Style TargetType="{x:Type Paragraph}">
-                            <Setter Property="Margin" Value="0"/>
-                        </Style>
-                    </RichTextBox.Resources>
-                </RichTextBox>
+                <TextBox x:Name="OutputTextBox"
+                         IsReadOnly="True"
+                         TextWrapping="NoWrap"
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Auto"/>
             </TabItem>
 
             <TabItem Header="Definition differences">

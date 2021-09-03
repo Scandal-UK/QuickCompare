@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using Microsoft.Extensions.Options;
 using QuickCompareModel;
 
@@ -24,7 +23,7 @@ namespace QuickCompare
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (OutputExists())
+            if (!string.IsNullOrEmpty(OutputTextBox.Text))
             {
                 ClearForm();
             }
@@ -59,12 +58,9 @@ namespace QuickCompare
             return Options.Create(settings);
         }
 
-        private bool OutputExists() =>
-            new TextRange(OutputTextBox.Document.ContentStart, OutputTextBox.Document.ContentEnd).Text.Length > 2;
-
         private void ClearForm()
         {
-            OutputTextBox.Document.Blocks.Clear();
+            OutputTextBox.Clear();
             ComboBox1.SelectedItem = null;
             DiffViewer1.OldText = string.Empty;
             DiffViewer1.NewText = string.Empty;
