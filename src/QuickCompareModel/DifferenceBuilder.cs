@@ -103,6 +103,9 @@
         protected virtual void RaiseStatusChanged(string message) =>
             this.ComparisonStatusChanged?.Invoke(this, new StatusChangedEventArgs(message));
 
+        protected virtual void RaiseStatusChanged(string message, DatabaseInstance databaseInstance) =>
+            this.ComparisonStatusChanged?.Invoke(this, new StatusChangedEventArgs(message, databaseInstance));
+
         private void LoadDatabaseSchemas()
         {
             if (string.IsNullOrEmpty(this.Options.ConnectionString1) || string.IsNullOrEmpty(this.Options.ConnectionString2))
@@ -118,17 +121,17 @@
                 throw new InvalidOperationException("Connection strings must target different database instances");
             }
 
-            var thread1 = ExecuteDatabaseLoaderOnNewThread(Database1, 1);
-            var thread2 = ExecuteDatabaseLoaderOnNewThread(Database2, 2);
+            var thread1 = ExecuteDatabaseLoaderOnNewThread(Database1, DatabaseInstance.Database1);
+            var thread2 = ExecuteDatabaseLoaderOnNewThread(Database2, DatabaseInstance.Database2);
 
             thread1.Join();
             thread2.Join(); // Await both threads to complete
         }
 
-        private Thread ExecuteDatabaseLoaderOnNewThread(SqlDatabase database, int instanceNumber)
+        private Thread ExecuteDatabaseLoaderOnNewThread(SqlDatabase database, DatabaseInstance databaseInstance)
         {
             database.LoaderStatusChanged += (object sender, StatusChangedEventArgs e) =>
-                RaiseStatusChanged($"{e.StatusMessage} for database {instanceNumber}");
+                RaiseStatusChanged(e.StatusMessage, databaseInstance);
 
             var thread = new Thread(database.PopulateSchemaModel);
             thread.Start();
