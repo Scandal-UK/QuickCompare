@@ -65,3 +65,5 @@ Consider this a pre-release version until the first release appears on the GitHu
 - Refactor DifferenceBuilder
 - Compare System-Versioned table properties
 - Compare Database properties (e.g. compatibility version)
+- Add option flags as checkboxes to UI
+- Handle exceptions in UI; such as database connectivity errors
