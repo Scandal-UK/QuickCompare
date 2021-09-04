@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using Microsoft.Extensions.Options;
-using QuickCompareModel;
-
-namespace QuickCompare
+﻿namespace QuickCompare
 {
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Controls;
+    using Microsoft.Extensions.Options;
+    using QuickCompareModel;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -17,8 +17,7 @@ namespace QuickCompare
         {
             InitializeComponent();
 
-            ConnectionString1.Text = (string)Application.Current.Properties[nameof(ConnectionString1)];
-            ConnectionString2.Text = (string)Application.Current.Properties[nameof(ConnectionString2)];
+            RestoreApplicationState();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -49,6 +48,18 @@ namespace QuickCompare
             }
         }
 
+        private void RestoreApplicationState()
+        {
+            ConnectionString1.Text = (string)Application.Current.Properties[nameof(ConnectionString1)];
+            ConnectionString2.Text = (string)Application.Current.Properties[nameof(ConnectionString2)];
+        }
+
+        private void SetApplicationState()
+        {
+            Application.Current.Properties[nameof(ConnectionString1)] = ConnectionString1.Text;
+            Application.Current.Properties[nameof(ConnectionString2)] = ConnectionString2.Text;
+        }
+
         private IOptions<QuickCompareOptions> GetOptions()
         {
             var settings = new QuickCompareOptions
@@ -58,12 +69,6 @@ namespace QuickCompare
             };
 
             return Options.Create(settings);
-        }
-
-        private void SetApplicationState()
-        {
-            Application.Current.Properties[nameof(ConnectionString1)] = ConnectionString1.Text;
-            Application.Current.Properties[nameof(ConnectionString2)] = ConnectionString2.Text;
         }
 
         private void ClearOutput()

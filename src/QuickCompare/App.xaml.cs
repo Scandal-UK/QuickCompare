@@ -1,9 +1,9 @@
-﻿using System.IO;
-using System.IO.IsolatedStorage;
-using System.Windows;
-
-namespace QuickCompare
+﻿namespace QuickCompare
 {
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
