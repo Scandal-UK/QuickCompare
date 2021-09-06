@@ -20,11 +20,11 @@
                 while (!reader.EndOfStream)
                 {
                     string[] keyValue = reader.ReadLine().Split(new char[] { ',' });
-                    this.Properties[keyValue[0]] = keyValue[1];
+                    Properties[keyValue[0]] = keyValue[1];
                 }
             }
 
-            this.InitialiseDefaultProperties();
+            InitialiseDefaultProperties();
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -35,27 +35,25 @@
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
-            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
-            using (IsolatedStorageFileStream stream = new(filename, FileMode.Create, storage))
-            using (StreamWriter writer = new(stream))
+            var storage = IsolatedStorageFile.GetUserStoreForDomain();
+            using IsolatedStorageFileStream stream = new(filename, FileMode.Create, storage);
+            using StreamWriter writer = new(stream);
+            foreach (string key in this.Properties.Keys)
             {
-                foreach (string key in this.Properties.Keys)
-                {
-                    writer.WriteLine("{0},{1}", key, this.Properties[key]);
-                }
+                writer.WriteLine("{0},{1}", key, this.Properties[key]);
             }
         }
 
         private void InitialiseDefaultProperties()
         {
-            if (!this.Properties.Contains("ConnectionString1"))
+            if (!Properties.Contains("ConnectionString1"))
             {
-                this.Properties["ConnectionString1"] = string.Empty;
+                Properties["ConnectionString1"] = string.Empty;
             }
 
-            if (!this.Properties.Contains("ConnectionString2"))
+            if (!Properties.Contains("ConnectionString2"))
             {
-                this.Properties["ConnectionString2"] = string.Empty;
+                Properties["ConnectionString2"] = string.Empty;
             }
         }
     }

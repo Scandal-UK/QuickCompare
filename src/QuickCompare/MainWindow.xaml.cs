@@ -23,7 +23,7 @@
                 ClearOutput();
             }
 
-            DifferenceBuilder builder = new(GetOptions());
+            DifferenceBuilder builder = new(CreateOptionsFromFormValues());
             builder.BuildDifferences();
 
             OutputTextBox.Text = builder.Differences.ToString();
@@ -40,7 +40,15 @@
             }
         }
 
-        private IOptions<QuickCompareOptions> GetOptions()
+        private void ClearOutput()
+        {
+            OutputTextBox.Clear();
+            ComboBox1.SelectedItem = null;
+            DiffViewer1.OldText = string.Empty;
+            DiffViewer1.NewText = string.Empty;
+        }
+
+        private IOptions<QuickCompareOptions> CreateOptionsFromFormValues()
         {
             QuickCompareOptions settings = new()
             {
@@ -49,15 +57,6 @@
             };
 
             return Options.Create(settings);
-        }
-
-        private void ClearOutput()
-        {
-            OutputTextBox.Clear();
-
-            ComboBox1.SelectedItem = null;
-            DiffViewer1.OldText = string.Empty;
-            DiffViewer1.NewText = string.Empty;
         }
     }
 }
