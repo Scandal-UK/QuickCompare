@@ -27,6 +27,12 @@
             this.InitialiseDefaultProperties();
         }
 
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show($"An unhandled exception just occurred: {e.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            e.Handled = true;
+        }
+
         private void App_Exit(object sender, ExitEventArgs e)
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
