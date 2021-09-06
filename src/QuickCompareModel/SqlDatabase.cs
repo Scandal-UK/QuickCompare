@@ -8,6 +8,7 @@
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using QuickCompareModel.DatabaseSchema;
 
     /// <summary>
@@ -78,59 +79,59 @@
         /// <summary>
         /// Populate the models based on the supplied connection string.
         /// </summary>
-        public void PopulateSchemaModel()
+        public async Task PopulateSchemaModel()
         {
             RaiseStatusChanged("Connecting");
             using var connection = new SqlConnection(this.connectionString);
-            LoadFullyQualifiedTableNames(connection);
+            await LoadFullyQualifiedTableNames(connection);
 
             if (options.CompareIndexes)
             {
                 foreach (var fullyQualifiedTableName in Tables.Keys)
                 {
-                    LoadIndexes(connection, fullyQualifiedTableName);
+                    await LoadIndexes(connection, fullyQualifiedTableName);
 
                     foreach (var index in Tables[fullyQualifiedTableName].Indexes)
                     {
-                        LoadIncludedColumnsForIndex(connection, index);
+                        await LoadIncludedColumnsForIndex(connection, index);
                     }
                 }
             }
 
-            LoadRelations(connection);
-            LoadColumnDetails(connection);
+            await LoadRelations(connection);
+            await LoadColumnDetails(connection);
 
             if (options.CompareUserTypes)
             {
-                LoadUserTypes(connection);
+                await LoadUserTypes(connection);
             }
 
             if (options.ComparePermissions)
             {
-                LoadRolePermissions(connection);
-                LoadUserPermissions(connection);
+                await LoadRolePermissions(connection);
+                await LoadUserPermissions(connection);
             }
 
             if (options.CompareProperties)
             {
-                LoadExtendedProperties(connection);
+                await LoadExtendedProperties(connection);
             }
 
             if (options.CompareTriggers)
             {
-                LoadTriggers(connection);
+                await LoadTriggers(connection);
             }
 
             if (options.CompareSynonyms)
             {
-                LoadSynonyms(connection);
+                await LoadSynonyms(connection);
             }
 
             if (options.CompareObjects)
             {
-                LoadViews(connection);
-                LoadUserRoutines(connection);
-                LoadUserRoutineDefinitions(connection);
+                await LoadViews(connection);
+                await LoadUserRoutines(connection);
+                await LoadUserRoutineDefinitions(connection);
             }
         }
 
@@ -151,12 +152,12 @@
 
         #region Load methods
 
-        private void LoadFullyQualifiedTableNames(SqlConnection connection)
+        private async Task LoadFullyQualifiedTableNames(SqlConnection connection)
         {
             RaiseStatusChanged("Reading tables");
             using var command = new SqlCommand(LoadQueryFromResource("TableNames"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 var fullyQualifiedTableName = $"[{dr.GetString(0)}].[{dr.GetString(1)}]";
@@ -164,7 +165,7 @@
             }
         }
 
-        private void LoadIndexes(SqlConnection connection, string fullyQualifiedTableName)
+        private async Task LoadIndexes(SqlConnection connection, string fullyQualifiedTableName)
         {
             RaiseStatusChanged("Reading indexes");
             using var command = new SqlCommand("sp_helpindex", connection);
@@ -172,7 +173,7 @@
             command.Parameters.AddWithValue("@objname", fullyQualifiedTableName);
 
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 var index = LoadIndex(dr);
@@ -183,7 +184,7 @@
             }
         }
 
-        private void LoadIncludedColumnsForIndex(SqlConnection connection, SqlIndex index)
+        private async Task LoadIncludedColumnsForIndex(SqlConnection connection, SqlIndex index)
         {
             RaiseStatusChanged("Reading index included columns");
             using var command = new SqlCommand(LoadQueryFromResource("IncludedColumnsForIndex"), connection);
@@ -192,7 +193,7 @@
             command.Parameters.AddWithValue("@TableSchema", index.TableSchema);
 
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 if (dr.GetBoolean(3))
@@ -202,12 +203,12 @@
             }
         }
 
-        private void LoadRelations(SqlConnection connection)
+        private async Task LoadRelations(SqlConnection connection)
         {
             RaiseStatusChanged("Reading relations");
             using var command = new SqlCommand(LoadQueryFromResource("Relations"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 var relation = LoadRelation(dr);
@@ -220,12 +221,12 @@
             }
         }
 
-        private void LoadColumnDetails(SqlConnection connection)
+        private async Task LoadColumnDetails(SqlConnection connection)
         {
             RaiseStatusChanged("Reading column details");
             using var command = new SqlCommand(LoadQueryFromResource("ColumnDetails"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 var detail = LoadColumnDetail(dr);
@@ -238,12 +239,12 @@
             }
         }
 
-        private void LoadUserTypes(SqlConnection connection)
+        private async Task LoadUserTypes(SqlConnection connection)
         {
             RaiseStatusChanged("Reading user types");
             using var command = new SqlCommand(LoadQueryFromResource("UserTypes"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 var userType = LoadUserType(dr);
@@ -251,48 +252,48 @@
             }
         }
 
-        private void LoadRolePermissions(SqlConnection connection)
+        private async Task LoadRolePermissions(SqlConnection connection)
         {
             RaiseStatusChanged("Reading role permissions");
             using var command = new SqlCommand(LoadQueryFromResource("RolePermissions"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 Permissions.Add(LoadPermission(dr));
             }
         }
 
-        private void LoadUserPermissions(SqlConnection connection)
+        private async Task LoadUserPermissions(SqlConnection connection)
         {
             RaiseStatusChanged("Reading user permissions");
             using var command = new SqlCommand(LoadQueryFromResource("UserPermissions"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 Permissions.Add(LoadPermission(dr));
             }
         }
 
-        private void LoadExtendedProperties(SqlConnection connection)
+        private async Task LoadExtendedProperties(SqlConnection connection)
         {
             RaiseStatusChanged("Reading extended properties");
             using var command = new SqlCommand(LoadQueryFromResource("ExtendedProperties"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 ExtendedProperties.Add(LoadExtendedProperty(dr));
             }
         }
 
-        private void LoadTriggers(SqlConnection connection)
+        private async Task LoadTriggers(SqlConnection connection)
         {
             RaiseStatusChanged("Reading triggers");
             using var command = new SqlCommand(LoadQueryFromResource("Triggers"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 var trigger = LoadTrigger(dr);
@@ -305,12 +306,12 @@
             }
         }
 
-        private void LoadSynonyms(SqlConnection connection)
+        private async Task LoadSynonyms(SqlConnection connection)
         {
             RaiseStatusChanged("Reading synonyms");
             using var command = new SqlCommand(LoadQueryFromResource("Synonyms"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 var i = 0;
@@ -335,12 +336,12 @@
             }
         }
 
-        private void LoadViews(SqlConnection connection)
+        private async Task LoadViews(SqlConnection connection)
         {
             RaiseStatusChanged("Reading views");
             using var command = new SqlCommand(LoadQueryFromResource("Views"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 var i = 0;
@@ -369,12 +370,12 @@
             }
         }
 
-        private void LoadUserRoutines(SqlConnection connection)
+        private async Task LoadUserRoutines(SqlConnection connection)
         {
             RaiseStatusChanged("Reading user routines");
             using var command = new SqlCommand(LoadQueryFromResource("UserRoutines"), connection);
             connection.Open();
-            using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+            using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 var routine = new SqlUserRoutine();
@@ -403,7 +404,7 @@
             }
         }
 
-        private void LoadUserRoutineDefinitions(SqlConnection connection)
+        private async Task LoadUserRoutineDefinitions(SqlConnection connection)
         {
             using var command = new SqlCommand(LoadQueryFromResource("UserRoutineDefinitions"), connection);
             command.Parameters.Add("@routinename", SqlDbType.VarChar, 128);
@@ -413,7 +414,7 @@
 
                 command.Parameters["@routinename"].Value = routine.GetObjectName();
                 connection.Open();
-                using var dr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     UserRoutines[routine].RoutineDefinition += dr.GetString(0);

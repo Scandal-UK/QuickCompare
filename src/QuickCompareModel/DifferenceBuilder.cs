@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.Options;
     using QuickCompareModel.DatabaseDifferences;
     using QuickCompareModel.DatabaseSchema;
@@ -121,21 +122,13 @@
                 throw new InvalidOperationException("Connection strings must target different database instances");
             }
 
-            var thread1 = ExecuteDatabaseLoaderOnNewThread(Database1, DatabaseInstance.Database1);
-            var thread2 = ExecuteDatabaseLoaderOnNewThread(Database2, DatabaseInstance.Database2);
+            Database1.LoaderStatusChanged += (object sender, StatusChangedEventArgs e) =>
+                RaiseStatusChanged(e.StatusMessage, DatabaseInstance.Database1);
 
-            thread1.Join();
-            thread2.Join(); // Await both threads to complete
-        }
+            Database2.LoaderStatusChanged += (object sender, StatusChangedEventArgs e) =>
+                RaiseStatusChanged(e.StatusMessage, DatabaseInstance.Database2);
 
-        private Thread ExecuteDatabaseLoaderOnNewThread(SqlDatabase database, DatabaseInstance databaseInstance)
-        {
-            database.LoaderStatusChanged += (object sender, StatusChangedEventArgs e) =>
-                RaiseStatusChanged(e.StatusMessage, databaseInstance);
-
-            var thread = new Thread(database.PopulateSchemaModel);
-            thread.Start();
-            return thread;
+            Task.WaitAll(Database1.PopulateSchemaModel(), Database2.PopulateSchemaModel());
         }
 
         private void InspectDatabaseExtendedProperties()
