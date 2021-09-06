@@ -1,9 +1,13 @@
 # QuickCompare
 __A simple fast database schema comparison library written in C#__
 
-- [QuickCompareModel](/src/QuickCompareModel) - the core library
+- [QuickCompareModel](/src/QuickCompareModel) - the core library and NuGet package source code
 - [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample console application
 - [QuickCompare](/src/QuickCompare) - sample Windows application _(new!)_
+
+This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for users and a NuGet package for developers.
+
+It is free to use _without any restrictions_ (and always will be), but I do encourage you to contribute improvements to the project - you will be credited accordingly.
 
 ## How it works
 
@@ -66,4 +70,3 @@ Consider this a pre-release version until the first release appears on the GitHu
 - Compare System-Versioned table properties
 - Compare Database properties (e.g. compatibility version)
 - Add option flags as checkboxes to UI
-- Handle exceptions in UI; such as database connectivity errors
