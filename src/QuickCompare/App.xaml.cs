@@ -1,8 +1,10 @@
 ﻿namespace QuickCompare
 {
+    using System;
     using System.IO;
     using System.IO.IsolatedStorage;
     using System.Windows;
+    using System.Windows.Threading;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -12,6 +14,31 @@
         private const string filename = "QuickCompare.Settings.txt";
 
         private void App_Startup(object sender, StartupEventArgs e)
+        {
+            ReadApplicationPropertiesFromFile();
+            InitialiseDefaultProperties();
+
+            AppDomain.CurrentDomain.UnhandledException += AppDomain_UnhandledException;
+        }
+
+        private void App_Exit(object sender, ExitEventArgs e)
+        {
+            WriteApplicationPropertiesToFile();
+        }
+
+        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show($"An unhandled exception just occurred: {e.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            e.Handled = true;
+        }
+
+        private void AppDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = (Exception)e.ExceptionObject;
+            MessageBox.Show($"{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
+        }
+
+        private void ReadApplicationPropertiesFromFile()
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
             using (IsolatedStorageFileStream stream = new(filename, FileMode.OpenOrCreate, storage))
@@ -23,17 +50,9 @@
                     Properties[keyValue[0]] = keyValue[1];
                 }
             }
-
-            InitialiseDefaultProperties();
         }
 
-        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
-        {
-            MessageBox.Show($"An unhandled exception just occurred: {e.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            e.Handled = true;
-        }
-
-        private void App_Exit(object sender, ExitEventArgs e)
+        private void WriteApplicationPropertiesToFile()
         {
             var storage = IsolatedStorageFile.GetUserStoreForDomain();
             using IsolatedStorageFileStream stream = new(filename, FileMode.Create, storage);

@@ -7,6 +7,5 @@
              Startup="App_Startup"
              Exit="App_Exit">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>
