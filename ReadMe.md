@@ -1,13 +1,13 @@
 # QuickCompare
-__A simple fast database schema comparison library written in C#__
+__A simple, fast, free database schema comparison library written in C#__
 
 - [QuickCompareModel](/src/QuickCompareModel) - the core library and NuGet package source code
 - [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample console application
 - [QuickCompare](/src/QuickCompare) - sample Windows application _(new!)_
 
-This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for users and a NuGet package for developers.
+This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers.
 
-It is free to use _without any restrictions_ (and always will be), but I do encourage you to contribute improvements to the project - you will be credited accordingly.
+It is free to use _without any restrictions_ (and always will be), but I do encourage you to contribute improvements to the project and raise issues as appropriate - you will be credited accordingly.
 
 ## How it works
 
@@ -17,7 +17,7 @@ Next the engine inspects models of both databases, building a set of Difference 
 
 The Difference objects also act as a report generator, with overridden `ToString()` methods a generated report will list all database differences.
 
-Input parameters are accepted via an `IOptions` implementation, `QuickCompareOptions`.
+Input parameters are accepted via the `IOptions` implementation; `QuickCompareOptions`. This aids automation because it allows the application to be easily run by anything that can provide application settings (such as Azure Pipelines).
 
 ### Why write this??
 
@@ -27,7 +27,7 @@ Finally, nobody seems to offer a _simple database comparison solution_ that meet
 
 So here is a __free alternative__ that will remain open-source and fully unit-tested for us all to enjoy.
 
-Please contribute to the source code if you have time to spare!
+Please contribute to the source code if you have time to spare. It is far from perfect, but it is useful and I am keen to improve this project so please submit those pull requests!
 
 ### Example usage
 
@@ -63,10 +63,10 @@ The SQL queries are located in the folder DatabaseSchema/Queries. They do not re
 
 ---
 
-Consider this a pre-release version until the first release appears on the GitHub project page!
+_Consider this a pre-release version until the first release appears on the GitHub project page!_
 
 #### To-Do:
-- Refactor DifferenceBuilder
+- Add option flags as checkboxes to UI
 - Compare System-Versioned table properties
 - Compare Database properties (e.g. compatibility version)
-- Add option flags as checkboxes to UI
+- Refactor DifferenceBuilder (refactor all repeated loops and it should dramatically reduce the line count of code)
