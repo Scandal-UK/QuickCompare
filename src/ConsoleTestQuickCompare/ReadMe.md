@@ -1,4 +1,4 @@
-﻿## QuickCompare example
+﻿## QuickCompare console sample
 
 [Return to main project](/../../)
 
