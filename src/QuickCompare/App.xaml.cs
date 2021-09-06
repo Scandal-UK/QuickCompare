@@ -35,7 +35,7 @@
         private void AppDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var exception = (Exception)e.ExceptionObject;
-            MessageBox.Show($"{exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
+            MessageBox.Show($"An unhandled exception just occurred: {exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
         }
 
         private void ReadApplicationPropertiesFromFile()
