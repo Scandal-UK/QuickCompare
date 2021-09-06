@@ -1,42 +1,43 @@
 ﻿namespace QuickCompare
 {
-    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Windows;
 
-    public static class QuickCompareContext
+    /// <summary>
+    /// View model class which uses application properties to persist form input between restarts.
+    /// </summary>
+    public class QuickCompareContext
     {
-        public static string ConnectionString1
+        public string ConnectionString1
         {
-            get
-            {
-                return (string)Application.Current.Properties[nameof(ConnectionString1)];
-            }
+            get => (string)Application.Current.Properties[nameof(ConnectionString1)];
             set
             {
                 Application.Current.Properties[nameof(ConnectionString1)] = value;
+                OnPropertyChanged(nameof(ConnectionString1));
             }
         }
 
-        public static string ConnectionString2
+        public string ConnectionString2
         {
-            get
-            {
-                return (string)Application.Current.Properties[nameof(ConnectionString2)];
-            }
+            get => (string)Application.Current.Properties[nameof(ConnectionString2)];
             set
             {
                 Application.Current.Properties[nameof(ConnectionString2)] = value;
+                OnPropertyChanged(nameof(ConnectionString2));
             }
         }
 
-        public static string OutputReportText { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public static List<string> ComboDataSource { get; set; }
-
-        public static string ComboSelectedItem { get; set; }
-
-        public static string DefinitionText1 { get; set; }
-
-        public static string DefinitionText2 { get; set; }
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null)
+            {
+                PropertyChangedEventArgs e = new(propertyName);
+                handler(this, e);
+            }
+        }
     }
 }

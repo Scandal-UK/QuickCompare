@@ -11,13 +11,9 @@
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Dictionary<string, (string, string)> definitionDifferences;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            RestoreApplicationState();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -27,42 +23,26 @@
                 ClearOutput();
             }
 
-            SetApplicationState();
-
-            var builder = new DifferenceBuilder(GetOptions());
+            DifferenceBuilder builder = new(GetOptions());
             builder.BuildDifferences();
 
-            definitionDifferences = builder.DefinitionDifferences;
-
-            OutputTextBox.AppendText(builder.Differences.ToString());
-            ComboBox1.ItemsSource = definitionDifferences.Keys;
+            OutputTextBox.Text = builder.Differences.ToString();
+            ComboBox1.ItemsSource = builder.DefinitionDifferences;
         }
 
         private void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count == 1)
             {
-                var definitionDifference = definitionDifferences[(string)e.AddedItems[0]];
-                DiffViewer1.OldText = definitionDifference.Item1;
-                DiffViewer1.NewText = definitionDifference.Item2;
+                var definitionDifference = (KeyValuePair<string, (string, string)>)e.AddedItems[0];
+                DiffViewer1.OldText = definitionDifference.Value.Item1;
+                DiffViewer1.NewText = definitionDifference.Value.Item2;
             }
-        }
-
-        private void RestoreApplicationState()
-        {
-            ConnectionString1.Text = (string)Application.Current.Properties[nameof(ConnectionString1)];
-            ConnectionString2.Text = (string)Application.Current.Properties[nameof(ConnectionString2)];
-        }
-
-        private void SetApplicationState()
-        {
-            Application.Current.Properties[nameof(ConnectionString1)] = ConnectionString1.Text;
-            Application.Current.Properties[nameof(ConnectionString2)] = ConnectionString2.Text;
         }
 
         private IOptions<QuickCompareOptions> GetOptions()
         {
-            var settings = new QuickCompareOptions
+            QuickCompareOptions settings = new()
             {
                 ConnectionString1 = ConnectionString1.Text,
                 ConnectionString2 = ConnectionString2.Text,

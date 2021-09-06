@@ -19,7 +19,7 @@
 
                 Console.WriteLine("\r\n--------------------------------");
 
-                var report = builder.Differences.ToString();
+                string report = builder.Differences.ToString();
                 Console.Write(report);
                 Trace.Write(report);
             }

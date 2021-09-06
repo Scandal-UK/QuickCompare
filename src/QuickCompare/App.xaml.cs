@@ -9,13 +9,13 @@
     /// </summary>
     public partial class App : Application
     {
-        string filename = "QuickCompare.Settings.txt";
+        private const string filename = "QuickCompare.Settings.txt";
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(filename, FileMode.OpenOrCreate, storage))
-            using (StreamReader reader = new StreamReader(stream))
+            using (IsolatedStorageFileStream stream = new(filename, FileMode.OpenOrCreate, storage))
+            using (StreamReader reader = new(stream))
             {
                 while (!reader.EndOfStream)
                 {
@@ -24,14 +24,14 @@
                 }
             }
 
-            this.SetDefaultProperties();
+            this.InitialiseDefaultProperties();
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(filename, FileMode.Create, storage))
-            using (StreamWriter writer = new StreamWriter(stream))
+            using (IsolatedStorageFileStream stream = new(filename, FileMode.Create, storage))
+            using (StreamWriter writer = new(stream))
             {
                 foreach (string key in this.Properties.Keys)
                 {
@@ -40,7 +40,7 @@
             }
         }
 
-        private void SetDefaultProperties()
+        private void InitialiseDefaultProperties()
         {
             if (!this.Properties.Contains("ConnectionString1"))
             {
