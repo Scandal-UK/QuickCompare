@@ -68,7 +68,6 @@ The SQL queries are located in the folder DatabaseSchema/Queries. They do not re
 _Consider this a pre-release version until the first release appears on the GitHub project page!_
 
 #### To-Do:
-- Add option flags as checkboxes to UI
 - Display status updates in UI
 - Compare System-Versioned table properties
 - Compare Database properties (e.g. compatibility version)
