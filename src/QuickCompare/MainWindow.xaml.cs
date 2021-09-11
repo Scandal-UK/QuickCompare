@@ -54,6 +54,16 @@
             {
                 ConnectionString1 = ConnectionString1.Text,
                 ConnectionString2 = ConnectionString2.Text,
+                IgnoreSqlComments = IgnoreSqlComments.IsChecked ?? false,
+                CompareColumns = CompareColumns.IsChecked ?? false,
+                CompareRelations = CompareRelations.IsChecked ?? false,
+                CompareObjects = CompareObjects.IsChecked ?? false,
+                CompareIndexes = CompareIndexes.IsChecked ?? false,
+                ComparePermissions = ComparePermissions.IsChecked ?? false,
+                CompareProperties = CompareProperties.IsChecked ?? false,
+                CompareTriggers = CompareTriggers.IsChecked ?? false,
+                CompareSynonyms = CompareSynonyms.IsChecked ?? false,
+                CompareUserTypes = CompareUserTypes.IsChecked ?? false,
             };
 
             return Options.Create(settings);

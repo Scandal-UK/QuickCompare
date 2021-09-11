@@ -65,14 +65,64 @@
 
         private void InitialiseDefaultProperties()
         {
-            if (!Properties.Contains("ConnectionString1"))
+            if (!Properties.Contains(nameof(QuickCompareContext.ConnectionString1)))
             {
-                Properties["ConnectionString1"] = string.Empty;
+                Properties[nameof(QuickCompareContext.ConnectionString1)] = string.Empty;
             }
 
-            if (!Properties.Contains("ConnectionString2"))
+            if (!Properties.Contains(nameof(QuickCompareContext.ConnectionString2)))
             {
-                Properties["ConnectionString2"] = string.Empty;
+                Properties[nameof(QuickCompareContext.ConnectionString2)] = string.Empty;
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.IgnoreSqlComments)))
+            {
+                Properties[nameof(QuickCompareContext.IgnoreSqlComments)] = true.ToString();
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.CompareColumns)))
+            {
+                Properties[nameof(QuickCompareContext.CompareColumns)] = true.ToString();
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.CompareRelations)))
+            {
+                Properties[nameof(QuickCompareContext.CompareRelations)] = true.ToString();
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.CompareObjects)))
+            {
+                Properties[nameof(QuickCompareContext.CompareObjects)] = true.ToString();
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.ComparePermissions)))
+            {
+                Properties[nameof(QuickCompareContext.ComparePermissions)] = true.ToString();
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.CompareProperties)))
+            {
+                Properties[nameof(QuickCompareContext.CompareProperties)] = true.ToString();
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.CompareTriggers)))
+            {
+                Properties[nameof(QuickCompareContext.CompareTriggers)] = true.ToString();
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.CompareSynonyms)))
+            {
+                Properties[nameof(QuickCompareContext.CompareSynonyms)] = true.ToString();
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.CompareUserTypes)))
+            {
+                Properties[nameof(QuickCompareContext.CompareUserTypes)] = true.ToString();
+            }
+
+            if (!Properties.Contains(nameof(QuickCompareContext.CompareIndexes)))
+            {
+                Properties[nameof(QuickCompareContext.CompareIndexes)] = true.ToString();
             }
         }
     }

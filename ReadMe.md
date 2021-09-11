@@ -1,7 +1,7 @@
 [![Build Status](https://github.com/Scandal-UK/QuickCompare/workflows/Build%20and%20Test/badge.svg)](https://github.com/Scandal-UK/QuickCompare/actions)
 # QuickCompare
 
-__A simple, fast, free SQL database schema comparison library written in C#__
+__A simple, fast, free SQL database schema comparison library/app written in C#__
 
 - [QuickCompareModel](/src/QuickCompareModel) - the core library and NuGet package source code
 - [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample console application
