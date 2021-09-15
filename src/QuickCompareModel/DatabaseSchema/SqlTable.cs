@@ -12,17 +12,7 @@
 
         public List<SqlTrigger> Triggers { get; set; } = new List<SqlTrigger>();
 
-        public bool ColumnHasUniqueIndex(string columnName)
-        {
-            foreach (var index in Indexes)
-            {
-                if (index.Unique && index.Columns.ContainsKey(columnName) && index.Columns.Count == 1)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public bool ColumnHasUniqueIndex(string columnName) =>
+            Indexes.Exists(x => x.Unique && x.Columns.ContainsKey(columnName) && x.Columns.Count == 1);
     }
 }

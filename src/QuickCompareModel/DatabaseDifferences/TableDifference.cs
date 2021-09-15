@@ -82,67 +82,49 @@
 
             if (HasColumnDifferences)
             {
-                foreach (var colDiff in ColumnDifferences)
+                foreach (var colDiff in ColumnDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (colDiff.Value.IsDifferent)
-                    {
-                        sb.Append($"{TabIndent}[{colDiff.Key}] {colDiff.Value}");
-                    }
+                    sb.Append($"{TabIndent}[{colDiff.Key}] {colDiff.Value}");
                 }
             }
 
             if (HasTriggerDifferences)
             {
-                foreach (var triggerDiff in TriggerDifferences)
+                foreach (var triggerDiff in TriggerDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (triggerDiff.Value.IsDifferent)
-                    {
-                        sb.Append($"{TabIndent}Trigger: {triggerDiff.Key} {triggerDiff.Value}");
-                    }
+                    sb.Append($"{TabIndent}Trigger: {triggerDiff.Key} {triggerDiff.Value}");
                 }
             }
 
             if (HasIndexDifferences)
             {
-                foreach (var indexDiff in IndexDifferences)
+                foreach (var indexDiff in IndexDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (indexDiff.Value.IsDifferent)
-                    {
-                        sb.Append($"{TabIndent}{indexDiff.Value.ItemType}: {indexDiff.Key} {indexDiff.Value}");
-                    }
+                    sb.Append($"{TabIndent}{indexDiff.Value.ItemType}: {indexDiff.Key} {indexDiff.Value}");
                 }
             }
 
             if (HasRelationshipDifferences)
             {
-                foreach (var relationDiff in RelationshipDifferences)
+                foreach (var relationDiff in RelationshipDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (relationDiff.Value.IsDifferent)
-                    {
-                        sb.Append($"{TabIndent}Relation: {relationDiff.Key} {relationDiff.Value}");
-                    }
+                    sb.Append($"{TabIndent}Relation: {relationDiff.Key} {relationDiff.Value}");
                 }
             }
 
             if (HasExtendedPropertyDifferences)
             {
-                foreach (var propDiff in ExtendedPropertyDifferences)
+                foreach (var propDiff in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (propDiff.Value.IsDifferent)
-                    {
-                        sb.Append($"{TabIndent}Extended property: {propDiff.Key} {propDiff.Value}");
-                    }
+                    sb.Append($"{TabIndent}Extended property: {propDiff.Key} {propDiff.Value}");
                 }
             }
 
             if (HasPermissionDifferences)
             {
-                foreach (var permissionDiff in PermissionDifferences)
+                foreach (var permissionDiff in PermissionDifferences.Where(x => !x.Value.ExistsInBothDatabases))
                 {
-                    if (!permissionDiff.Value.ExistsInBothDatabases)
-                    {
-                        sb.Append($"{TabIndent}Permission: {permissionDiff.Key} {permissionDiff.Value}");
-                    }
+                    sb.Append($"{TabIndent}Permission: {permissionDiff.Key} {permissionDiff.Value}");
                 }
             }
 
