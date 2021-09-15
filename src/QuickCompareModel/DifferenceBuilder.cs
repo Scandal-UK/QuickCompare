@@ -578,31 +578,25 @@
                 if (property1.Type == PropertyObjectType.Index && propertyTableName == fullyQualifiedTableName && property1.IndexName == indexName)
                 {
                     var diff = new ExtendedPropertyDifference(true, false);
-                    foreach (var property2 in Database2.ExtendedProperties)
+                    var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
+                    if (property2 != null)
                     {
-                        if (property2.FullId == property1.FullId)
-                        {
-                            diff.ExistsInDatabase2 = true;
-                            diff.Value1 = property1.PropertyValue;
-                            diff.Value2 = property2.PropertyValue;
-                            break;
-                        }
+                        diff.ExistsInDatabase2 = true;
+                        diff.Value1 = property1.PropertyValue;
+                        diff.Value2 = property2.PropertyValue;
                     }
 
                     indexDiff.ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
                 }
             }
 
-            foreach (var property2 in Database2.ExtendedProperties)
+            foreach (var property in Database2.ExtendedProperties.Where(x =>
+                x.PropertyType == "INDEX" &&
+                x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName &&
+                x.IndexName == indexName &&
+                !indexDiff.ExtendedPropertyDifferences.ContainsKey(x.PropertyName)))
             {
-                var propertyTableName = property2.TableName.PrependSchemaName(property2.TableSchema);
-                if (property2.Type == PropertyObjectType.Index && propertyTableName == fullyQualifiedTableName && property2.IndexName == indexName)
-                {
-                    if (!indexDiff.ExtendedPropertyDifferences.ContainsKey(property2.PropertyName))
-                    {
-                        indexDiff.ExtendedPropertyDifferences.Add(property2.PropertyName, new ExtendedPropertyDifference(false, true));
-                    }
-                }
+                indexDiff.ExtendedPropertyDifferences.Add(property.PropertyName, new ExtendedPropertyDifference(false, true));
             }
         }
 
@@ -643,12 +637,9 @@
                 Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.Add(relation1.RelationName, diff);
             }
 
-            foreach (var relation2 in Database2.Tables[fullyQualifiedTableName].Relations)
+            foreach (var relation in Database2.Tables[fullyQualifiedTableName].Relations.Where(x => !Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.ContainsKey(x.RelationName)))
             {
-                if (!Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.ContainsKey(relation2.RelationName))
-                {
-                    Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.Add(relation2.RelationName, new ItemDifference(false, true));
-                }
+                Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.Add(relation.RelationName, new ItemDifference(false, true));
             }
         }
 
@@ -665,18 +656,19 @@
                 }
             }
 
-            foreach (var permission2 in Database2.Permissions)
+            foreach (var permission in Database2.Permissions.Where(x =>
+                x.ObjectType == "USER_TABLE" &&
+                x.ObjectName.PrependSchemaName(x.ObjectSchema) == fullyQualifiedTableName &&
+                !Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.ContainsKey(PermissionToString(x.PermissionType, x.ColumnName, x.PermissionState, string.IsNullOrEmpty(x.RoleName) ? "user" : "role", string.IsNullOrEmpty(x.RoleName) ? x.UserName : x.RoleName))))
             {
-                var permissionTableName = permission2.ObjectName.PrependSchemaName(permission2.ObjectSchema);
-                if (permission2.Type == PermissionObjectType.UserTable && permissionTableName == fullyQualifiedTableName)
-                {
-                    if (!Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.ContainsKey(permission2.ToString()))
-                    {
-                        Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(permission2.ToString(), new BaseDifference(false, true));
-                    }
-                }
+                Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(PermissionToString(permission.PermissionType, permission.ColumnName, permission.PermissionState, string.IsNullOrEmpty(permission.RoleName) ? "user" : "role", string.IsNullOrEmpty(permission.RoleName) ? permission.UserName : permission.RoleName), new ExtendedPropertyDifference(false, true));
             }
         }
+
+        private string PermissionToString(string permissionType, string columnName, string permissionState, string targetType, string targetName) =>
+            permissionType == "REFERENCES"
+                ? $"REFERENCES column: [{columnName}] {(permissionState == "GRANT" ? string.Empty : "DENIED ")}for {targetType}: [{targetName}]"
+                : $"[{permissionType}] {(permissionState == "GRANT" ? string.Empty : "DENIED ")}for {targetType}: [{targetName}]";
 
         private void InspectTableProperties(string fullyQualifiedTableName)
         {
@@ -699,16 +691,12 @@
                 }
             }
 
-            foreach (var property2 in Database2.ExtendedProperties)
+            foreach (var property in Database2.ExtendedProperties.Where(x =>
+                x.ColumnName == null &&
+                x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName &&
+                !Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.ContainsKey(x.PropertyName)))
             {
-                var propertyTableName = property2.TableName.PrependSchemaName(property2.TableSchema);
-                if (property2.Type == PropertyObjectType.Table && propertyTableName == fullyQualifiedTableName)
-                {
-                    if (!Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.ContainsKey(property2.PropertyName))
-                    {
-                        Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.Add(property2.PropertyName, new ExtendedPropertyDifference(false, true));
-                    }
-                }
+                Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.Add(property.PropertyName, new ExtendedPropertyDifference(false, true));
             }
         }
 
@@ -837,12 +825,9 @@
                 Differences.UserTypeDifferences.Add(userTypeName, diff);
             }
 
-            foreach (var userType2 in Database2.UserTypes.Keys)
+            foreach (var userType in Database2.UserTypes.Where(x => !Differences.UserTypeDifferences.ContainsKey(x.Key)))
             {
-                if (!Differences.UserTypeDifferences.ContainsKey(userType2))
-                {
-                    Differences.UserTypeDifferences.Add(userType2, new ItemDifference(false, true));
-                }
+                Differences.UserTypeDifferences.Add(userType.Key, new ItemDifference(false, true));
             }
         }
 
@@ -874,12 +859,9 @@
                 Differences.SynonymDifferences.Add(synonymName, diff);
             }
 
-            foreach (var synonym2 in Database2.Synonyms.Keys)
+            foreach (var synonym in Database2.Synonyms.Where(x => !Differences.SynonymDifferences.ContainsKey(x.Key)))
             {
-                if (!Differences.SynonymDifferences.ContainsKey(synonym2))
-                {
-                    Differences.SynonymDifferences.Add(synonym2, new DatabaseObjectDifference(false, true));
-                }
+                Differences.SynonymDifferences.Add(synonym.Key, new DatabaseObjectDifference(false, true));
             }
         }
 
@@ -916,12 +898,9 @@
                 Differences.ViewDifferences.Add(viewName, diff);
             }
 
-            foreach (var viewName in Database2.Views.Keys)
+            foreach (var view in Database2.Views.Where(x => !Differences.ViewDifferences.ContainsKey(x.Key)))
             {
-                if (!Differences.ViewDifferences.ContainsKey(viewName))
-                {
-                    Differences.ViewDifferences.Add(viewName, new DatabaseObjectDifference(false, true));
-                }
+                Differences.ViewDifferences.Add(view.Key, new DatabaseObjectDifference(false, true));
             }
         }
 
