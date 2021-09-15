@@ -30,7 +30,9 @@ Finally, nobody seems to offer a _simple database comparison solution_ that meet
 
 So here is a __free alternative__ that will remain open-source and fully unit-tested for us all to enjoy.
 
-Please contribute to the source code if you have time to spare. It is far from perfect, but it is useful and I am keen to improve this project so please submit those pull requests!
+It is lean enough to be used in CI/CD pipelines and as it targets information schema views, it does not negatively impact the performance of the databases under interrogation.
+
+Please contribute to the source code if you have the time/knowledge to spare!
 
 ### Example usage
 
