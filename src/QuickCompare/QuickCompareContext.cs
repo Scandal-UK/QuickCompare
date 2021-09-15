@@ -28,7 +28,8 @@
             }
         }
 
-        public bool IgnoreSqlComments {
+        public bool IgnoreSqlComments
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(IgnoreSqlComments)]);
             set
             {
@@ -37,7 +38,8 @@
             }
         }
 
-        public bool CompareColumns {
+        public bool CompareColumns
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(CompareColumns)]);
             set
             {
@@ -46,7 +48,8 @@
             }
         }
 
-        public bool CompareRelations {
+        public bool CompareRelations
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(CompareRelations)]);
             set
             {
@@ -55,7 +58,8 @@
             }
         }
 
-        public bool CompareObjects {
+        public bool CompareObjects
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(CompareObjects)]);
             set
             {
@@ -64,7 +68,8 @@
             }
         }
 
-        public bool CompareIndexes {
+        public bool CompareIndexes
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(CompareIndexes)]);
             set
             {
@@ -73,7 +78,8 @@
             }
         }
 
-        public bool ComparePermissions {
+        public bool ComparePermissions
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(ComparePermissions)]);
             set
             {
@@ -82,7 +88,8 @@
             }
         }
 
-        public bool CompareProperties {
+        public bool CompareProperties
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(CompareProperties)]);
             set
             {
@@ -91,7 +98,8 @@
             }
         }
 
-        public bool CompareTriggers {
+        public bool CompareTriggers
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(CompareTriggers)]);
             set
             {
@@ -100,7 +108,8 @@
             }
         }
 
-        public bool CompareSynonyms {
+        public bool CompareSynonyms
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(CompareSynonyms)]);
             set
             {
@@ -109,7 +118,8 @@
             }
         }
 
-        public bool CompareUserTypes {
+        public bool CompareUserTypes
+        {
             get => bool.Parse((string)Application.Current.Properties[nameof(CompareUserTypes)]);
             set
             {
