@@ -1,8 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Authors>Dan Ware</Authors>
+        <Product>QuickCompare</Product>
+        <PackageTags>database compare;database comparison;database schema;schema checker;schema compare;schema comparison;database schema compare;database schema comparison</PackageTags>
+        <Description>A simple, fast, free SQL database schema comparison library written in C#.</Description>
+        <RepositoryUrl>https://github.com/scandal-uk/quickcompare</RepositoryUrl>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <Version>1.0.0</Version>
+        <PackageLicenseFile></PackageLicenseFile>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageReleaseNotes>First release</PackageReleaseNotes>
+        <RepositoryType>git</RepositoryType>
+        <Copyright>Copyright (c) Dan Ware 2021</Copyright>
+        <PackageProjectUrl>https://coderware.co.uk</PackageProjectUrl>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+    </ItemGroup>
 
     <ItemGroup>
         <None Remove="DatabaseSchema\Queries\ColumnDetails.sql" />
@@ -21,12 +44,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="DatabaseSchema\Queries\IncludedColumnsForIndex.sql" />
-    </ItemGroup>
-
-    <ItemGroup>
         <EmbeddedResource Include="DatabaseSchema\Queries\ColumnDetails.sql" />
         <EmbeddedResource Include="DatabaseSchema\Queries\ExtendedProperties.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\IncludedColumnsForIndex.sql" />
         <EmbeddedResource Include="DatabaseSchema\Queries\Relations.sql" />
         <EmbeddedResource Include="DatabaseSchema\Queries\RolePermissions.sql" />
         <EmbeddedResource Include="DatabaseSchema\Queries\Synonyms.sql" />
@@ -37,11 +57,6 @@
         <EmbeddedResource Include="DatabaseSchema\Queries\UserRoutines.sql" />
         <EmbeddedResource Include="DatabaseSchema\Queries\UserTypes.sql" />
         <EmbeddedResource Include="DatabaseSchema\Queries\Views.sql" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
-        <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     </ItemGroup>
 
 </Project>
