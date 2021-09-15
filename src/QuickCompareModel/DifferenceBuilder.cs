@@ -133,22 +133,19 @@
 
         private void InspectDatabaseExtendedProperties()
         {
-            foreach (var property1 in Database1.ExtendedProperties)
+            foreach (var property1 in Database1.ExtendedProperties.Where(x => x.Type == PropertyObjectType.Database))
             {
-                if (property1.Type == PropertyObjectType.Database)
+                var diff = new ExtendedPropertyDifference(true, false);
+
+                var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
+                if (property2 != null)
                 {
-                    var diff = new ExtendedPropertyDifference(true, false);
-
-                    var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
-                    if (property2 != null)
-                    {
-                        diff.ExistsInDatabase2 = true;
-                        diff.Value1 = property1.PropertyValue;
-                        diff.Value2 = property2.PropertyValue;
-                    }
-
-                    Differences.ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
+                    diff.ExistsInDatabase2 = true;
+                    diff.Value1 = property1.PropertyValue;
+                    diff.Value2 = property2.PropertyValue;
                 }
+
+                Differences.ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
             }
 
             foreach (var property2 in Database2.ExtendedProperties.Where(x => x.Type == PropertyObjectType.Database && !Differences.ExtendedPropertyDifferences.ContainsKey(x.PropertyName)))
@@ -187,39 +184,36 @@
 
         private void InspectTableDifferences()
         {
-            foreach (var fullyQualifiedTableName in Differences.TableDifferences.Keys)
+            foreach (var fullyQualifiedTableName in Differences.TableDifferences.Keys.Where(x => Differences.TableDifferences[x].ExistsInBothDatabases))
             {
-                if (Differences.TableDifferences[fullyQualifiedTableName].ExistsInBothDatabases)
+                if (this.Options.CompareColumns)
                 {
-                    if (this.Options.CompareColumns)
-                    {
-                        InspectTableColumns(fullyQualifiedTableName);
-                    }
+                    InspectTableColumns(fullyQualifiedTableName);
+                }
 
-                    if (this.Options.CompareIndexes)
-                    {
-                        InspectIndexes(fullyQualifiedTableName);
-                    }
+                if (this.Options.CompareIndexes)
+                {
+                    InspectIndexes(fullyQualifiedTableName);
+                }
 
-                    if (this.Options.CompareRelations)
-                    {
-                        InspectRelations(fullyQualifiedTableName);
-                    }
+                if (this.Options.CompareRelations)
+                {
+                    InspectRelations(fullyQualifiedTableName);
+                }
 
-                    if (this.Options.ComparePermissions)
-                    {
-                        InspectTablePermissions(fullyQualifiedTableName);
-                    }
+                if (this.Options.ComparePermissions)
+                {
+                    InspectTablePermissions(fullyQualifiedTableName);
+                }
 
-                    if (this.Options.CompareProperties)
-                    {
-                        InspectTableProperties(fullyQualifiedTableName);
-                    }
+                if (this.Options.CompareProperties)
+                {
+                    InspectTableProperties(fullyQualifiedTableName);
+                }
 
-                    if (this.Options.CompareTriggers)
-                    {
-                        InspectTriggers(fullyQualifiedTableName);
-                    }
+                if (this.Options.CompareTriggers)
+                {
+                    InspectTriggers(fullyQualifiedTableName);
                 }
             }
         }
@@ -608,16 +602,11 @@
             foreach (var permission in Database2.Permissions.Where(x =>
                 x.ObjectType == "USER_TABLE" &&
                 x.ObjectName.PrependSchemaName(x.ObjectSchema) == fullyQualifiedTableName &&
-                !Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.ContainsKey(PermissionToString(x.PermissionType, x.ColumnName, x.PermissionState, string.IsNullOrEmpty(x.RoleName) ? "user" : "role", string.IsNullOrEmpty(x.RoleName) ? x.UserName : x.RoleName))))
+                !Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.ContainsKey(x.ToString())))
             {
-                Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(PermissionToString(permission.PermissionType, permission.ColumnName, permission.PermissionState, string.IsNullOrEmpty(permission.RoleName) ? "user" : "role", string.IsNullOrEmpty(permission.RoleName) ? permission.UserName : permission.RoleName), new ExtendedPropertyDifference(false, true));
+                Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(permission.ToString(), new ExtendedPropertyDifference(false, true));
             }
         }
-
-        private string PermissionToString(string permissionType, string columnName, string permissionState, string targetType, string targetName) =>
-            permissionType == "REFERENCES"
-                ? $"REFERENCES column: [{columnName}] {(permissionState == "GRANT" ? string.Empty : "DENIED ")}for {targetType}: [{targetName}]"
-                : $"[{permissionType}] {(permissionState == "GRANT" ? string.Empty : "DENIED ")}for {targetType}: [{targetName}]";
 
         private void InspectTableProperties(string fullyQualifiedTableName)
         {
@@ -654,70 +643,64 @@
             foreach (var trigger1 in Database1.Tables[fullyQualifiedTableName].Triggers)
             {
                 var diff = new ItemDifference(true, false);
-                foreach (var trigger2 in Database2.Tables[fullyQualifiedTableName].Triggers)
+
+                var trigger2 = Database2.Tables[fullyQualifiedTableName].Triggers.Where(x => x.TriggerName == trigger1.TriggerName && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName).FirstOrDefault();
+                if (trigger2 != null)
                 {
-                    var triggerTableName = trigger2.TableName.PrependSchemaName(trigger2.TableSchema);
-                    if (triggerTableName == fullyQualifiedTableName && trigger2.TriggerName == trigger1.TriggerName)
+                    if (trigger2.FileGroup != trigger1.FileGroup)
                     {
-                        if (trigger2.FileGroup != trigger1.FileGroup)
-                        {
-                            diff.Differences.Add($"has different filegroup - is {trigger1.FileGroup} in database 1 and is {trigger2.FileGroup} in database 2");
-                        }
-
-                        if (trigger2.TriggerOwner != trigger1.TriggerOwner)
-                        {
-                            diff.Differences.Add($"has different owner - is {trigger1.TriggerOwner} in database 1 and is {trigger2.TriggerOwner} in database 2");
-                        }
-
-                        if (trigger2.IsUpdate != trigger1.IsUpdate)
-                        {
-                            diff.Differences.Add($"has different update - is {(trigger1.IsUpdate ? string.Empty : "not ")}update in database 1 and is {(trigger2.IsUpdate ? string.Empty : "not ")}update in database 2");
-                        }
-
-                        if (trigger2.IsDelete != trigger1.IsDelete)
-                        {
-                            diff.Differences.Add($"has different delete - is {(trigger1.IsDelete ? string.Empty : "not ")}delete in database 1 and is {(trigger2.IsDelete ? string.Empty : "not ")}delete in database 2");
-                        }
-
-                        if (trigger2.IsInsert != trigger1.IsInsert)
-                        {
-                            diff.Differences.Add($"has different insert - is {(trigger1.IsInsert ? string.Empty : "not ")}insert in database 1 and is {(trigger2.IsInsert ? string.Empty : "not ")}insert in database 2");
-                        }
-
-                        if (trigger2.IsAfter != trigger1.IsAfter)
-                        {
-                            diff.Differences.Add($"has different after - is {(trigger1.IsAfter ? string.Empty : "not ")}after in database 1 and is {(trigger2.IsAfter ? string.Empty : "not ")}after in database 2");
-                        }
-
-                        if (trigger2.IsInsteadOf != trigger1.IsInsteadOf)
-                        {
-                            diff.Differences.Add($"has different instead-of - is {(trigger1.IsInsteadOf ? string.Empty : "not ")}instead-of in database 1 and is {(trigger2.IsInsteadOf ? string.Empty : "not ")}instead-of in database 2");
-                        }
-
-                        if (trigger2.IsDisabled != trigger1.IsDisabled)
-                        {
-                            diff.Differences.Add($"has different disabled - is {(trigger1.IsDisabled ? string.Empty : "not ")}disabled in database 1 and is {(trigger2.IsDisabled ? string.Empty : "not ")}disabled in database 2");
-                        }
-
-                        if (BaseDifference.CleanDefinitionText(trigger1.TriggerContent, true) != BaseDifference.CleanDefinitionText(trigger2.TriggerContent, true))
-                        {
-                            diff.Differences.Add("definitions are different");
-                        }
-
-                        diff.ExistsInDatabase2 = true;
-                        break;
+                        diff.Differences.Add($"has different filegroup - is {trigger1.FileGroup} in database 1 and is {trigger2.FileGroup} in database 2");
                     }
+
+                    if (trigger2.TriggerOwner != trigger1.TriggerOwner)
+                    {
+                        diff.Differences.Add($"has different owner - is {trigger1.TriggerOwner} in database 1 and is {trigger2.TriggerOwner} in database 2");
+                    }
+
+                    if (trigger2.IsUpdate != trigger1.IsUpdate)
+                    {
+                        diff.Differences.Add($"has different update - is {(trigger1.IsUpdate ? string.Empty : "not ")}update in database 1 and is {(trigger2.IsUpdate ? string.Empty : "not ")}update in database 2");
+                    }
+
+                    if (trigger2.IsDelete != trigger1.IsDelete)
+                    {
+                        diff.Differences.Add($"has different delete - is {(trigger1.IsDelete ? string.Empty : "not ")}delete in database 1 and is {(trigger2.IsDelete ? string.Empty : "not ")}delete in database 2");
+                    }
+
+                    if (trigger2.IsInsert != trigger1.IsInsert)
+                    {
+                        diff.Differences.Add($"has different insert - is {(trigger1.IsInsert ? string.Empty : "not ")}insert in database 1 and is {(trigger2.IsInsert ? string.Empty : "not ")}insert in database 2");
+                    }
+
+                    if (trigger2.IsAfter != trigger1.IsAfter)
+                    {
+                        diff.Differences.Add($"has different after - is {(trigger1.IsAfter ? string.Empty : "not ")}after in database 1 and is {(trigger2.IsAfter ? string.Empty : "not ")}after in database 2");
+                    }
+
+                    if (trigger2.IsInsteadOf != trigger1.IsInsteadOf)
+                    {
+                        diff.Differences.Add($"has different instead-of - is {(trigger1.IsInsteadOf ? string.Empty : "not ")}instead-of in database 1 and is {(trigger2.IsInsteadOf ? string.Empty : "not ")}instead-of in database 2");
+                    }
+
+                    if (trigger2.IsDisabled != trigger1.IsDisabled)
+                    {
+                        diff.Differences.Add($"has different disabled - is {(trigger1.IsDisabled ? string.Empty : "not ")}disabled in database 1 and is {(trigger2.IsDisabled ? string.Empty : "not ")}disabled in database 2");
+                    }
+
+                    if (BaseDifference.CleanDefinitionText(trigger1.TriggerContent, true) != BaseDifference.CleanDefinitionText(trigger2.TriggerContent, true))
+                    {
+                        diff.Differences.Add("definitions are different");
+                    }
+
+                    diff.ExistsInDatabase2 = true;
                 }
 
                 Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.Add(trigger1.TriggerName, diff);
             }
 
-            foreach (var trigger2 in Database2.Tables[fullyQualifiedTableName].Triggers)
+            foreach (var trigger2 in Database2.Tables[fullyQualifiedTableName].Triggers.Where(x => !Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.ContainsKey(x.TriggerName)))
             {
-                if (!Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.ContainsKey(trigger2.TriggerName))
-                {
-                    Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.Add(trigger2.TriggerName, new ItemDifference(false, true));
-                }
+                Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.Add(trigger2.TriggerName, new ItemDifference(false, true));
             }
         }
 
