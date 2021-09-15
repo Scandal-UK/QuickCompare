@@ -99,11 +99,17 @@
         {
             var resourceName = $"{nameof(QuickCompareModel)}.{nameof(DatabaseSchema)}.Queries.{queryName}.sql";
             using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-            return stream != null ? new StreamReader(stream).ReadToEnd() : string.Empty;
+            return stream != null ? StreamToString(stream) : string.Empty;
         }
 
         protected virtual void RaiseStatusChanged(string message) =>
             this.LoaderStatusChanged?.Invoke(this, new StatusChangedEventArgs(message));
+
+        private static string StreamToString(Stream stream)
+        {
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
+        }
 
         private Task[] RequiredItemTasks()
         {
@@ -237,9 +243,9 @@
                 var relation = LoadRelation(dr);
                 var fullyQualifiedChildTable = relation.ChildTable.PrependSchemaName(relation.ChildSchema);
 
-                if (Tables.ContainsKey(fullyQualifiedChildTable))
+                if (Tables.TryGetValue(fullyQualifiedChildTable, out var table))
                 {
-                    Tables[fullyQualifiedChildTable].Relations.Add(relation);
+                    table.Relations.Add(relation);
                 }
             }
         }
@@ -256,9 +262,9 @@
                 var detail = LoadColumnDetail(dr);
                 var fullyQualifiedTableName = detail.TableName.PrependSchemaName(detail.TableSchema);
 
-                if (Tables.ContainsKey(fullyQualifiedTableName))
+                if (Tables.TryGetValue(fullyQualifiedTableName, out var table))
                 {
-                    Tables[fullyQualifiedTableName].ColumnDetails.Add(detail);
+                    table.ColumnDetails.Add(detail);
                 }
             }
         }
@@ -328,9 +334,9 @@
                 var trigger = LoadTrigger(dr);
                 var fullyQualifiedTableName = trigger.TableName.PrependSchemaName(trigger.TableSchema);
 
-                if (Tables.ContainsKey(fullyQualifiedTableName))
+                if (Tables.TryGetValue(fullyQualifiedTableName, out var table))
                 {
-                    Tables[fullyQualifiedTableName].Triggers.Add(trigger);
+                    table.Triggers.Add(trigger);
                 }
             }
         }

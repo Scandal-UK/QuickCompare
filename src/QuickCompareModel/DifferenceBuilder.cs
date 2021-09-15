@@ -500,11 +500,11 @@
                         {
                             foreach (var column in index1.Columns.Keys)
                             {
-                                if (index2.Columns.ContainsKey(column))
+                                if (index2.Columns.TryGetValue(column, out bool value))
                                 {
-                                    if (index1.Columns[column] != index2.Columns[column])
+                                    if (index1.Columns[column] != value)
                                     {
-                                        diff.Differences.Add($"[{column}] has different ordering - {(index1.Columns[column] ? "a" : "de")}scending on database 1 and {(index2.Columns[column] ? "a" : "de")}scending on database 2");
+                                        diff.Differences.Add($"[{column}] has different ordering - {(index1.Columns[column] ? "a" : "de")}scending on database 1 and {(value ? "a" : "de")}scending on database 2");
                                     }
                                 }
                                 else
@@ -526,11 +526,11 @@
                         {
                             foreach (var column in index1.IncludedColumns.Keys)
                             {
-                                if (index2.IncludedColumns.ContainsKey(column))
+                                if (index2.IncludedColumns.TryGetValue(column, out bool value))
                                 {
-                                    if (index1.IncludedColumns[column] != index2.IncludedColumns[column])
+                                    if (index1.IncludedColumns[column] != value)
                                     {
-                                        diff.Differences.Add($"[{column}] \"included column\" has different ordering - {(index1.IncludedColumns[column] ? "a" : "de")}scending on database 1 and {(index2.IncludedColumns[column] ? "a" : "de")}scending on database 2");
+                                        diff.Differences.Add($"[{column}] \"included column\" has different ordering - {(index1.IncludedColumns[column] ? "a" : "de")}scending on database 1 and {(value ? "a" : "de")}scending on database 2");
                                     }
                                 }
                                 else
