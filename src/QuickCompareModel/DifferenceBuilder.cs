@@ -659,17 +659,9 @@
                 var permissionTableName = permission1.ObjectName.PrependSchemaName(permission1.ObjectSchema);
                 if (permission1.Type == PermissionObjectType.UserTable && permissionTableName == fullyQualifiedTableName)
                 {
-                    var diff = new BaseDifference(true, false);
-                    foreach (var permission2 in Database2.Permissions)
-                    {
-                        if (permission2.FullId == permission1.FullId)
-                        {
-                            diff.ExistsInDatabase2 = true;
-                            break;
-                        }
-                    }
-
-                    Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(permission1.ToString(), diff);
+                    Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(
+                        permission1.ToString(),
+                        new BaseDifference(true, Database2.Permissions.Exists(x => x.FullId == permission1.FullId)));
                 }
             }
 
@@ -694,15 +686,13 @@
                 if (property1.Type == PropertyObjectType.Table && propertyTableName == fullyQualifiedTableName)
                 {
                     var diff = new ExtendedPropertyDifference(true, false);
-                    foreach (var property2 in Database2.ExtendedProperties)
+
+                    var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
+                    if (property2 != null)
                     {
-                        if (property2.FullId == property1.FullId)
-                        {
-                            diff.ExistsInDatabase2 = true;
-                            diff.Value1 = property1.PropertyValue;
-                            diff.Value2 = property2.PropertyValue;
-                            break;
-                        }
+                        diff.ExistsInDatabase2 = true;
+                        diff.Value1 = property1.PropertyValue;
+                        diff.Value2 = property2.PropertyValue;
                     }
 
                     Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
@@ -796,57 +786,55 @@
 
         private void InspectUserTypes()
         {
-            foreach (var userType1 in Database1.UserTypes.Keys)
+            foreach (var userTypeName in Database1.UserTypes.Keys)
             {
                 var diff = new ItemDifference(true, false);
-                foreach (var userType2 in Database2.UserTypes.Keys)
+
+                var userType = Database2.UserTypes.Where(x => x.Key == userTypeName).FirstOrDefault();
+                if (!userType.Equals(default(KeyValuePair<string, SqlUserType>)))
                 {
-                    if (userType2 == userType1)
+                    var item1 = Database1.UserTypes[userTypeName];
+                    var item2 = Database2.UserTypes[userTypeName];
+
+                    if (item1.UnderlyingTypeName != item2.UnderlyingTypeName)
                     {
-                        var item1 = Database1.UserTypes[userType1];
-                        var item2 = Database2.UserTypes[userType2];
-
-                        if (item1.UnderlyingTypeName != item2.UnderlyingTypeName)
-                        {
-                            diff.Differences.Add($"has different underlying type - is {item1.UnderlyingTypeName} in database 1 and is {item2.UnderlyingTypeName} in database 2");
-                        }
-
-                        if (item1.Precision != item2.Precision)
-                        {
-                            diff.Differences.Add($"has different precision - is {(item1.Precision.HasValue ? item1.Precision.Value.ToString() : "NULL")} in database 1 and is {(item2.Precision.HasValue ? item2.Precision.Value.ToString() : "NULL")} in database 2");
-                        }
-
-                        if (item1.Scale != item2.Scale)
-                        {
-                            diff.Differences.Add($"has different scale - is {(item1.Scale.HasValue ? item1.Scale.Value.ToString() : "NULL")} in database 1 and is {(item2.Scale.HasValue ? item2.Scale.Value.ToString() : "NULL")} in database 2");
-                        }
-
-                        if (item1.MaxLength != item2.MaxLength)
-                        {
-                            diff.Differences.Add($"has different max length - is {(item1.MaxLength.HasValue ? item1.MaxLength.Value.ToString() : "NULL")} in database 1 and is {(item2.MaxLength.HasValue ? item2.MaxLength.Value.ToString() : "NULL")} in database 2");
-                        }
-
-                        if (item1.IsNullable != item2.IsNullable)
-                        {
-                            diff.Differences.Add($"is{(item1.IsNullable ? "" : " not")} nullable in database 1 and is{(item2.IsNullable ? "" : " not")} nullable in database 2");
-                        }
-
-                        if (item1.CollationName != item2.CollationName)
-                        {
-                            diff.Differences.Add($"has different collation - is {(string.IsNullOrEmpty(item1.CollationName) ? "NULL" : item1.CollationName)} in database 1 and is {(string.IsNullOrEmpty(item2.CollationName) ? "NULL" : item2.CollationName)} in database 2");
-                        }
-
-                        if (item1.IsAssemblyType != item2.IsAssemblyType)
-                        {
-                            diff.Differences.Add($"is{(item1.IsAssemblyType ? "" : " not")} assembly type in database 1 and is{(item2.IsAssemblyType ? "" : " not")} assembly type in database 2");
-                        }
-
-                        diff.ExistsInDatabase2 = true;
-                        break;
+                        diff.Differences.Add($"has different underlying type - is {item1.UnderlyingTypeName} in database 1 and is {item2.UnderlyingTypeName} in database 2");
                     }
+
+                    if (item1.Precision != item2.Precision)
+                    {
+                        diff.Differences.Add($"has different precision - is {(item1.Precision.HasValue ? item1.Precision.Value.ToString() : "NULL")} in database 1 and is {(item2.Precision.HasValue ? item2.Precision.Value.ToString() : "NULL")} in database 2");
+                    }
+
+                    if (item1.Scale != item2.Scale)
+                    {
+                        diff.Differences.Add($"has different scale - is {(item1.Scale.HasValue ? item1.Scale.Value.ToString() : "NULL")} in database 1 and is {(item2.Scale.HasValue ? item2.Scale.Value.ToString() : "NULL")} in database 2");
+                    }
+
+                    if (item1.MaxLength != item2.MaxLength)
+                    {
+                        diff.Differences.Add($"has different max length - is {(item1.MaxLength.HasValue ? item1.MaxLength.Value.ToString() : "NULL")} in database 1 and is {(item2.MaxLength.HasValue ? item2.MaxLength.Value.ToString() : "NULL")} in database 2");
+                    }
+
+                    if (item1.IsNullable != item2.IsNullable)
+                    {
+                        diff.Differences.Add($"is{(item1.IsNullable ? "" : " not")} nullable in database 1 and is{(item2.IsNullable ? "" : " not")} nullable in database 2");
+                    }
+
+                    if (item1.CollationName != item2.CollationName)
+                    {
+                        diff.Differences.Add($"has different collation - is {(string.IsNullOrEmpty(item1.CollationName) ? "NULL" : item1.CollationName)} in database 1 and is {(string.IsNullOrEmpty(item2.CollationName) ? "NULL" : item2.CollationName)} in database 2");
+                    }
+
+                    if (item1.IsAssemblyType != item2.IsAssemblyType)
+                    {
+                        diff.Differences.Add($"is{(item1.IsAssemblyType ? "" : " not")} assembly type in database 1 and is{(item2.IsAssemblyType ? "" : " not")} assembly type in database 2");
+                    }
+
+                    diff.ExistsInDatabase2 = true;
                 }
 
-                Differences.UserTypeDifferences.Add(userType1, diff);
+                Differences.UserTypeDifferences.Add(userTypeName, diff);
             }
 
             foreach (var userType2 in Database2.UserTypes.Keys)
@@ -860,32 +848,30 @@
 
         private void InspectSynonyms()
         {
-            foreach (var synonym1 in Database1.Synonyms.Keys)
+            foreach (var synonymName in Database1.Synonyms.Keys)
             {
                 var diff = new DatabaseObjectDifference(true, false);
-                foreach (var synonym2 in Database2.Synonyms.Keys)
+
+                var synonym = Database2.Synonyms.Where(x => x.Key == synonymName).FirstOrDefault();
+                if (!synonym.Equals(default(KeyValuePair<string, string>)))
                 {
-                    if (synonym2 == synonym1)
+                    if (this.Options.CompareProperties)
                     {
-                        if (this.Options.CompareProperties)
-                        {
-                            InspectObjectProperties(synonym2, diff);
-                        }
-
-                        if (this.Options.ComparePermissions)
-                        {
-                            InspectObjectPermissions(synonym2, PermissionObjectType.Synonym, diff);
-                        }
-
-                        diff.ObjectDefinition1 = Database1.Synonyms[synonym2];
-                        diff.ObjectDefinition2 = Database2.Synonyms[synonym2];
-
-                        diff.ExistsInDatabase2 = true;
-                        break;
+                        InspectObjectProperties(synonymName, diff);
                     }
+
+                    if (this.Options.ComparePermissions)
+                    {
+                        InspectObjectPermissions(synonymName, PermissionObjectType.Synonym, diff);
+                    }
+
+                    diff.ObjectDefinition1 = Database1.Synonyms[synonymName];
+                    diff.ObjectDefinition2 = Database2.Synonyms[synonymName];
+
+                    diff.ExistsInDatabase2 = true;
                 }
 
-                Differences.SynonymDifferences.Add(synonym1, diff);
+                Differences.SynonymDifferences.Add(synonymName, diff);
             }
 
             foreach (var synonym2 in Database2.Synonyms.Keys)
@@ -899,105 +885,101 @@
 
         private void InspectViews()
         {
-            foreach (var view1 in Database1.Views.Keys)
+            foreach (var viewName in Database1.Views.Keys)
             {
                 var diff = new DatabaseObjectDifference(true, false);
-                foreach (var view2 in Database2.Views.Keys)
+
+                var view = Database2.Views.Where(x => x.Key == viewName).FirstOrDefault();
+                if (!view.Equals(default(KeyValuePair<string, string>)))
                 {
-                    if (view2 == view1)
+                    if (this.Options.CompareProperties)
                     {
-                        if (this.Options.CompareProperties)
-                        {
-                            InspectObjectProperties(view2, diff);
-                        }
-
-                        if (this.Options.ComparePermissions)
-                        {
-                            InspectObjectPermissions(view2, PermissionObjectType.View, diff);
-                        }
-
-                        diff.ObjectDefinition1 = Database1.Views[view2];
-                        diff.ObjectDefinition2 = Database2.Views[view2];
-
-                        if (diff.DefinitionsAreDifferent)
-                        {
-                            DefinitionDifferences.Add(view1, (diff.ObjectDefinition1, diff.ObjectDefinition2));
-                        }
-
-                        diff.ExistsInDatabase2 = true;
-                        break;
+                        InspectObjectProperties(viewName, diff);
                     }
+
+                    if (this.Options.ComparePermissions)
+                    {
+                        InspectObjectPermissions(viewName, PermissionObjectType.View, diff);
+                    }
+
+                    diff.ObjectDefinition1 = Database1.Views[viewName];
+                    diff.ObjectDefinition2 = view.Value;
+
+                    if (diff.DefinitionsAreDifferent)
+                    {
+                        DefinitionDifferences.Add(viewName, (diff.ObjectDefinition1, diff.ObjectDefinition2));
+                    }
+
+                    diff.ExistsInDatabase2 = true;
                 }
 
-                Differences.ViewDifferences.Add(view1, diff);
+                Differences.ViewDifferences.Add(viewName, diff);
             }
 
-            foreach (var view2 in Database2.Views.Keys)
+            foreach (var viewName in Database2.Views.Keys)
             {
-                if (!Differences.ViewDifferences.ContainsKey(view2))
+                if (!Differences.ViewDifferences.ContainsKey(viewName))
                 {
-                    Differences.ViewDifferences.Add(view2, new DatabaseObjectDifference(false, true));
+                    Differences.ViewDifferences.Add(viewName, new DatabaseObjectDifference(false, true));
                 }
             }
         }
 
         private void InspectRoutines()
         {
-            foreach (var routine1 in Database1.UserRoutines.Keys)
+            foreach (var routineName in Database1.UserRoutines.Keys)
             {
                 var diff = new DatabaseObjectDifference(true, false);
-                var isFunction = Database1.UserRoutines[routine1].RoutineType.ToLower() == "function";
-                foreach (var routine2 in Database2.UserRoutines.Keys)
+                var isFunction = Database1.UserRoutines[routineName].RoutineType.ToLower() == "function";
+
+                var routine = Database2.UserRoutines.Where(x => x.Key == routineName).FirstOrDefault();
+                if (!routine.Equals(default(KeyValuePair<string, SqlUserRoutine>)))
                 {
-                    if (routine2 == routine1)
+                    if (this.Options.CompareProperties)
                     {
-                        if (this.Options.CompareProperties)
-                        {
-                            InspectObjectProperties(routine2, diff);
-                        }
-
-                        if (this.Options.ComparePermissions)
-                        {
-                            InspectObjectPermissions(routine2, isFunction ? PermissionObjectType.SqlFunction : PermissionObjectType.SqlStoredProcedure, diff);
-                        }
-
-                        diff.ObjectDefinition1 = Database1.UserRoutines[routine2].RoutineDefinition;
-                        diff.ObjectDefinition2 = Database2.UserRoutines[routine2].RoutineDefinition;
-
-                        if (diff.DefinitionsAreDifferent)
-                        {
-                            DefinitionDifferences.Add(routine1, (diff.ObjectDefinition1, diff.ObjectDefinition2));
-                        }
-
-                        diff.ExistsInDatabase2 = true;
-                        break;
+                        InspectObjectProperties(routineName, diff);
                     }
+
+                    if (this.Options.ComparePermissions)
+                    {
+                        InspectObjectPermissions(routineName, isFunction ? PermissionObjectType.SqlFunction : PermissionObjectType.SqlStoredProcedure, diff);
+                    }
+
+                    diff.ObjectDefinition1 = Database1.UserRoutines[routineName].RoutineDefinition;
+                    diff.ObjectDefinition2 = routine.Value.RoutineDefinition;
+
+                    if (diff.DefinitionsAreDifferent)
+                    {
+                        DefinitionDifferences.Add(routineName, (diff.ObjectDefinition1, diff.ObjectDefinition2));
+                    }
+
+                    diff.ExistsInDatabase2 = true;
                 }
 
                 if (isFunction)
                 {
-                    Differences.FunctionDifferences.Add(routine1, diff);
+                    Differences.FunctionDifferences.Add(routineName, diff);
                 }
                 else
                 {
-                    Differences.StoredProcedureDifferences.Add(routine1, diff);
+                    Differences.StoredProcedureDifferences.Add(routineName, diff);
                 }
             }
 
-            foreach (var routine2 in Database2.UserRoutines.Keys)
+            foreach (var routineName in Database2.UserRoutines.Keys)
             {
-                if (Database2.UserRoutines[routine2].RoutineType.ToLower() == "function")
+                if (Database2.UserRoutines[routineName].RoutineType.ToLower() == "function")
                 {
-                    if (!Differences.FunctionDifferences.ContainsKey(routine2))
+                    if (!Differences.FunctionDifferences.ContainsKey(routineName))
                     {
-                        Differences.FunctionDifferences.Add(routine2, new DatabaseObjectDifference(false, true));
+                        Differences.FunctionDifferences.Add(routineName, new DatabaseObjectDifference(false, true));
                     }
                 }
                 else
                 {
-                    if (!Differences.StoredProcedureDifferences.ContainsKey(routine2))
+                    if (!Differences.StoredProcedureDifferences.ContainsKey(routineName))
                     {
-                        Differences.StoredProcedureDifferences.Add(routine2, new DatabaseObjectDifference(false, true));
+                        Differences.StoredProcedureDifferences.Add(routineName, new DatabaseObjectDifference(false, true));
                     }
                 }
             }
@@ -1011,15 +993,13 @@
                 if (property1.Type == PropertyObjectType.Routine && propertyObjectName == fullyQualifiedObjectName)
                 {
                     var diff = new ExtendedPropertyDifference(true, false);
-                    foreach (var property2 in Database2.ExtendedProperties)
+
+                    var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
+                    if (property2 != null)
                     {
-                        if (property2.FullId == property1.FullId)
-                        {
-                            diff.ExistsInDatabase2 = true;
-                            diff.Value1 = property1.PropertyValue;
-                            diff.Value2 = property2.PropertyValue;
-                            break;
-                        }
+                        diff.ExistsInDatabase2 = true;
+                        diff.Value1 = property1.PropertyValue;
+                        diff.Value2 = property2.PropertyValue;
                     }
 
                     objectDiff.ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
@@ -1046,17 +1026,9 @@
                 var permissionObjectName = permission1.ObjectName.PrependSchemaName(permission1.ObjectSchema);
                 if (permission1.Type == objectType && permissionObjectName == fullyQualifiedObjectName)
                 {
-                    var diff = new BaseDifference(true, false);
-                    foreach (var permission2 in Database2.Permissions)
-                    {
-                        if (permission2.FullId == permission1.FullId)
-                        {
-                            diff.ExistsInDatabase2 = true;
-                            break;
-                        }
-                    }
-
-                    objectDiff.PermissionDifferences.Add(permission1.ToString(), diff);
+                    objectDiff.PermissionDifferences.Add(
+                        permission1.ToString(),
+                        new BaseDifference(true, Database2.Permissions.Exists(x => x.FullId == permission1.FullId)));
                 }
             }
 
