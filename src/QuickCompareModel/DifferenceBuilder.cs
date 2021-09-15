@@ -184,12 +184,10 @@
 
             foreach (var permission2 in Database2.Permissions)
             {
-                if (permission2.Type == PermissionObjectType.Database)
+                if (permission2.Type == PermissionObjectType.Database &&
+                    !Differences.PermissionDifferences.ContainsKey(permission2.ToString()))
                 {
-                    if (!Differences.PermissionDifferences.ContainsKey(permission2.ToString()))
-                    {
-                        Differences.PermissionDifferences.Add(permission2.ToString(), new BaseDifference(false, true));
-                    }
+                    Differences.PermissionDifferences.Add(permission2.ToString(), new BaseDifference(false, true));
                 }
             }
         }
@@ -277,12 +275,9 @@
 
         private void InspectColumns(string fullyQualifiedTableName, ItemWithPropertiesDifference diff, SqlColumnDetail column1, SqlColumnDetail column2)
         {
-            if (this.Options.CompareOrdinalPositions)
+            if (this.Options.CompareOrdinalPositions && column2.OrdinalPosition != column1.OrdinalPosition)
             {
-                if (column2.OrdinalPosition != column1.OrdinalPosition)
-                {
-                    diff.Differences.Add($"has different ordinal position - is {column1.OrdinalPosition} in database 1 and is {column2.OrdinalPosition} in database 2");
-                }
+                diff.Differences.Add($"has different ordinal position - is {column1.OrdinalPosition} in database 1 and is {column2.OrdinalPosition} in database 2");
             }
 
             if (column2.ColumnDefault != column1.ColumnDefault)
@@ -561,12 +556,11 @@
                 Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.Add(index1.IndexName, diff);
             }
 
-            foreach (var index2 in Database2.Tables[fullyQualifiedTableName].Indexes)
+
+            foreach (var index in Database2.Tables[fullyQualifiedTableName].Indexes.Where(x =>
+                !Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.ContainsKey(x.IndexName)))
             {
-                if (!Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.ContainsKey(index2.IndexName))
-                {
-                    Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.Add(index2.IndexName, new ItemWithPropertiesDifference(false, true, index2.ItemType));
-                }
+                Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.Add(index.IndexName, new ItemWithPropertiesDifference(false, true, index.ItemType));
             }
         }
 
@@ -605,33 +599,31 @@
             foreach (var relation1 in Database1.Tables[fullyQualifiedTableName].Relations)
             {
                 var diff = new ItemDifference(true, false);
-                foreach (var relation2 in Database2.Tables[fullyQualifiedTableName].Relations)
+
+                var relation2 = Database2.Tables[fullyQualifiedTableName].Relations.Where(x => x.RelationName == relation1.RelationName).FirstOrDefault();
+                if (relation2 != null)
                 {
-                    if (relation2.RelationName == relation1.RelationName)
+                    if (relation2.ChildColumns != relation1.ChildColumns)
                     {
-                        if (relation2.ChildColumns != relation1.ChildColumns)
-                        {
-                            diff.Differences.Add($"has different child column list - is \"{relation1.ChildColumns}\" in database 1 and is \"{relation2.ChildColumns}\" in database 2");
-                        }
-
-                        if (relation2.ParentColumns != relation1.ParentColumns)
-                        {
-                            diff.Differences.Add($"has different parent column list - is \"{relation1.ParentColumns}\" in database 1 and is \"{relation2.ParentColumns}\" in database 2");
-                        }
-
-                        if (relation2.DeleteRule != relation1.DeleteRule)
-                        {
-                            diff.Differences.Add($"has different delete rule - is \"{relation1.DeleteRule}\" in database 1 and is \"{relation2.DeleteRule}\" in database 2");
-                        }
-
-                        if (relation2.UpdateRule != relation1.UpdateRule)
-                        {
-                            diff.Differences.Add($"has different update rule - is \"{relation1.UpdateRule}\" in database 1 and is \"{relation2.UpdateRule}\" in database 2");
-                        }
-
-                        diff.ExistsInDatabase2 = true;
-                        break;
+                        diff.Differences.Add($"has different child column list - is \"{relation1.ChildColumns}\" in database 1 and is \"{relation2.ChildColumns}\" in database 2");
                     }
+
+                    if (relation2.ParentColumns != relation1.ParentColumns)
+                    {
+                        diff.Differences.Add($"has different parent column list - is \"{relation1.ParentColumns}\" in database 1 and is \"{relation2.ParentColumns}\" in database 2");
+                    }
+
+                    if (relation2.DeleteRule != relation1.DeleteRule)
+                    {
+                        diff.Differences.Add($"has different delete rule - is \"{relation1.DeleteRule}\" in database 1 and is \"{relation2.DeleteRule}\" in database 2");
+                    }
+
+                    if (relation2.UpdateRule != relation1.UpdateRule)
+                    {
+                        diff.Differences.Add($"has different update rule - is \"{relation1.UpdateRule}\" in database 1 and is \"{relation2.UpdateRule}\" in database 2");
+                    }
+
+                    diff.ExistsInDatabase2 = true;
                 }
 
                 Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.Add(relation1.RelationName, diff);
@@ -988,12 +980,11 @@
             foreach (var property2 in Database2.ExtendedProperties)
             {
                 var propertyObjectName = property2.ObjectName.PrependSchemaName(property2.ObjectSchema);
-                if (property2.Type == PropertyObjectType.Routine && propertyObjectName == fullyQualifiedObjectName)
+                if (property2.Type == PropertyObjectType.Routine &&
+                    propertyObjectName == fullyQualifiedObjectName &&
+                    !objectDiff.ExtendedPropertyDifferences.ContainsKey(property2.PropertyName))
                 {
-                    if (!objectDiff.ExtendedPropertyDifferences.ContainsKey(property2.PropertyName))
-                    {
-                        objectDiff.ExtendedPropertyDifferences.Add(property2.PropertyName, new ExtendedPropertyDifference(false, true));
-                    }
+                    objectDiff.ExtendedPropertyDifferences.Add(property2.PropertyName, new ExtendedPropertyDifference(false, true));
                 }
             }
         }
@@ -1014,12 +1005,11 @@
             foreach (var permission2 in Database2.Permissions)
             {
                 var permissionObjectName = permission2.ObjectName.PrependSchemaName(permission2.ObjectSchema);
-                if (permission2.Type == objectType && permissionObjectName == fullyQualifiedObjectName)
+                if (permission2.Type == objectType &&
+                    permissionObjectName == fullyQualifiedObjectName &&
+                    !objectDiff.PermissionDifferences.ContainsKey(permission2.ToString()))
                 {
-                    if (!objectDiff.PermissionDifferences.ContainsKey(permission2.ToString()))
-                    {
-                        objectDiff.PermissionDifferences.Add(permission2.ToString(), new BaseDifference(false, true));
-                    }
+                    objectDiff.PermissionDifferences.Add(permission2.ToString(), new BaseDifference(false, true));
                 }
             }
         }
