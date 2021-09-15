@@ -8,13 +8,13 @@ __A simple, fast, free SQL database schema comparison library/app written in C#_
 - [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample console application
 - [QuickCompare](/src/QuickCompare) - sample Windows application
 
-This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers.
+This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
 
-It is free to use _without any restrictions_ (and always will be), but I do encourage you to contribute improvements to the project and raise issues as appropriate - you will be credited accordingly.
+It is free to use _without any restrictions_ (and always will be), but I do encourage everyone to contribute improvements to the project and raise issues as appropriate.
 
 ## How it works
 
-Using some SQL queries (mainly targeting the INFORMATION_SCHEMA models), the solution uses low-level asynchronous DataReader instances to populate models in the DatabaseSchema namespace.
+Using some SQL queries (mainly targeting the INFORMATION_SCHEMA views), the solution uses low-level asynchronous DataReader instances to populate models in the DatabaseSchema namespace.
 
 Next the engine inspects models of both databases, building a set of Difference objects for each database element.
 
@@ -71,7 +71,8 @@ The SQL queries are located in the folder DatabaseSchema/Queries. They do not re
 _Consider this a pre-release version until the first release appears on the GitHub project page!_
 
 #### To-Do:
-- Display status updates in UI
+- Display status updates in Windows app UI
 - Compare System-Versioned table properties
 - Compare Database properties (e.g. compatibility version)
-- Refactor DifferenceBuilder (refactor all repeated loops and it should dramatically reduce the line count of code)
+- Refactor DifferenceBuilder
+- Add "upload report" feature for DevOps (XML/JSON?)
