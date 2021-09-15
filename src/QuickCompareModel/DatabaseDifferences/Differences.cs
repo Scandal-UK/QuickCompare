@@ -1,6 +1,7 @@
 ﻿namespace QuickCompareModel.DatabaseDifferences
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
 
     /// <summary> Model to hold lists of various differences between two databases. </summary>
@@ -65,12 +66,9 @@
 
             if (ExtendedPropertyDifferences.Count > 0)
             {
-                foreach (var prop in ExtendedPropertyDifferences)
+                foreach (var prop in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (prop.Value.IsDifferent)
-                    {
-                        section.Append($"Extended property: [{prop.Key}] - {prop.Value}");
-                    }
+                    section.Append($"Extended property: [{prop.Key}] - {prop.Value}");
                 }
 
                 if (section.Length > 0)
@@ -83,12 +81,9 @@
 
             if (PermissionDifferences.Count > 0)
             {
-                foreach (var prop in PermissionDifferences)
+                foreach (var prop in PermissionDifferences.Where(x => !x.Value.ExistsInBothDatabases))
                 {
-                    if (!prop.Value.ExistsInBothDatabases)
-                    {
-                        section.Append($"Permission: {prop.Key} {prop.Value}");
-                    }
+                    section.Append($"Permission: {prop.Key} {prop.Value}");
                 }
 
                 if (section.Length > 0)
@@ -101,12 +96,9 @@
 
             if (TableDifferences.Count > 0)
             {
-                foreach (var tableDifference in TableDifferences)
+                foreach (var tableDifference in TableDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (tableDifference.Value.IsDifferent)
-                    {
-                        section.AppendLine($"Table: {tableDifference.Key} {tableDifference.Value}");
-                    }
+                    section.AppendLine($"Table: {tableDifference.Key} {tableDifference.Value}");
                 }
 
                 if (section.Length > 0)
@@ -119,12 +111,9 @@
 
             if (UserTypeDifferences.Count > 0)
             {
-                foreach (var userTypeDifference in UserTypeDifferences)
+                foreach (var userTypeDifference in UserTypeDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (userTypeDifference.Value.IsDifferent)
-                    {
-                        section.AppendLine($"User type: {userTypeDifference.Key} {userTypeDifference.Value}");
-                    }
+                    section.AppendLine($"User type: {userTypeDifference.Key} {userTypeDifference.Value}");
                 }
 
                 if (section.Length > 0)
@@ -137,12 +126,9 @@
 
             if (ViewDifferences.Count > 0)
             {
-                foreach (var viewDifference in ViewDifferences)
+                foreach (var viewDifference in ViewDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (viewDifference.Value.IsDifferent)
-                    {
-                        section.AppendLine($"View: {viewDifference.Key} {viewDifference.Value}");
-                    }
+                    section.AppendLine($"View: {viewDifference.Key} {viewDifference.Value}");
                 }
 
                 if (section.Length > 0)
@@ -155,12 +141,9 @@
 
             if (FunctionDifferences.Count > 0)
             {
-                foreach (var functionDifference in FunctionDifferences)
+                foreach (var functionDifference in FunctionDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (functionDifference.Value.IsDifferent)
-                    {
-                        section.AppendLine($"Function: {functionDifference.Key} {functionDifference.Value}");
-                    }
+                    section.AppendLine($"Function: {functionDifference.Key} {functionDifference.Value}");
                 }
 
                 if (section.Length > 0)
@@ -173,12 +156,9 @@
 
             if (StoredProcedureDifferences.Count > 0)
             {
-                foreach (var procedureDifference in StoredProcedureDifferences)
+                foreach (var procedureDifference in StoredProcedureDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (procedureDifference.Value.IsDifferent)
-                    {
-                        section.AppendLine($"Stored procedure: {procedureDifference.Key} {procedureDifference.Value}");
-                    }
+                    section.AppendLine($"Stored procedure: {procedureDifference.Key} {procedureDifference.Value}");
                 }
 
                 if (section.Length > 0)
@@ -191,12 +171,9 @@
 
             if (SynonymDifferences.Count > 0)
             {
-                foreach (var synonymDifference in SynonymDifferences)
+                foreach (var synonymDifference in SynonymDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (synonymDifference.Value.IsDifferent)
-                    {
-                        section.AppendLine($"Synonym: [{synonymDifference.Key}] {synonymDifference.Value}");
-                    }
+                    section.AppendLine($"Synonym: [{synonymDifference.Key}] {synonymDifference.Value}");
                 }
 
                 if (section.Length > 0)

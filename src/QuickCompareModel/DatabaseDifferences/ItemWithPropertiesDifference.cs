@@ -1,6 +1,7 @@
 ﻿namespace QuickCompareModel.DatabaseDifferences
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
 
     /// <summary> Model to represent an element that can have extended properties and belongs to a table. </summary>
@@ -33,21 +34,7 @@
             = new Dictionary<string, ExtendedPropertyDifference>();
 
         /// <summary> Gets a value indicating whether the extended property difference set has tracked any differences. </summary>
-        public bool HasExtendedPropertyDifferences
-        {
-            get
-            {
-                foreach (var prop in ExtendedPropertyDifferences.Values)
-                {
-                    if (prop.IsDifferent)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public bool HasExtendedPropertyDifferences => ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
         public override bool IsDifferent => base.IsDifferent || HasExtendedPropertyDifferences;
@@ -68,16 +55,13 @@
             var sb = new StringBuilder(DifferenceList());
             if (HasExtendedPropertyDifferences)
             {
-                foreach (var diff in ExtendedPropertyDifferences)
+                foreach (var diff in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (diff.Value.IsDifferent)
-                    {
-                        sb.AppendFormat(
-                            "{0}{0}Extended property: {1}: {2}",
-                            TabIndent,
-                            diff.Key,
-                            diff.Value);
-                    }
+                    sb.AppendFormat(
+                        "{0}{0}Extended property: {1}: {2}",
+                        TabIndent,
+                        diff.Key,
+                        diff.Value);
                 }
             }
 

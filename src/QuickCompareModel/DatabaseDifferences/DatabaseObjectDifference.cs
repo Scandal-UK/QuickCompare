@@ -1,6 +1,7 @@
 ﻿namespace QuickCompareModel.DatabaseDifferences
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
 
     /// <summary> Model to represent a complex database element and track the differences across two databases. </summary>
@@ -33,38 +34,10 @@
         public bool DefinitionsAreDifferent => CleanDefinitionText(ObjectDefinition1, true) != CleanDefinitionText(ObjectDefinition2, true);
 
         /// <summary> Gets a value indicating whether the permission difference set has tracked any differences. </summary>
-        public bool HasPermissionDifferences
-        {
-            get
-            {
-                foreach (var permission in PermissionDifferences.Values)
-                {
-                    if (!permission.ExistsInBothDatabases)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public bool HasPermissionDifferences => PermissionDifferences.Values.Any(x => !x.ExistsInBothDatabases);
 
         /// <summary> Gets a value indicating whether the extended property difference set has tracked any differences. </summary>
-        public bool HasExtendedPropertyDifferences
-        {
-            get
-            {
-                foreach (var prop in ExtendedPropertyDifferences.Values)
-                {
-                    if (prop.IsDifferent)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public bool HasExtendedPropertyDifferences => ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
         public bool IsDifferent => !ExistsInBothDatabases || DefinitionsAreDifferent || HasPermissionDifferences || HasExtendedPropertyDifferences;
@@ -91,23 +64,17 @@
 
             if (HasExtendedPropertyDifferences)
             {
-                foreach (var diff in ExtendedPropertyDifferences)
+                foreach (var diff in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
                 {
-                    if (diff.Value.IsDifferent)
-                    {
-                        sb.Append($"{TabIndent}Extended property: [{diff.Key}] {diff.Value}");
-                    }
+                    sb.Append($"{TabIndent}Extended property: [{diff.Key}] {diff.Value}");
                 }
             }
 
             if (HasPermissionDifferences)
             {
-                foreach (var diff in PermissionDifferences)
+                foreach (var diff in PermissionDifferences.Where(x => !x.Value.ExistsInBothDatabases))
                 {
-                    if (!diff.Value.ExistsInBothDatabases)
-                    {
-                        sb.Append($"{TabIndent}Permission: {diff.Key} {diff.Value}");
-                    }
+                    sb.Append($"{TabIndent}Permission: {diff.Key} {diff.Value}");
                 }
             }
 
