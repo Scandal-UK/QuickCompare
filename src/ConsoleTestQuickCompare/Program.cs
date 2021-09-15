@@ -25,8 +25,8 @@
             }
             catch (Exception ex)
             {
-                Console.Write(ex.ToString());
-                Trace.Write(ex.ToString());
+                Console.Write(ex);
+                Trace.Write(ex);
             }
             finally
             {
