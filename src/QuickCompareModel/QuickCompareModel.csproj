@@ -1,47 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="DatabaseSchema\Queries\ColumnDetails.sql" />
-    <None Remove="DatabaseSchema\Queries\ExtendedProperties.sql" />
-    <None Remove="DatabaseSchema\Queries\IncludedColumnsForIndex.sql" />
-    <None Remove="DatabaseSchema\Queries\Relations.sql" />
-    <None Remove="DatabaseSchema\Queries\RolePermissions.sql" />
-    <None Remove="DatabaseSchema\Queries\Synonyms.sql" />
-    <None Remove="DatabaseSchema\Queries\TableNames.sql" />
-    <None Remove="DatabaseSchema\Queries\Triggers.sql" />
-    <None Remove="DatabaseSchema\Queries\UserPermissions.sql" />
-    <None Remove="DatabaseSchema\Queries\UserRoutineDefinitions.sql" />
-    <None Remove="DatabaseSchema\Queries\UserRoutines.sql" />
-    <None Remove="DatabaseSchema\Queries\UserTypes.sql" />
-    <None Remove="DatabaseSchema\Queries\Views.sql" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="DatabaseSchema\Queries\ColumnDetails.sql" />
+        <None Remove="DatabaseSchema\Queries\ExtendedProperties.sql" />
+        <None Remove="DatabaseSchema\Queries\IncludedColumnsForIndex.sql" />
+        <None Remove="DatabaseSchema\Queries\Relations.sql" />
+        <None Remove="DatabaseSchema\Queries\RolePermissions.sql" />
+        <None Remove="DatabaseSchema\Queries\Synonyms.sql" />
+        <None Remove="DatabaseSchema\Queries\TableNames.sql" />
+        <None Remove="DatabaseSchema\Queries\Triggers.sql" />
+        <None Remove="DatabaseSchema\Queries\UserPermissions.sql" />
+        <None Remove="DatabaseSchema\Queries\UserRoutineDefinitions.sql" />
+        <None Remove="DatabaseSchema\Queries\UserRoutines.sql" />
+        <None Remove="DatabaseSchema\Queries\UserTypes.sql" />
+        <None Remove="DatabaseSchema\Queries\Views.sql" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Queries\IncludedColumnsForIndex.sql" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="DatabaseSchema\Queries\IncludedColumnsForIndex.sql" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Queries\ColumnDetails.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\ExtendedProperties.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\Relations.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\RolePermissions.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\Synonyms.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\TableNames.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\Triggers.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\UserPermissions.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\UserRoutineDefinitions.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\UserRoutines.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\UserTypes.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Queries\Views.sql" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="DatabaseSchema\Queries\ColumnDetails.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\ExtendedProperties.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\Relations.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\RolePermissions.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\Synonyms.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\TableNames.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\Triggers.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\UserPermissions.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\UserRoutineDefinitions.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\UserRoutines.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\UserTypes.sql" />
+        <EmbeddedResource Include="DatabaseSchema\Queries\Views.sql" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+    </ItemGroup>
 
 </Project>
