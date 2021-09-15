@@ -10,85 +10,85 @@ namespace QuickCompareTests
 
         [Fact]
         public void LoadNonExistingQueryFromResource_ReturnsEmptyString() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("Foobar")
                 .Should().BeEmpty();
 
         [Fact]
         public void LoadColumnDetailsQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("ColumnDetails")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadExtendedPropertiesQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("ExtendedProperties")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadIncludedColumnsForIndexQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("IncludedColumnsForIndex")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadRelationsQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("Relations")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadRolePermissionsQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("RolePermissions")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadSynonymsQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("Synonyms")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadTableNamesQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("TableNames")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadTriggersQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("Triggers")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadUserPermissionsQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("UserPermissions")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadUserRoutineDefinitionsQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("UserRoutineDefinitions")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadUserRoutinesQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("UserRoutines")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadUserTypesQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("UserTypes")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
 
         [Fact]
         public void LoadViewsQueryFromResource_ReturnsDatabaseQuery() =>
-            new SqlDatabase(string.Empty)
+            SqlDatabase
                 .LoadQueryFromResource("Views")
                 .Should().MatchRegex(TextStartsWithSelectRegex);
     }

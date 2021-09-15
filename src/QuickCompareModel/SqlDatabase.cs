@@ -139,7 +139,7 @@
         /// </summary>
         /// <param name="queryName">Name of the SQL file without the extension.</param>
         /// <returns>SQL query text.</returns>
-        public string LoadQueryFromResource(string queryName)
+        public static string LoadQueryFromResource(string queryName)
         {
             var resourceName = $"{nameof(QuickCompareModel)}.{nameof(DatabaseSchema)}.Queries.{queryName}.sql";
             using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
