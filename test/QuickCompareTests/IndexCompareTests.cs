@@ -19,7 +19,7 @@
             builder.Database2.Tables[tableName].Indexes.Add(new SqlIndex { IndexName = indexName });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -45,7 +45,7 @@
             builder.Database2.Tables.Add(tableName, new SqlTable());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -72,7 +72,7 @@
             builder.Database2.Tables[tableName].Indexes.Add(new SqlIndex { IndexName = indexName });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -96,7 +96,7 @@
             builder.Database2.Tables[tableName].Indexes.Add(new SqlIndex { IndexName = indexName, IsPrimaryKey = true });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -119,7 +119,7 @@
             builder.Database2.Tables.Add(tableName, new SqlTable());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -142,7 +142,7 @@
             builder.Database2.Tables[tableName].Indexes.Add(new SqlIndex { IndexName = indexName, IsUniqueKey = true });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -165,7 +165,7 @@
             builder.Database2.Tables.Add(tableName, new SqlTable());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]

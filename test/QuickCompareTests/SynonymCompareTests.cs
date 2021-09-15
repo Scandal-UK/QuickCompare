@@ -15,7 +15,7 @@
             builder.Database2.Synonyms.Add(synonymName, "foobar");
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.SynonymDifferences.Should().ContainKey(synonymName);
@@ -36,7 +36,7 @@
             builder.Database1.Synonyms.Add(synonymName, "foobar");
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.SynonymDifferences.Should().ContainKey(synonymName);
@@ -58,7 +58,7 @@
             builder.Database2.Synonyms.Add(synonymName, "foobar");
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.SynonymDifferences.Should().ContainKey(synonymName);

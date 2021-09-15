@@ -16,7 +16,7 @@
             builder.Database2.UserTypes.Add(userTypeName, new SqlUserType());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.UserTypeDifferences.Should().ContainKey(userTypeName);
@@ -37,7 +37,7 @@
             builder.Database1.UserTypes.Add(userTypeName, new SqlUserType());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.UserTypeDifferences.Should().ContainKey(userTypeName);
@@ -59,7 +59,7 @@
             builder.Database2.UserTypes.Add(userTypeName, new SqlUserType());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.UserTypeDifferences.Should().ContainKey(userTypeName);
@@ -115,7 +115,7 @@
             builder.Database2.UserTypes.Add(userTypeName, new SqlUserType());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             var diff = builder.Differences.UserTypeDifferences[userTypeName];

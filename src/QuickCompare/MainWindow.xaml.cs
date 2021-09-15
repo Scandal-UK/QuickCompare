@@ -16,18 +16,21 @@
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            RunButton.IsEnabled = false;
             if (!string.IsNullOrEmpty(OutputTextBox.Text))
             {
                 ClearOutput();
             }
 
             DifferenceBuilder builder = new(CreateOptionsFromFormValues());
-            builder.BuildDifferences();
+            await builder.BuildDifferencesAsync();
 
             OutputTextBox.Text = builder.Differences.ToString();
             ComboBox1.ItemsSource = builder.DefinitionDifferences;
+
+            RunButton.IsEnabled = true;
         }
 
         private void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)

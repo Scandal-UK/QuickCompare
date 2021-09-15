@@ -19,7 +19,7 @@
             builder.Database2.Tables[tableName].ColumnDetails.Add(new SqlColumnDetail { ColumnName = columnName });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -46,7 +46,7 @@
             builder.Database2.Tables.Add(tableName, new SqlTable());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -69,7 +69,7 @@
             var builder = TestHelper.GetBuilderWithSingleTable(tableName, columnName);
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -204,7 +204,7 @@
             builder.Database2.Tables[tableName].ColumnDetails[0] = column2Details;
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             var diff = builder.Differences.TableDifferences[tableName].ColumnDifferences[columnName];

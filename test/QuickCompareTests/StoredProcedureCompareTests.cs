@@ -17,7 +17,7 @@
             builder.Database2.UserRoutines.Add(StoredProcedureName, new SqlUserRoutine { RoutineType = StoredProcedureRoutineType });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -36,7 +36,7 @@
             builder.Database1.UserRoutines.Add(StoredProcedureName, new SqlUserRoutine { RoutineType = StoredProcedureRoutineType });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -56,7 +56,7 @@
             builder.Database2.UserRoutines.Add(StoredProcedureName, new SqlUserRoutine { RoutineType = StoredProcedureRoutineType });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -75,7 +75,7 @@
             builder.Database2.UserRoutines.Add(StoredProcedureName, new SqlUserRoutine { RoutineType = StoredProcedureRoutineType, RoutineDefinition = "bar" });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -103,7 +103,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -132,7 +132,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -170,7 +170,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);

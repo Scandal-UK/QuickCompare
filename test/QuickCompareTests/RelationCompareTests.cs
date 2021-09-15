@@ -21,7 +21,7 @@
             builder.Database2.Tables[TableName].Relations.Add(new SqlRelation { RelationName = RelationName });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[TableName]
@@ -46,7 +46,7 @@
             builder.Database2.Tables.Add(TableName, new SqlTable());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[TableName]
@@ -72,7 +72,7 @@
             builder.Database2.Tables[TableName].Relations.Add(new SqlRelation { RelationName = RelationName });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[TableName]

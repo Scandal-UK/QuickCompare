@@ -19,7 +19,7 @@
             builder.Database2.Tables[tableName].Triggers.Add(new SqlTrigger { TriggerName = triggerName });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -46,7 +46,7 @@
             builder.Database2.Tables.Add(tableName, new SqlTable());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]
@@ -74,7 +74,7 @@
             builder.Database2.Tables[tableName].Triggers.Add(new SqlTrigger { TriggerName = triggerName, TableName = tableName });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences[tableName]

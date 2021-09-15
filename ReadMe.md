@@ -46,7 +46,7 @@ var settings = new QuickCompareOptions
 IOptions<QuickCompareOptions> options = Options.Create(settings);
 
 var builder = new DifferenceBuilder(options);
-builder.BuildDifferences();
+await builder.BuildDifferencesAsync();
 string outputText = builder.Differences.ToString();
 ```
 

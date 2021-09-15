@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using QuickCompareModel.DatabaseDifferences;
 
     /// <summary>
@@ -28,6 +29,7 @@
         event EventHandler<StatusChangedEventArgs> ComparisonStatusChanged;
 
         /// <summary> Inspect two database schemas and build the <see cref="Differences"/> model. </summary>
-        void BuildDifferences();
+        /// <returns> A <see cref="Task"/> that represents the asynchronous operation. </returns>
+        Task BuildDifferencesAsync();
     }
 }

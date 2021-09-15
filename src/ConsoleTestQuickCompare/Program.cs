@@ -15,7 +15,7 @@
                 var builder = provider.GetService<IDifferenceBuilder>();
 
                 builder.ComparisonStatusChanged += OnComparisonStatusChanged;
-                builder.BuildDifferences();
+                builder.BuildDifferencesAsync().Wait();
 
                 Console.WriteLine("\r\n--------------------------------");
 

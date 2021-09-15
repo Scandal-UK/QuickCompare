@@ -41,7 +41,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.ExtendedPropertyDifferences.Count.Should().Be(1);
@@ -61,7 +61,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.ExtendedPropertyDifferences.Count.Should().Be(1);
@@ -88,7 +88,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.ExtendedPropertyDifferences.Count.Should().Be(1);

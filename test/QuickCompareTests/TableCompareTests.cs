@@ -18,7 +18,7 @@
             builder.Database2.Tables.Add(TableName, new SqlTable());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -37,7 +37,7 @@
             builder.Database1.Tables.Add(TableName, new SqlTable());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -57,7 +57,7 @@
             builder.Database2.Tables.Add(TableName, new SqlTable());
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -88,7 +88,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -124,7 +124,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -171,7 +171,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -203,7 +203,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -237,7 +237,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -280,7 +280,7 @@
             });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -308,7 +308,7 @@
             builder.Database2.Tables.Add(TableName, new SqlTable { ColumnDetails = new List<SqlColumnDetail> { new SqlColumnDetail { ColumnName = "foobar" } } });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -331,7 +331,7 @@
             builder.Database2.Tables.Add(TableName, new SqlTable { ColumnDetails = new List<SqlColumnDetail> { new SqlColumnDetail { ColumnName = "foobar" } } });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.TableDifferences.Should().ContainKey(TableName);

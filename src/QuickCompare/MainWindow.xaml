@@ -42,7 +42,7 @@
                 <CheckBox x:Name="IgnoreSqlComments" Margin="10 5" Content="Ignore SQL comments?" IsChecked="{Binding Source={StaticResource localContext}, Path=IgnoreSqlComments}" />
             </StackPanel>
 
-            <Button Grid.Row="1" Margin="20" Content="Run comparison" IsDefault="True" Click="Button_Click" />
+            <Button x:Name="RunButton" Grid.Row="1" Margin="20" Content="Run comparison" IsDefault="True" Click="Button_Click" />
         </Grid>
 
         <TabControl Grid.Column="1">

@@ -17,7 +17,7 @@
             builder.Database2.UserRoutines.Add(FunctionName, new SqlUserRoutine { RoutineType = FunctionRoutineType });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.FunctionDifferences.Should().ContainKey(FunctionName);
@@ -36,7 +36,7 @@
             builder.Database1.UserRoutines.Add(FunctionName, new SqlUserRoutine { RoutineType = FunctionRoutineType });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.FunctionDifferences.Should().ContainKey(FunctionName);
@@ -56,7 +56,7 @@
             builder.Database2.UserRoutines.Add(FunctionName, new SqlUserRoutine { RoutineType = FunctionRoutineType });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.FunctionDifferences.Should().ContainKey(FunctionName);
@@ -75,7 +75,7 @@
             builder.Database2.UserRoutines.Add(FunctionName, new SqlUserRoutine { RoutineType = FunctionRoutineType, RoutineDefinition = "BarFoo" });
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.FunctionDifferences.Should().ContainKey(FunctionName);

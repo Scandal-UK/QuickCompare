@@ -15,7 +15,7 @@
             builder.Database2.Views.Add(viewName, "foobar");
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync();
 
             // Assert
             builder.Differences.ViewDifferences.Should().ContainKey(viewName);
@@ -36,7 +36,7 @@
             builder.Database1.Views.Add(viewName, "foobar");
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync();
 
             // Assert
             builder.Differences.ViewDifferences.Should().ContainKey(viewName);
@@ -58,7 +58,7 @@
             builder.Database2.Views.Add(viewName, "foobar");
 
             // Act
-            builder.BuildDifferences();
+            builder.BuildDifferencesAsync();
 
             // Assert
             builder.Differences.ViewDifferences.Should().ContainKey(viewName);
