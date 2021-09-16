@@ -1,5 +1,8 @@
 [![Build Status](https://github.com/Scandal-UK/QuickCompare/workflows/Build%20and%20Test/badge.svg)](https://github.com/Scandal-UK/QuickCompare/actions?query=workflow%3A%22Build%20and%20Test%22)
 [![CodeQL](https://github.com/Scandal-UK/QuickCompare/workflows/CodeQL/badge.svg)](https://github.com/Scandal-UK/QuickCompare/actions?query=workflow%3ACodeQL)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=security_rating)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
 # QuickCompare
 
 __A simple, fast, free SQL database schema comparison library/app written in C#__
