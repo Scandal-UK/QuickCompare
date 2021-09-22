@@ -55,10 +55,10 @@
             </TabItem>
 
             <TabItem Header="Definition differences">
-                <StackPanel Margin="0,5">
-                    <ComboBox x:Name="ComboBox1" DisplayMemberPath="Key" SelectionChanged="ComboBox1_SelectionChanged" />
+                <DockPanel Margin="0,5">
+                    <ComboBox x:Name="ComboBox1" DisplayMemberPath="Key" SelectionChanged="ComboBox1_SelectionChanged" DockPanel.Dock="Top" />
                     <diffplex:DiffViewer x:Name="DiffViewer1" OldTextHeader="Database 1" NewTextHeader="Database 2" />
-                </StackPanel>
+                </DockPanel>
             </TabItem>
         </TabControl>
     </Grid>
