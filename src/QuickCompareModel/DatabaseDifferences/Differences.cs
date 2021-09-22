@@ -62,129 +62,35 @@
                 return output.ToString();
             }
 
-            var section = new StringBuilder();
-
-            if (ExtendedPropertyDifferences.Count > 0)
-            {
-                foreach (var prop in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    section.Append($"Extended property: [{prop.Key}] - {prop.Value}");
-                }
-
-                if (section.Length > 0)
-                {
-                    output.Append("\r\nEXTENDED PROPERTY DIFFERENCES\r\n\r\n");
-                    output.Append(section);
-                    section.Length = 0;
-                }
-            }
-
-            if (PermissionDifferences.Count > 0)
-            {
-                foreach (var prop in PermissionDifferences.Where(x => !x.Value.ExistsInBothDatabases))
-                {
-                    section.Append($"Permission: {prop.Key} {prop.Value}");
-                }
-
-                if (section.Length > 0)
-                {
-                    output.Append("\r\nPERMISSION DIFFERENCES\r\n\r\n");
-                    output.Append(section);
-                    section.Length = 0;
-                }
-            }
-
-            if (TableDifferences.Count > 0)
-            {
-                foreach (var tableDifference in TableDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    section.AppendLine($"Table: {tableDifference.Key} {tableDifference.Value}");
-                }
-
-                if (section.Length > 0)
-                {
-                    output.Append("\r\nTABLE DIFFERENCES\r\n\r\n");
-                    output.Append(section);
-                    section.Length = 0;
-                }
-            }
-
-            if (UserTypeDifferences.Count > 0)
-            {
-                foreach (var userTypeDifference in UserTypeDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    section.AppendLine($"User type: {userTypeDifference.Key} {userTypeDifference.Value}");
-                }
-
-                if (section.Length > 0)
-                {
-                    output.Append("\r\nUSER TYPE DIFFERENCES\r\n\r\n");
-                    output.Append(section);
-                    section.Length = 0;
-                }
-            }
-
-            if (ViewDifferences.Count > 0)
-            {
-                foreach (var viewDifference in ViewDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    section.AppendLine($"View: {viewDifference.Key} {viewDifference.Value}");
-                }
-
-                if (section.Length > 0)
-                {
-                    output.Append("\r\nVIEW DIFFERENCES\r\n\r\n");
-                    output.Append(section);
-                    section.Length = 0;
-                }
-            }
-
-            if (FunctionDifferences.Count > 0)
-            {
-                foreach (var functionDifference in FunctionDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    section.AppendLine($"Function: {functionDifference.Key} {functionDifference.Value}");
-                }
-
-                if (section.Length > 0)
-                {
-                    output.Append("\r\nFUNCTION DIFFERENCES\r\n\r\n");
-                    output.Append(section);
-                    section.Length = 0;
-                }
-            }
-
-            if (StoredProcedureDifferences.Count > 0)
-            {
-                foreach (var procedureDifference in StoredProcedureDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    section.AppendLine($"Stored procedure: {procedureDifference.Key} {procedureDifference.Value}");
-                }
-
-                if (section.Length > 0)
-                {
-                    output.Append("\r\nSTORED PROCEDURE DIFFERENCES\r\n\r\n");
-                    output.Append(section);
-                    section.Length = 0;
-                }
-            }
-
-            if (SynonymDifferences.Count > 0)
-            {
-                foreach (var synonymDifference in SynonymDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    section.AppendLine($"Synonym: [{synonymDifference.Key}] {synonymDifference.Value}");
-                }
-
-                if (section.Length > 0)
-                {
-                    output.Append("\r\nSYNONYM DIFFERENCES\r\n\r\n");
-                    output.Append(section);
-                    section.Length = 0;
-                }
-            }
+            output.Append(GetSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
+            output.Append(GetSectionDifferenceOutput(PermissionDifferences, "Permission"));
+            output.Append(GetSectionDifferenceOutput(TableDifferences, "Table"));
+            output.Append(GetSectionDifferenceOutput(UserTypeDifferences, "User type"));
+            output.Append(GetSectionDifferenceOutput(ViewDifferences, "View"));
+            output.Append(GetSectionDifferenceOutput(FunctionDifferences, "Function"));
+            output.Append(GetSectionDifferenceOutput(StoredProcedureDifferences, "Stored procedure"));
+            output.Append(GetSectionDifferenceOutput(SynonymDifferences, "Synonym"));
 
             return output.ToString();
+        }
+
+        private static string GetSectionDifferenceOutput<T>(Dictionary<string, T> source, string name) where T : BaseDifference
+        {
+            var section = new StringBuilder();
+            if (source.Count > 0)
+            {
+                foreach (var prop in source.Where(x => x.Value.IsDifferent))
+                {
+                    section.Append($"{name}: {prop.Key} {prop.Value}");
+                }
+
+                if (section.Length > 0)
+                {
+                    section.Insert(0, $"\r\n{name.ToUpperInvariant()} DIFFERENCES\r\n\r\n");
+                }
+            }
+
+            return section.ToString();
         }
     }
 }
