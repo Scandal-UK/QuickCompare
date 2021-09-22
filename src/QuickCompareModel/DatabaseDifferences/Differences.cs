@@ -77,17 +77,15 @@
         private static string GetSectionDifferenceOutput<T>(Dictionary<string, T> source, string name) where T : BaseDifference
         {
             var section = new StringBuilder();
-            if (source.Count > 0)
-            {
-                foreach (var prop in source.Where(x => x.Value.IsDifferent))
-                {
-                    section.Append($"{name}: {prop.Key} {prop.Value}");
-                }
 
-                if (section.Length > 0)
-                {
-                    section.Insert(0, $"\r\n{name.ToUpperInvariant()} DIFFERENCES\r\n\r\n");
-                }
+            foreach (var prop in source.Where(x => x.Value.IsDifferent))
+            {
+                section.Append($"{name}: {prop.Key} {prop.Value}");
+            }
+
+            if (section.Length > 0)
+            {
+                section.Insert(0, $"\r\n{name.ToUpperInvariant()} DIFFERENCES\r\n\r\n");
             }
 
             return section.ToString();
