@@ -9,7 +9,7 @@
 
 - [QuickCompareModel](/src/QuickCompareModel) - the core library and NuGet package source code
 - [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample console application
-- [QuickCompare](/src/QuickCompare) - sample Windows application
+- [WinQuickCompare](/src/WinQuickCompare) - sample Windows application
 
 This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
 
