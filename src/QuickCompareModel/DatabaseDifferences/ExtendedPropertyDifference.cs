@@ -21,7 +21,7 @@
         public string Value2 { get; set; }
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public bool IsDifferent => !ExistsInBothDatabases || Value1 != Value2;
+        public override bool IsDifferent => !ExistsInBothDatabases || Value1 != Value2;
 
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
         public override string ToString() => IsDifferent
