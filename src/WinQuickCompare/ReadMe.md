@@ -1,4 +1,4 @@
-﻿## QuickCompare UI
+﻿## WinQuickCompare
 
 [Return to main project](/../../)
 
