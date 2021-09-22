@@ -1,4 +1,7 @@
 name: "Security and Quality"
 
+paths-ignore:
+  - '**/*.xaml'
+
 queries:
   - uses: security-and-quality
