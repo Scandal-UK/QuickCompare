@@ -26,6 +26,9 @@
         /// <summary> Gets a value indicating whether the item exists in both databases. </summary>
         public bool ExistsInBothDatabases => ExistsInDatabase1 && ExistsInDatabase2;
 
+        /// <summary> Gets a value indicating whether there are any differences. </summary>
+        public virtual bool IsDifferent => !ExistsInBothDatabases;
+
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
         public override string ToString() => ExistsInBothDatabases ? string.Empty : $"does not exist in database {(ExistsInDatabase1 ? 2 : 1)}\r\n";
 

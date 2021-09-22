@@ -61,9 +61,9 @@
         public bool HasExtendedPropertyDifferences => ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public bool IsDifferent => !ExistsInBothDatabases || HasColumnDifferences ||
-                    HasRelationshipDifferences || HasIndexDifferences || HasTriggerDifferences ||
-                    HasExtendedPropertyDifferences || HasPermissionDifferences;
+        public override bool IsDifferent => !ExistsInBothDatabases || HasColumnDifferences ||
+            HasRelationshipDifferences || HasIndexDifferences || HasTriggerDifferences ||
+            HasExtendedPropertyDifferences || HasPermissionDifferences;
 
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
         public override string ToString()

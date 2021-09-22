@@ -1,9 +1,11 @@
+# QuickCompare
+
 [![Build Status](https://github.com/Scandal-UK/QuickCompare/workflows/Build%20and%20Test/badge.svg)](https://github.com/Scandal-UK/QuickCompare/actions?query=workflow%3A%22Build%20and%20Test%22)
 [![CodeQL](https://github.com/Scandal-UK/QuickCompare/workflows/CodeQL/badge.svg)](https://github.com/Scandal-UK/QuickCompare/actions?query=workflow%3ACodeQL)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=alert_status)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=security_rating)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
-# QuickCompare
 
 > __A simple, fast, free SQL database schema comparison library/app written in C#__
 
@@ -67,7 +69,9 @@ An example of consuming this event can be found in the sample console applicatio
 
 ### Database SQL queries
 
-The SQL queries are located in the folder DatabaseSchema/Queries. They do not require special permission for the master database or anything like that.
+The SQL queries are located in the folder DatabaseSchema/Queries. These have been written for backwards-compatibility with SQL Server 2000.
+
+The queries do not require special permission for the master database and have minimal impact on database performance, even during busy periods.
 
 ---
 
@@ -77,5 +81,5 @@ _Consider this a pre-release version until the first release appears on the GitH
 - Display status updates in Windows app UI
 - Compare System-Versioned table properties
 - Compare Database properties (e.g. compatibility version)
-- Refactor DifferenceBuilder
 - Add "upload report" feature for DevOps (XML/JSON?)
+- Change Windows UI to display a tree view or similar(?)
