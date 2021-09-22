@@ -5,7 +5,7 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
 # QuickCompare
 
-__A simple, fast, free SQL database schema comparison library/app written in C#__
+> __A simple, fast, free SQL database schema comparison library/app written in C#__
 
 - [QuickCompareModel](/src/QuickCompareModel) - the core library and NuGet package source code
 - [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample console application
@@ -13,7 +13,7 @@ __A simple, fast, free SQL database schema comparison library/app written in C#_
 
 This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
 
-It is free to use _without any restrictions_ (and always will be), but I do encourage everyone to contribute improvements to the project and raise issues as appropriate.
+It is free to use _without any restrictions_ (and always will be), but I do encourage everyone to contribute improvements to the project and raise issues as appropriate. If you find this project useful, considering clicking the star to add to your favourites!
 
 ## How it works
 
