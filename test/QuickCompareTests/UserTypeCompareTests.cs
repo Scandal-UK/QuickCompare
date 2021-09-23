@@ -105,7 +105,7 @@
             ComparisonResultContainsValue(new SqlUserType { IsAssemblyType = true }, "assembly")
                 .Should().BeTrue();
 
-        private bool ComparisonResultContainsValue(SqlUserType userType, string value)
+        private static bool ComparisonResultContainsValue(SqlUserType userType, string value)
         {
             // Arrange
             var userTypeName = "Type1";

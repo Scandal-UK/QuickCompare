@@ -40,7 +40,7 @@
             var columnNames = value.Split(',');
             foreach (var columnName in columnNames)
             {
-                if (columnName.IndexOf("(-)") > 0)
+                if (columnName.Contains("(-)"))
                 {
                     Columns.Add(columnName.Replace("(-)", "").Trim(), false);
                 }

@@ -30,7 +30,7 @@
             diff.ExistsInDatabase2.Should().BeTrue();
 
             builder.Differences.TableDifferences[tableName]
-                .ToString().Should().Contain($"[{columnName}] does not exist in database 1");
+                .ToString().Should().Contain($"Column: {columnName} does not exist in database 1");
         }
 
         [Fact]
@@ -57,7 +57,7 @@
             diff.ExistsInDatabase2.Should().BeFalse();
 
             builder.Differences.TableDifferences[tableName]
-                .ToString().Should().Contain($"[{columnName}] does not exist in database 2");
+                .ToString().Should().Contain($"Column: {columnName} does not exist in database 2");
         }
 
         [Fact]
@@ -190,10 +190,10 @@
             ComparisonResultContainsValue(new SqlColumnDetail { ColumnName = "Column1", IsRowGuid = true }, "row-guid")
                 .Should().BeTrue();
 
-        private bool ComparisonResultContainsValue(SqlColumnDetail columnDetails, string value) =>
+        private static bool ComparisonResultContainsValue(SqlColumnDetail columnDetails, string value) =>
             ComparisonResultContainsValue(columnDetails, new SqlColumnDetail { ColumnName = "Column1" }, value);
 
-        private bool ComparisonResultContainsValue(SqlColumnDetail column1Details, SqlColumnDetail column2Details, string value)
+        private static bool ComparisonResultContainsValue(SqlColumnDetail column1Details, SqlColumnDetail column2Details, string value)
         {
             // Arrange
             var tableName = "Table1";

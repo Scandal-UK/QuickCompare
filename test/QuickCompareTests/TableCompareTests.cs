@@ -211,7 +211,6 @@
             var diff = builder.Differences.TableDifferences[TableName];
             diff.ExistsInBothDatabases.Should().BeTrue();
 
-            diff.HasPermissionDifferences.Should().BeTrue();
             diff.PermissionDifferences.Count.Should().Be(1);
             diff.PermissionDifferences.ContainsKey("[INSERT] DENIED for user: [foobar]").Should().BeTrue();
 
@@ -245,7 +244,6 @@
             var diff = builder.Differences.TableDifferences[TableName];
             diff.ExistsInBothDatabases.Should().BeTrue();
 
-            diff.HasPermissionDifferences.Should().BeTrue();
             diff.PermissionDifferences.Count.Should().Be(1);
             diff.PermissionDifferences.ContainsKey("[INSERT] DENIED for user: [foobar]").Should().BeTrue();
 
@@ -288,7 +286,6 @@
             var diff = builder.Differences.TableDifferences[TableName];
             diff.ExistsInBothDatabases.Should().BeTrue();
 
-            diff.HasPermissionDifferences.Should().BeFalse();
             diff.PermissionDifferences.Count.Should().Be(1);
             diff.PermissionDifferences.ContainsKey("[INSERT] DENIED for user: [foobar]").Should().BeTrue();
 
@@ -317,7 +314,7 @@
             diff.ExistsInBothDatabases.Should().BeTrue();
             diff.IsDifferent.Should().BeTrue();
 
-            diff.ToString().Should().Be($"\r\n{TabIndent}[foobar] has different ordinal position - is 1 in database 1 and is 0 in database 2\r\n");
+            diff.ToString().Should().Be($"\r\n{TabIndent}Column: foobar has different ordinal position - is 1 in database 1 and is 0 in database 2\r\n");
         }
 
         [Fact]
@@ -340,7 +337,7 @@
             diff.ExistsInBothDatabases.Should().BeTrue();
             diff.IsDifferent.Should().BeTrue();
 
-            diff.ToString().Should().StartWith($"\r\n{TabIndent}[foobar]");
+            diff.ToString().Should().StartWith($"\r\n{TabIndent}Column: foobar");
             diff.ToString().Should().Contain(" - has different ordinal position - is 1 in database 1 and is 0 in database 2\r\n");
             diff.ToString().Should().Contain(" - has different numeric precision - is 1 in database 1 and is NULL in database 2\r\n");
         }

@@ -136,7 +136,7 @@
             {
                 var diff = new ExtendedPropertyDifference(true, false);
 
-                var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
+                var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
                 if (property2 != null)
                 {
                     diff.ExistsInDatabase2 = true;
@@ -223,7 +223,7 @@
             {
                 var diff = new ItemWithPropertiesDifference(true, false);
 
-                var column2 = Database2.Tables[fullyQualifiedTableName].ColumnDetails.Where(x => x.ColumnName == column1.ColumnName).FirstOrDefault();
+                var column2 = Database2.Tables[fullyQualifiedTableName].ColumnDetails.FirstOrDefault(x => x.ColumnName == column1.ColumnName);
                 if (column2 != null)
                 {
                     InspectColumns(fullyQualifiedTableName, diff, column1, column2);
@@ -365,37 +365,33 @@
         {
             var hasFoundColumn1Description = false;
 
-            foreach (var property1 in Database1.ExtendedProperties)
+            foreach (var property1 in Database1.ExtendedProperties.Where(x => x.Type == PropertyObjectType.TableColumn && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName && x.ColumnName == columnName))
             {
-                var propertyTableName = property1.TableName.PrependSchemaName(property1.TableSchema);
-                if (property1.Type == PropertyObjectType.TableColumn && propertyTableName == fullyQualifiedTableName && property1.ColumnName == columnName)
+                var diff = new ExtendedPropertyDifference(true, false);
+
+                var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
+                if (property2 != null)
                 {
-                    var diff = new ExtendedPropertyDifference(true, false);
+                    diff.ExistsInDatabase2 = true;
+                    diff.Value1 = property1.PropertyValue;
+                    diff.Value2 = property2.PropertyValue;
+                }
 
-                    var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
-                    if (property2 != null)
+                if (property1.PropertyName == "MS_Description")
+                {
+                    hasFoundColumn1Description = true;
+                    if (!diff.ExistsInDatabase2)
                     {
-                        diff.ExistsInDatabase2 = true;
-                        diff.Value1 = property1.PropertyValue;
-                        diff.Value2 = property2.PropertyValue;
+                        columnDiff.Differences.Add("description exists in database 1 and does not exist in database 2");
                     }
-
-                    if (property1.PropertyName == "MS_Description")
+                    else if (diff.Value1 != diff.Value2)
                     {
-                        hasFoundColumn1Description = true;
-                        if (!diff.ExistsInDatabase2)
-                        {
-                            columnDiff.Differences.Add("description exists in database 1 and does not exist in database 2");
-                        }
-                        else if (diff.Value1 != diff.Value2)
-                        {
-                            columnDiff.Differences.Add($"has different description - is [{diff.Value1}] in database 1 and is [{diff.Value2}] in database 2");
-                        }
+                        columnDiff.Differences.Add($"has different description - is [{diff.Value1}] in database 1 and is [{diff.Value2}] in database 2");
                     }
-                    else
-                    {
-                        columnDiff.ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
-                    }
+                }
+                else
+                {
+                    columnDiff.ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
                 }
             }
 
@@ -421,7 +417,7 @@
             {
                 var diff = new ItemWithPropertiesDifference(true, false, index1.ItemType);
 
-                var index2 = Database2.Tables[fullyQualifiedTableName].Indexes.Where(x => x.FullId == index1.FullId).FirstOrDefault();
+                var index2 = Database2.Tables[fullyQualifiedTableName].Indexes.FirstOrDefault(x => x.FullId == index1.FullId);
                 if (index2 != null)
                 {
                     if (index2.Clustered != index1.Clustered)
@@ -522,7 +518,7 @@
                 if (property1.Type == PropertyObjectType.Index && propertyTableName == fullyQualifiedTableName && property1.IndexName == indexName)
                 {
                     var diff = new ExtendedPropertyDifference(true, false);
-                    var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
+                    var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
                     if (property2 != null)
                     {
                         diff.ExistsInDatabase2 = true;
@@ -550,7 +546,7 @@
             {
                 var diff = new ItemDifference(true, false);
 
-                var relation2 = Database2.Tables[fullyQualifiedTableName].Relations.Where(x => x.RelationName == relation1.RelationName).FirstOrDefault();
+                var relation2 = Database2.Tables[fullyQualifiedTableName].Relations.FirstOrDefault(x => x.RelationName == relation1.RelationName);
                 if (relation2 != null)
                 {
                     if (relation2.ChildColumns != relation1.ChildColumns)
@@ -616,7 +612,7 @@
                 {
                     var diff = new ExtendedPropertyDifference(true, false);
 
-                    var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
+                    var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
                     if (property2 != null)
                     {
                         diff.ExistsInDatabase2 = true;
@@ -643,7 +639,7 @@
             {
                 var diff = new ItemDifference(true, false);
 
-                var trigger2 = Database2.Tables[fullyQualifiedTableName].Triggers.Where(x => x.TriggerName == trigger1.TriggerName && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName).FirstOrDefault();
+                var trigger2 = Database2.Tables[fullyQualifiedTableName].Triggers.FirstOrDefault(x => x.TriggerName == trigger1.TriggerName && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName);
                 if (trigger2 != null)
                 {
                     if (trigger2.FileGroup != trigger1.FileGroup)
@@ -709,7 +705,7 @@
             {
                 var diff = new ItemDifference(true, false);
 
-                var userType = Database2.UserTypes.Where(x => x.Key == userTypeName).FirstOrDefault();
+                var userType = Database2.UserTypes.FirstOrDefault(x => x.Key == userTypeName);
                 if (!userType.Equals(default(KeyValuePair<string, SqlUserType>)))
                 {
                     var item1 = Database1.UserTypes[userTypeName];
@@ -768,7 +764,7 @@
             {
                 var diff = new DatabaseObjectDifference(true, false);
 
-                var synonym = Database2.Synonyms.Where(x => x.Key == synonymName).FirstOrDefault();
+                var synonym = Database2.Synonyms.FirstOrDefault(x => x.Key == synonymName);
                 if (!synonym.Equals(default(KeyValuePair<string, string>)))
                 {
                     if (this.Options.CompareProperties)
@@ -802,7 +798,7 @@
             {
                 var diff = new DatabaseObjectDifference(true, false);
 
-                var view = Database2.Views.Where(x => x.Key == viewName).FirstOrDefault();
+                var view = Database2.Views.FirstOrDefault(x => x.Key == viewName);
                 if (!view.Equals(default(KeyValuePair<string, string>)))
                 {
                     if (this.Options.CompareProperties)
@@ -842,7 +838,7 @@
                 var diff = new DatabaseObjectDifference(true, false);
                 var isFunction = Database1.UserRoutines[routineName].RoutineType.ToLower() == "function";
 
-                var routine = Database2.UserRoutines.Where(x => x.Key == routineName).FirstOrDefault();
+                var routine = Database2.UserRoutines.FirstOrDefault(x => x.Key == routineName);
                 if (!routine.Equals(default(KeyValuePair<string, SqlUserRoutine>)))
                 {
                     if (this.Options.CompareProperties)
@@ -904,7 +900,7 @@
                 {
                     var diff = new ExtendedPropertyDifference(true, false);
 
-                    var property2 = Database2.ExtendedProperties.Where(x => x.FullId == property1.FullId).FirstOrDefault();
+                    var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
                     if (property2 != null)
                     {
                         diff.ExistsInDatabase2 = true;
