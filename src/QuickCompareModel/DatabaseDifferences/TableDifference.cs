@@ -42,28 +42,15 @@
         public Dictionary<string, BaseDifference> PermissionDifferences { get; set; }
             = new Dictionary<string, BaseDifference>();
 
-        /// <summary> Gets a value indicating whether the column difference set has tracked any differences. </summary>
-        public bool HasColumnDifferences => ColumnDifferences.Values.Any(x => x.IsDifferent);
-
-        /// <summary> Gets a value indicating whether the relation difference set has tracked any differences. </summary>
-        public bool HasRelationshipDifferences => RelationshipDifferences.Values.Any(x => x.IsDifferent);
-
-        /// <summary> Gets a value indicating whether the index difference set has tracked any differences. </summary>
-        public bool HasIndexDifferences => IndexDifferences.Values.Any(x => x.IsDifferent);
-
-        /// <summary> Gets a value indicating whether the trigger difference set has tracked any differences. </summary>
-        public bool HasTriggerDifferences => TriggerDifferences.Values.Any(x => x.IsDifferent);
-
-        /// <summary> Gets a value indicating whether the permission difference set has tracked any differences. </summary>
-        public bool HasPermissionDifferences => PermissionDifferences.Values.Any(x => !x.ExistsInBothDatabases);
-
-        /// <summary> Gets a value indicating whether the extended property difference set has tracked any differences. </summary>
-        public bool HasExtendedPropertyDifferences => ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
-
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public override bool IsDifferent => !ExistsInBothDatabases || HasColumnDifferences ||
-            HasRelationshipDifferences || HasIndexDifferences || HasTriggerDifferences ||
-            HasExtendedPropertyDifferences || HasPermissionDifferences;
+        public override bool IsDifferent =>
+            !ExistsInBothDatabases ||
+            ColumnDifferences.Values.Any(x => x.IsDifferent) ||
+            RelationshipDifferences.Values.Any(x => x.IsDifferent) ||
+            IndexDifferences.Values.Any(x => x.IsDifferent) ||
+            TriggerDifferences.Values.Any(x => x.IsDifferent) ||
+            PermissionDifferences.Values.Any(x => x.IsDifferent) ||
+            ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
         public override string ToString()
@@ -80,55 +67,31 @@
 
             var sb = new StringBuilder("\r\n");
 
-            if (HasColumnDifferences)
-            {
-                foreach (var colDiff in ColumnDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    sb.Append($"{TabIndent}[{colDiff.Key}] {colDiff.Value}");
-                }
-            }
+            sb.Append(GetSectionDifferenceOutput(ColumnDifferences, "Column"));
+            sb.Append(GetSectionDifferenceOutput(TriggerDifferences, "Trigger"));
+            sb.Append(GetSectionDifferenceOutput(RelationshipDifferences, "Relation"));
+            sb.Append(GetSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
+            sb.Append(GetSectionDifferenceOutput(PermissionDifferences, "Permission"));
 
-            if (HasTriggerDifferences)
+            foreach (var indexDiff in IndexDifferences.Where(x => x.Value.IsDifferent))
             {
-                foreach (var triggerDiff in TriggerDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    sb.Append($"{TabIndent}Trigger: {triggerDiff.Key} {triggerDiff.Value}");
-                }
-            }
-
-            if (HasIndexDifferences)
-            {
-                foreach (var indexDiff in IndexDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    sb.Append($"{TabIndent}{indexDiff.Value.ItemType}: {indexDiff.Key} {indexDiff.Value}");
-                }
-            }
-
-            if (HasRelationshipDifferences)
-            {
-                foreach (var relationDiff in RelationshipDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    sb.Append($"{TabIndent}Relation: {relationDiff.Key} {relationDiff.Value}");
-                }
-            }
-
-            if (HasExtendedPropertyDifferences)
-            {
-                foreach (var propDiff in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    sb.Append($"{TabIndent}Extended property: {propDiff.Key} {propDiff.Value}");
-                }
-            }
-
-            if (HasPermissionDifferences)
-            {
-                foreach (var permissionDiff in PermissionDifferences.Where(x => !x.Value.ExistsInBothDatabases))
-                {
-                    sb.Append($"{TabIndent}Permission: {permissionDiff.Key} {permissionDiff.Value}");
-                }
+                sb.Append($"{TabIndent}{indexDiff.Value.ItemType}: {indexDiff.Key} {indexDiff.Value}");
             }
 
             return sb.ToString();
+        }
+
+        private static string GetSectionDifferenceOutput<T>(Dictionary<string, T> source, string name)
+            where T : BaseDifference
+        {
+            var section = new StringBuilder();
+
+            foreach (var prop in source.Where(x => x.Value.IsDifferent))
+            {
+                section.Append($"{TabIndent}{name}: {prop.Key} {prop.Value}");
+            }
+
+            return section.ToString();
         }
     }
 }

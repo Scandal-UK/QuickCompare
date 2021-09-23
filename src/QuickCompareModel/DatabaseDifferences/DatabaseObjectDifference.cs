@@ -33,14 +33,12 @@
         /// <summary> Gets a value indicating whether the body text is different. </summary>
         public bool DefinitionsAreDifferent => CleanDefinitionText(ObjectDefinition1, true) != CleanDefinitionText(ObjectDefinition2, true);
 
-        /// <summary> Gets a value indicating whether the permission difference set has tracked any differences. </summary>
-        public bool HasPermissionDifferences => PermissionDifferences.Values.Any(x => !x.ExistsInBothDatabases);
-
-        /// <summary> Gets a value indicating whether the extended property difference set has tracked any differences. </summary>
-        public bool HasExtendedPropertyDifferences => ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
-
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public override bool IsDifferent => !ExistsInBothDatabases || DefinitionsAreDifferent || HasPermissionDifferences || HasExtendedPropertyDifferences;
+        public override bool IsDifferent =>
+            !ExistsInBothDatabases ||
+            DefinitionsAreDifferent ||
+            PermissionDifferences.Values.Any(x => !x.ExistsInBothDatabases) ||
+            ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
         public override string ToString()
@@ -62,20 +60,14 @@
                 sb.AppendLine($"{TabIndent}Definitions are different");
             }
 
-            if (HasExtendedPropertyDifferences)
+            foreach (var diff in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
             {
-                foreach (var diff in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    sb.Append($"{TabIndent}Extended property: [{diff.Key}] {diff.Value}");
-                }
+                sb.Append($"{TabIndent}Extended property: [{diff.Key}] {diff.Value}");
             }
 
-            if (HasPermissionDifferences)
+            foreach (var diff in PermissionDifferences.Where(x => !x.Value.ExistsInBothDatabases))
             {
-                foreach (var diff in PermissionDifferences.Where(x => !x.Value.ExistsInBothDatabases))
-                {
-                    sb.Append($"{TabIndent}Permission: {diff.Key} {diff.Value}");
-                }
+                sb.Append($"{TabIndent}Permission: {diff.Key} {diff.Value}");
             }
 
             return sb.ToString();

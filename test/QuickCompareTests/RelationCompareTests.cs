@@ -83,22 +83,21 @@
             diff.ToString().Should().Be(string.Empty);
         }
 
-        private SqlRelation GetTestRelationship()
-        {
-            // todo: add unit tests for the following differences
-            return new SqlRelation
-            {
-                RelationName = RelationName,
-                ChildSchema = SecondTableName.GetSchemaName(),
-                ChildTable = SecondTableName.GetObjectName(),
-                ChildColumns = "RelatedColumn",
-                UniqueConstraintName = "PK_Table1",
-                ParentSchema = TableName.GetSchemaName(),
-                ParentTable = TableName.GetObjectName(),
-                ParentColumns = "Column1",
-                UpdateRule = "NO ACTION",
-                DeleteRule = "NO ACTION",
-            };
-        }
+        //private SqlRelation GetTestRelationship()
+        //{
+        //    return new SqlRelation
+        //    {
+        //        RelationName = RelationName,
+        //        ChildSchema = SecondTableName.GetSchemaName(),
+        //        ChildTable = SecondTableName.GetObjectName(),
+        //        ChildColumns = "RelatedColumn",
+        //        UniqueConstraintName = "PK_Table1",
+        //        ParentSchema = TableName.GetSchemaName(),
+        //        ParentTable = TableName.GetObjectName(),
+        //        ParentColumns = "Column1",
+        //        UpdateRule = "NO ACTION",
+        //        DeleteRule = "NO ACTION",
+        //    };
+        //}
     }
 }

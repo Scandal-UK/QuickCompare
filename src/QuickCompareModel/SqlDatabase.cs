@@ -7,6 +7,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using QuickCompareModel.DatabaseSchema;
@@ -451,13 +452,17 @@
             {
                 RaiseStatusChanged($"Reading routine definition {Array.IndexOf(UserRoutines.Keys.ToArray(), routine) + 1} of {UserRoutines.Count}");
 
+                var sb = new StringBuilder();
+
                 command.Parameters["@routinename"].Value = routine.GetObjectName();
                 await connection.OpenAsync();
                 using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
                 while (await dr.ReadAsync())
                 {
-                    UserRoutines[routine].RoutineDefinition += dr.GetString(0);
+                    sb.Append(dr.GetString(0));
                 }
+
+                UserRoutines[routine].RoutineDefinition = sb.ToString();
             }
         }
 
@@ -478,10 +483,10 @@
                         break;
                     case "index_description":
                         desc = dr.GetString(i);
-                        index.IsPrimaryKey = desc.IndexOf("primary key") >= 0;
-                        index.Clustered = desc.IndexOf("nonclustered") == -1;
-                        index.Unique = desc.IndexOf("unique") > 0;
-                        index.IsUniqueKey = desc.IndexOf("unique key") > 0;
+                        index.IsPrimaryKey = desc.Contains("primary key");
+                        index.Clustered = !desc.Contains("nonclustered");
+                        index.Unique = desc.Contains("unique");
+                        index.IsUniqueKey = desc.Contains("unique key");
                         index.FileGroup = Regex.Match(desc, "located on  (.*)$").Groups[1].Value;
                         break;
                 }
@@ -558,127 +563,67 @@
                         detail.OrdinalPosition = dr.GetInt32(i);
                         break;
                     case "COLUMN_DEFAULT":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.ColumnDefault = dr.GetString(i);
-                        }
+                        detail.ColumnDefault = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "IS_NULLABLE":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.IsNullable = dr.GetString(i) == "YES";
-                        }
+                        detail.IsNullable = !dr.IsDBNull(i) && dr.GetString(i) == "YES";
                         break;
                     case "DATA_TYPE":
                         detail.DataType = dr.GetString(i);
                         break;
                     case "CHARACTER_MAXIMUM_LENGTH":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.CharacterMaximumLength = dr.GetInt32(i);
-                        }
+                        detail.CharacterMaximumLength = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
                         break;
                     case "CHARACTER_OCTET_LENGTH":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.CharacterOctetLength = dr.GetInt32(i);
-                        }
+                        detail.CharacterOctetLength = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
                         break;
                     case "NUMERIC_PRECISION":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.NumericPrecision = dr.GetByte(i);
-                        }
+                        detail.NumericPrecision = dr.IsDBNull(i) ? null : (int?)dr.GetByte(i);
                         break;
                     case "NUMERIC_PRECISION_RADIX":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.NumericPrecisionRadix = dr.GetInt16(i);
-                        }
+                        detail.NumericPrecisionRadix = dr.IsDBNull(i) ? null : (int?)dr.GetInt16(i);
                         break;
                     case "NUMERIC_SCALE":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.NumericScale = dr.GetInt32(i);
-                        }
+                        detail.NumericScale = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
                         break;
                     case "DATETIME_PRECISION":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.DatetimePrecision = dr.GetInt16(i);
-                        }
+                        detail.DatetimePrecision = dr.IsDBNull(i) ? null : (int?)dr.GetInt16(i);
                         break;
                     case "CHARACTER_SET_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.CharacterSetName = dr.GetString(i);
-                        }
+                        detail.CharacterSetName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "COLLATION_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.CollationName = dr.GetString(i);
-                        }
+                        detail.CollationName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "DOMAIN_SCHEMA":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.DomainSchema = dr.GetString(i);
-                        }
+                        detail.DomainSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "DOMAIN_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.DomainName = dr.GetString(i);
-                        }
+                        detail.DomainName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "IS_FULL_TEXT_INDEXED":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.IsFullTextIndexed = dr.GetInt32(i) == 1;
-                        }
+                        detail.IsFullTextIndexed = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
                         break;
                     case "IS_COMPUTED":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.IsComputed = dr.GetInt32(i) == 1;
-                        }
+                        detail.IsComputed = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
                         break;
                     case "IS_IDENTITY":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.IsIdentity = dr.GetInt32(i) == 1;
-                        }
+                        detail.IsIdentity = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
                         break;
                     case "IDENTITY_SEED":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.IdentitySeed = dr.GetDecimal(i);
-                        }
+                        detail.IdentitySeed = dr.IsDBNull(i) ? null : (decimal?)dr.GetDecimal(i);
                         break;
                     case "IDENTITY_INCREMENT":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.IdentityIncrement = dr.GetDecimal(i);
-                        }
+                        detail.IdentityIncrement = dr.IsDBNull(i) ? null : (decimal?)dr.GetDecimal(i);
                         break;
                     case "IS_SPARSE":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.IsSparse = dr.GetInt32(i) == 1;
-                        }
+                        detail.IsSparse = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
                         break;
                     case "IS_COLUMN_SET":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.IsColumnSet = dr.GetInt32(i) == 1;
-                        }
+                        detail.IsColumnSet = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
                         break;
                     case "IS_ROW_GUID":
-                        if (!dr.IsDBNull(i))
-                        {
-                            detail.IsRowGuid = dr.GetInt32(i) == 1;
-                        }
+                        detail.IsRowGuid = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
                         break;
                 }
 
@@ -706,31 +651,19 @@
                         userType.UnderlyingTypeName = dr.GetString(i);
                         break;
                     case "precision":
-                        if (!dr.IsDBNull(i))
-                        {
-                            userType.Precision = dr.GetInt32(i);
-                        }
+                        userType.Precision = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
                         break;
                     case "scale":
-                        if (!dr.IsDBNull(i))
-                        {
-                            userType.Scale = dr.GetInt32(i);
-                        }
+                        userType.Scale = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
                         break;
                     case "max_length":
-                        if (!dr.IsDBNull(i))
-                        {
-                            userType.MaxLength = dr.GetInt32(i);
-                        }
+                        userType.MaxLength = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
                         break;
                     case "is_nullable":
                         userType.IsNullable = dr.GetInt32(i) == 1;
                         break;
                     case "collation_name":
-                        if (!dr.IsDBNull(i))
-                        {
-                            userType.CollationName = dr.GetString(i);
-                        }
+                        userType.CollationName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "is_assembly_type":
                         userType.IsAssemblyType = dr.GetInt32(i) == 1;
@@ -755,46 +688,25 @@
                         permission.UserName = dr.GetString(i);
                         break;
                     case "ROLE_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            permission.RoleName = dr.GetString(i);
-                        }
+                        permission.RoleName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "PERMISSION_TYPE":
-                        if (!dr.IsDBNull(i))
-                        {
-                            permission.PermissionType = dr.GetString(i);
-                        }
+                        permission.PermissionType = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "PERMISSION_STATE":
-                        if (!dr.IsDBNull(i))
-                        {
-                            permission.PermissionState = dr.GetString(i);
-                        }
+                        permission.PermissionState = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "OBJECT_TYPE":
-                        if (!dr.IsDBNull(i))
-                        {
-                            permission.ObjectType = dr.GetString(i);
-                        }
+                        permission.ObjectType = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "OBJECT_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            permission.ObjectName = dr.GetString(i);
-                        }
+                        permission.ObjectName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "COLUMN_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            permission.ColumnName = dr.GetString(i);
-                        }
+                        permission.ColumnName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "OBJECT_SCHEMA":
-                        if (!dr.IsDBNull(i))
-                        {
-                            permission.ObjectSchema = dr.GetString(i);
-                        }
+                        permission.ObjectSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                 }
 
@@ -816,49 +728,28 @@
                         property.PropertyType = dr.GetString(i);
                         break;
                     case "OBJECT_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            property.ObjectName = dr.GetString(i);
-                        }
+                        property.ObjectName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "OBJECT_SCHEMA":
-                        if (!dr.IsDBNull(i))
-                        {
-                            property.ObjectSchema = dr.GetString(i);
-                        }
+                        property.ObjectSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "COLUMN_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            property.ColumnName = dr.GetString(i);
-                        }
+                        property.ColumnName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "PROPERTY_NAME":
                         property.PropertyName = dr.GetString(i);
                         break;
                     case "PROPERTY_VALUE":
-                        if (!dr.IsDBNull(i))
-                        {
-                            property.PropertyValue = dr.GetString(i);
-                        }
+                        property.PropertyValue = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "INDEX_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            property.IndexName = dr.GetString(i);
-                        }
+                        property.IndexName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "TABLE_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            property.TableName = dr.GetString(i);
-                        }
+                        property.TableName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "TABLE_SCHEMA":
-                        if (!dr.IsDBNull(i))
-                        {
-                            property.TableSchema = dr.GetString(i);
-                        }
+                        property.TableSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                 }
 
@@ -880,22 +771,13 @@
                         trigger.TriggerName = dr.GetString(i);
                         break;
                     case "TRIGGER_OWNER":
-                        if (!dr.IsDBNull(i))
-                        {
-                            trigger.TriggerOwner = dr.GetString(i);
-                        }
+                        trigger.TriggerOwner = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "TABLE_SCHEMA":
-                        if (!dr.IsDBNull(i))
-                        {
-                            trigger.TableSchema = dr.GetString(i);
-                        }
+                        trigger.TableSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "TABLE_NAME":
-                        if (!dr.IsDBNull(i))
-                        {
-                            trigger.TableName = dr.GetString(i);
-                        }
+                        trigger.TableName = dr.IsDBNull(i) ? null : dr.GetString(i);
                         break;
                     case "IS_UPDATE":
                         trigger.IsUpdate = dr.GetInt32(i) == 1;

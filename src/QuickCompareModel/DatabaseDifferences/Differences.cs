@@ -46,8 +46,14 @@
             = new Dictionary<string, DatabaseObjectDifference>();
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public bool HasDifferences => ExtendedPropertyDifferences.Count + PermissionDifferences.Count + TableDifferences.Count + 
-            FunctionDifferences.Count + StoredProcedureDifferences.Count + ViewDifferences.Count + SynonymDifferences.Count > 0;
+        public bool HasDifferences =>
+            ExtendedPropertyDifferences.Any(x => x.Value.IsDifferent) ||
+            PermissionDifferences.Any(x => x.Value.IsDifferent) ||
+            TableDifferences.Any(x => x.Value.IsDifferent) ||
+            FunctionDifferences.Any(x => x.Value.IsDifferent) ||
+            StoredProcedureDifferences.Any(x => x.Value.IsDifferent) ||
+            ViewDifferences.Any(x => x.Value.IsDifferent) ||
+            SynonymDifferences.Any(x => x.Value.IsDifferent);
 
         /// <summary> Gets a report of the differences, whether any were detected or not. </summary>
         public override string ToString()
@@ -74,7 +80,8 @@
             return output.ToString();
         }
 
-        private static string GetSectionDifferenceOutput<T>(Dictionary<string, T> source, string name) where T : BaseDifference
+        private static string GetSectionDifferenceOutput<T>(Dictionary<string, T> source, string name)
+            where T : BaseDifference
         {
             var section = new StringBuilder();
 
