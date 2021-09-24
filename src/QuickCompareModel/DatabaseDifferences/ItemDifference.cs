@@ -27,7 +27,7 @@
         public string ItemType { get; set; }
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public override bool IsDifferent => !ExistsInBothDatabases || Differences.Count > 0;
+        public override bool IsDifferent => base.IsDifferent || Differences.Count > 0;
 
         /// <summary> Gets a text description of the <see cref="Differences"/> or returns an empty string if no difference is detected. </summary>
         public string DifferenceList()
@@ -53,7 +53,7 @@
 
         /// <summary> Gets a text description of the differences or returns an empty string if no difference is detected. </summary>
         public override string ToString() => IsDifferent
-            ? !ExistsInBothDatabases ? base.ToString() : DifferenceList()
+            ? base.IsDifferent ? base.ToString() : DifferenceList()
             : string.Empty;
     }
 }

@@ -44,7 +44,7 @@
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
         public override bool IsDifferent =>
-            !ExistsInBothDatabases ||
+            base.IsDifferent ||
             ColumnDifferences.Values.Any(x => x.IsDifferent) ||
             RelationshipDifferences.Values.Any(x => x.IsDifferent) ||
             IndexDifferences.Values.Any(x => x.IsDifferent) ||
@@ -60,18 +60,18 @@
                 return string.Empty;
             }
 
-            if (!ExistsInBothDatabases)
+            if (base.IsDifferent)
             {
                 return base.ToString();
             }
 
             var sb = new StringBuilder("\r\n");
 
-            sb.Append(GetSectionDifferenceOutput(ColumnDifferences, "Column"));
-            sb.Append(GetSectionDifferenceOutput(TriggerDifferences, "Trigger"));
-            sb.Append(GetSectionDifferenceOutput(RelationshipDifferences, "Relation"));
-            sb.Append(GetSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
-            sb.Append(GetSectionDifferenceOutput(PermissionDifferences, "Permission"));
+            sb.Append(GetSubSectionDifferenceOutput(ColumnDifferences, "Column"));
+            sb.Append(GetSubSectionDifferenceOutput(TriggerDifferences, "Trigger"));
+            sb.Append(GetSubSectionDifferenceOutput(RelationshipDifferences, "Relation"));
+            sb.Append(GetSubSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
+            sb.Append(GetSubSectionDifferenceOutput(PermissionDifferences, "Permission"));
 
             foreach (var indexDiff in IndexDifferences.Where(x => x.Value.IsDifferent))
             {
@@ -79,19 +79,6 @@
             }
 
             return sb.ToString();
-        }
-
-        private static string GetSectionDifferenceOutput<T>(Dictionary<string, T> source, string name)
-            where T : BaseDifference
-        {
-            var section = new StringBuilder();
-
-            foreach (var prop in source.Where(x => x.Value.IsDifferent))
-            {
-                section.Append($"{TabIndent}{name}: {prop.Key} {prop.Value}");
-            }
-
-            return section.ToString();
         }
     }
 }

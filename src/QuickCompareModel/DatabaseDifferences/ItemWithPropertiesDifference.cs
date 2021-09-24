@@ -33,11 +33,8 @@
         public Dictionary<string, ExtendedPropertyDifference> ExtendedPropertyDifferences { get; set; }
             = new Dictionary<string, ExtendedPropertyDifference>();
 
-        /// <summary> Gets a value indicating whether the extended property difference set has tracked any differences. </summary>
-        public bool HasExtendedPropertyDifferences => ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
-
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public override bool IsDifferent => base.IsDifferent || HasExtendedPropertyDifferences;
+        public override bool IsDifferent => base.IsDifferent || ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
         public override string ToString()
@@ -52,18 +49,8 @@
                 return base.ToString();
             }
 
-            var sb = new StringBuilder(DifferenceList());
-            if (HasExtendedPropertyDifferences)
-            {
-                foreach (var diff in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
-                {
-                    sb.AppendFormat(
-                        "{0}{0}Extended property: {1}: {2}",
-                        TabIndent,
-                        diff.Key,
-                        diff.Value);
-                }
-            }
+            var sb = new StringBuilder(base.ToString());
+            sb.Append(GetSubSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
 
             return sb.ToString();
         }
