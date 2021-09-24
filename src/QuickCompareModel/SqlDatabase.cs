@@ -448,14 +448,14 @@
             using var connection = new SqlConnection(this.connectionString);
             using var command = new SqlCommand(LoadQueryFromResource("UserRoutineDefinitions"), connection);
             command.Parameters.Add("@routinename", SqlDbType.VarChar, 128);
+            var sb = new StringBuilder();
             foreach (var routine in UserRoutines.Keys)
             {
                 RaiseStatusChanged($"Reading routine definition {Array.IndexOf(UserRoutines.Keys.ToArray(), routine) + 1} of {UserRoutines.Count}");
 
-                var sb = new StringBuilder();
-
                 command.Parameters["@routinename"].Value = routine.GetObjectName();
                 await connection.OpenAsync();
+
                 using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
                 while (await dr.ReadAsync())
                 {
@@ -463,6 +463,7 @@
                 }
 
                 UserRoutines[routine].RoutineDefinition = sb.ToString();
+                sb.Clear();
             }
         }
 
@@ -563,7 +564,7 @@
                         detail.OrdinalPosition = dr.GetInt32(i);
                         break;
                     case "COLUMN_DEFAULT":
-                        detail.ColumnDefault = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        detail.ColumnDefault = dr.GetNullableString(i);
                         break;
                     case "IS_NULLABLE":
                         detail.IsNullable = !dr.IsDBNull(i) && dr.GetString(i) == "YES";
@@ -572,58 +573,58 @@
                         detail.DataType = dr.GetString(i);
                         break;
                     case "CHARACTER_MAXIMUM_LENGTH":
-                        detail.CharacterMaximumLength = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
+                        detail.CharacterMaximumLength = dr.GetNullableInt32(i);
                         break;
                     case "CHARACTER_OCTET_LENGTH":
-                        detail.CharacterOctetLength = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
+                        detail.CharacterOctetLength = dr.GetNullableInt32(i);
                         break;
                     case "NUMERIC_PRECISION":
-                        detail.NumericPrecision = dr.IsDBNull(i) ? null : (int?)dr.GetByte(i);
+                        detail.NumericPrecision = dr.GetNullableByte(i);
                         break;
                     case "NUMERIC_PRECISION_RADIX":
-                        detail.NumericPrecisionRadix = dr.IsDBNull(i) ? null : (int?)dr.GetInt16(i);
+                        detail.NumericPrecisionRadix = dr.GetNullableInt16(i);
                         break;
                     case "NUMERIC_SCALE":
-                        detail.NumericScale = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
+                        detail.NumericScale = dr.GetNullableInt32(i);
                         break;
                     case "DATETIME_PRECISION":
-                        detail.DatetimePrecision = dr.IsDBNull(i) ? null : (int?)dr.GetInt16(i);
+                        detail.DatetimePrecision = dr.GetNullableInt16(i);
                         break;
                     case "CHARACTER_SET_NAME":
-                        detail.CharacterSetName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        detail.CharacterSetName = dr.GetNullableString(i);
                         break;
                     case "COLLATION_NAME":
-                        detail.CollationName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        detail.CollationName = dr.GetNullableString(i);
                         break;
                     case "DOMAIN_SCHEMA":
-                        detail.DomainSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        detail.DomainSchema = dr.GetNullableString(i);
                         break;
                     case "DOMAIN_NAME":
-                        detail.DomainName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        detail.DomainName = dr.GetNullableString(i);
                         break;
                     case "IS_FULL_TEXT_INDEXED":
-                        detail.IsFullTextIndexed = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
+                        detail.IsFullTextIndexed = dr.GetNullableInt32AsBoolean(i);
                         break;
                     case "IS_COMPUTED":
-                        detail.IsComputed = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
+                        detail.IsComputed = dr.GetNullableInt32AsBoolean(i);
                         break;
                     case "IS_IDENTITY":
-                        detail.IsIdentity = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
+                        detail.IsIdentity = dr.GetNullableInt32AsBoolean(i);
                         break;
                     case "IDENTITY_SEED":
-                        detail.IdentitySeed = dr.IsDBNull(i) ? null : (decimal?)dr.GetDecimal(i);
+                        detail.IdentitySeed = dr.GetNullableDecimal(i);
                         break;
                     case "IDENTITY_INCREMENT":
-                        detail.IdentityIncrement = dr.IsDBNull(i) ? null : (decimal?)dr.GetDecimal(i);
+                        detail.IdentityIncrement = dr.GetNullableDecimal(i);
                         break;
                     case "IS_SPARSE":
-                        detail.IsSparse = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
+                        detail.IsSparse = dr.GetNullableInt32AsBoolean(i);
                         break;
                     case "IS_COLUMN_SET":
-                        detail.IsColumnSet = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
+                        detail.IsColumnSet = dr.GetNullableInt32AsBoolean(i);
                         break;
                     case "IS_ROW_GUID":
-                        detail.IsRowGuid = !dr.IsDBNull(i) && dr.GetInt32(i) == 1;
+                        detail.IsRowGuid = dr.GetNullableInt32AsBoolean(i);
                         break;
                 }
 
@@ -651,22 +652,22 @@
                         userType.UnderlyingTypeName = dr.GetString(i);
                         break;
                     case "precision":
-                        userType.Precision = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
+                        userType.Precision = dr.GetNullableInt32(i);
                         break;
                     case "scale":
-                        userType.Scale = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
+                        userType.Scale = dr.GetNullableInt32(i);
                         break;
                     case "max_length":
-                        userType.MaxLength = dr.IsDBNull(i) ? null : (int?)dr.GetInt32(i);
+                        userType.MaxLength = dr.GetNullableInt32(i);
                         break;
                     case "is_nullable":
-                        userType.IsNullable = dr.GetInt32(i) == 1;
+                        userType.IsNullable = dr.GetInt32AsBoolean(i);
                         break;
                     case "collation_name":
-                        userType.CollationName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        userType.CollationName = dr.GetNullableString(i);
                         break;
                     case "is_assembly_type":
-                        userType.IsAssemblyType = dr.GetInt32(i) == 1;
+                        userType.IsAssemblyType = dr.GetInt32AsBoolean(i);
                         break;
                 }
 
@@ -688,25 +689,25 @@
                         permission.UserName = dr.GetString(i);
                         break;
                     case "ROLE_NAME":
-                        permission.RoleName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        permission.RoleName = dr.GetNullableString(i);
                         break;
                     case "PERMISSION_TYPE":
-                        permission.PermissionType = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        permission.PermissionType = dr.GetNullableString(i);
                         break;
                     case "PERMISSION_STATE":
-                        permission.PermissionState = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        permission.PermissionState = dr.GetNullableString(i);
                         break;
                     case "OBJECT_TYPE":
-                        permission.ObjectType = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        permission.ObjectType = dr.GetNullableString(i);
                         break;
                     case "OBJECT_NAME":
-                        permission.ObjectName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        permission.ObjectName = dr.GetNullableString(i);
                         break;
                     case "COLUMN_NAME":
-                        permission.ColumnName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        permission.ColumnName = dr.GetNullableString(i);
                         break;
                     case "OBJECT_SCHEMA":
-                        permission.ObjectSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        permission.ObjectSchema = dr.GetNullableString(i);
                         break;
                 }
 
@@ -728,28 +729,28 @@
                         property.PropertyType = dr.GetString(i);
                         break;
                     case "OBJECT_NAME":
-                        property.ObjectName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        property.ObjectName = dr.GetNullableString(i);
                         break;
                     case "OBJECT_SCHEMA":
-                        property.ObjectSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        property.ObjectSchema = dr.GetNullableString(i);
                         break;
                     case "COLUMN_NAME":
-                        property.ColumnName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        property.ColumnName = dr.GetNullableString(i);
                         break;
                     case "PROPERTY_NAME":
                         property.PropertyName = dr.GetString(i);
                         break;
                     case "PROPERTY_VALUE":
-                        property.PropertyValue = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        property.PropertyValue = dr.GetNullableString(i);
                         break;
                     case "INDEX_NAME":
-                        property.IndexName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        property.IndexName = dr.GetNullableString(i);
                         break;
                     case "TABLE_NAME":
-                        property.TableName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        property.TableName = dr.GetNullableString(i);
                         break;
                     case "TABLE_SCHEMA":
-                        property.TableSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        property.TableSchema = dr.GetNullableString(i);
                         break;
                 }
 
@@ -771,31 +772,31 @@
                         trigger.TriggerName = dr.GetString(i);
                         break;
                     case "TRIGGER_OWNER":
-                        trigger.TriggerOwner = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        trigger.TriggerOwner = dr.GetNullableString(i);
                         break;
                     case "TABLE_SCHEMA":
-                        trigger.TableSchema = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        trigger.TableSchema = dr.GetNullableString(i);
                         break;
                     case "TABLE_NAME":
-                        trigger.TableName = dr.IsDBNull(i) ? null : dr.GetString(i);
+                        trigger.TableName = dr.GetNullableString(i);
                         break;
                     case "IS_UPDATE":
-                        trigger.IsUpdate = dr.GetInt32(i) == 1;
+                        trigger.IsUpdate = dr.GetInt32AsBoolean(i);
                         break;
                     case "IS_DELETE":
-                        trigger.IsDelete = dr.GetInt32(i) == 1;
+                        trigger.IsDelete = dr.GetInt32AsBoolean(i);
                         break;
                     case "IS_INSERT":
-                        trigger.IsInsert = dr.GetInt32(i) == 1;
+                        trigger.IsInsert = dr.GetInt32AsBoolean(i);
                         break;
                     case "IS_AFTER":
-                        trigger.IsAfter = dr.GetInt32(i) == 1;
+                        trigger.IsAfter = dr.GetInt32AsBoolean(i);
                         break;
                     case "IS_INSTEAD_OF":
-                        trigger.IsInsteadOf = dr.GetInt32(i) == 1;
+                        trigger.IsInsteadOf = dr.GetInt32AsBoolean(i);
                         break;
                     case "IS_DISABLED":
-                        trigger.IsDisabled = dr.GetInt32(i) == 1;
+                        trigger.IsDisabled = dr.GetInt32AsBoolean(i);
                         break;
                     case "TRIGGER_CONTENT":
                         trigger.TriggerContent = dr.GetString(i);
