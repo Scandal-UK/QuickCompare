@@ -85,9 +85,7 @@
             RaiseStatusChanged("Connecting");
 
             await LoadFullyQualifiedTableNamesAsync();
-
             await Task.WhenAll(RequiredItemTasks());
-
             await Task.WhenAll(DependentItemTasks());
         }
 
@@ -455,7 +453,6 @@
 
                 command.Parameters["@routinename"].Value = routine.GetObjectName();
                 await connection.OpenAsync();
-
                 using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
                 while (await dr.ReadAsync())
                 {
