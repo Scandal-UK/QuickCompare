@@ -1,7 +1,7 @@
 namespace QuickCompareTests
 {
     using FluentAssertions;
-    using QuickCompareModel;
+    using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
     public class EmbeddedSqlTests

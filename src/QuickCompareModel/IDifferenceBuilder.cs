@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using QuickCompareModel.DatabaseDifferences;
+    using QuickCompareModel.DatabaseSchema;
 
     /// <summary>
     /// Class responsible for building a set of differences between two database instances.

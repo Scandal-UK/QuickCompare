@@ -1,4 +1,4 @@
-﻿namespace QuickCompareModel
+﻿namespace QuickCompareModel.DatabaseSchema
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,6 @@
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using QuickCompareModel.DatabaseSchema;
 
     /// <summary>
     /// Class for running database queries and building lists that detail the content of the database schema.
