@@ -65,17 +65,17 @@
                 return base.ToString();
             }
 
-            var sb = new StringBuilder("\r\n");
+            var section = new StringBuilder("\r\n");
 
-            sb.Append(GetSubSectionDifferenceOutput(ColumnDifferences, "Column"));
-            sb.Append(GetSubSectionDifferenceOutput(TriggerDifferences, "Trigger"));
-            sb.Append(GetSubSectionDifferenceOutput(RelationshipDifferences, "Relation"));
-            sb.Append(GetSubSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
-            sb.Append(GetSubSectionDifferenceOutput(PermissionDifferences, "Permission"));
+            section.Append(GetSubSectionDifferenceOutput(ColumnDifferences, "Column"));
+            section.Append(GetSubSectionDifferenceOutput(TriggerDifferences, "Trigger"));
+            section.Append(GetSubSectionDifferenceOutput(RelationshipDifferences, "Relation"));
+            section.Append(GetSubSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
+            section.Append(GetSubSectionDifferenceOutput(PermissionDifferences, "Permission"));
 
             foreach (var indexDiff in IndexDifferences.Where(x => x.Value.IsDifferent))
             {
-                sb.Append($"{TabIndent}{indexDiff.Value.ItemType}: {indexDiff.Key} {indexDiff.Value}");
+                section.Append($"{TabIndent}{indexDiff.Value.ItemType}: {indexDiff.Key} {indexDiff.Value}");
             }
 
             return section.ToString();
