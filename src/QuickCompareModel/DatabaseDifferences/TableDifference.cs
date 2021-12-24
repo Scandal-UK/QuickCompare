@@ -78,7 +78,7 @@
                 sb.Append($"{TabIndent}{indexDiff.Value.ItemType}: {indexDiff.Key} {indexDiff.Value}");
             }
 
-            return sb.ToString();
+            return section.ToString();
         }
     }
 }

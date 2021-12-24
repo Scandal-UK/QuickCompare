@@ -451,6 +451,8 @@
             {
                 RaiseStatusChanged($"Reading routine definition {Array.IndexOf(UserRoutines.Keys.ToArray(), routine) + 1} of {UserRoutines.Count}");
 
+                var sb = new StringBuilder();
+
                 command.Parameters["@routinename"].Value = routine.GetObjectName();
                 await connection.OpenAsync();
                 using var dr = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
