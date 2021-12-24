@@ -1,5 +1,8 @@
 ﻿namespace QuickCompareModel.DatabaseDifferences
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
     using System.Text.RegularExpressions;
 
     /// <summary> Model to represent the most basic element and track the existence across two databases. </summary>
@@ -56,6 +59,19 @@
             }
 
             return definition.Trim();
+        }
+
+        protected static string GetSubSectionDifferenceOutput<T>(Dictionary<string, T> source, string name)
+            where T : BaseDifference
+        {
+            var section = new StringBuilder();
+
+            foreach (var prop in source.Where(x => x.Value.IsDifferent))
+            {
+                section.Append($"{TabIndent}{name}: {prop.Key} {prop.Value}");
+            }
+
+            return section.ToString();
         }
 
         private static string StripMultiLineComments(string input) => Regex.Replace(input, @"/\*[^*]*\*+([^/*][^*]*\*+)*/", " ");

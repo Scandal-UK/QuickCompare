@@ -35,9 +35,9 @@
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
         public override bool IsDifferent =>
-            !ExistsInBothDatabases ||
+            base.IsDifferent ||
             DefinitionsAreDifferent ||
-            PermissionDifferences.Values.Any(x => !x.ExistsInBothDatabases) ||
+            PermissionDifferences.Values.Any(x => x.IsDifferent) ||
             ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
@@ -48,7 +48,7 @@
                 return string.Empty;
             }
 
-            if (!ExistsInBothDatabases)
+            if (base.IsDifferent)
             {
                 return base.ToString();
             }
@@ -60,15 +60,8 @@
                 sb.AppendLine($"{TabIndent}Definitions are different");
             }
 
-            foreach (var diff in ExtendedPropertyDifferences.Where(x => x.Value.IsDifferent))
-            {
-                sb.Append($"{TabIndent}Extended property: [{diff.Key}] {diff.Value}");
-            }
-
-            foreach (var diff in PermissionDifferences.Where(x => !x.Value.ExistsInBothDatabases))
-            {
-                sb.Append($"{TabIndent}Permission: {diff.Key} {diff.Value}");
-            }
+            sb.Append(GetSubSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
+            sb.Append(GetSubSectionDifferenceOutput(PermissionDifferences, "Permission"));
 
             return sb.ToString();
         }
