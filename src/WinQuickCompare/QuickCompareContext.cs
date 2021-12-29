@@ -14,7 +14,7 @@
             set
             {
                 Application.Current.Properties[nameof(ConnectionString1)] = value;
-                OnPropertyChanged(nameof(ConnectionString1));
+                this.OnPropertyChanged(nameof(ConnectionString1));
             }
         }
 
@@ -24,7 +24,7 @@
             set
             {
                 Application.Current.Properties[nameof(ConnectionString2)] = value;
-                OnPropertyChanged(nameof(ConnectionString2));
+                this.OnPropertyChanged(nameof(ConnectionString2));
             }
         }
 
@@ -34,7 +34,7 @@
             set
             {
                 Application.Current.Properties[nameof(IgnoreSqlComments)] = value.ToString();
-                OnPropertyChanged(nameof(IgnoreSqlComments));
+                this.OnPropertyChanged(nameof(IgnoreSqlComments));
             }
         }
 
@@ -44,7 +44,7 @@
             set
             {
                 Application.Current.Properties[nameof(CompareColumns)] = value.ToString();
-                OnPropertyChanged(nameof(CompareColumns));
+                this.OnPropertyChanged(nameof(CompareColumns));
             }
         }
 
@@ -54,7 +54,7 @@
             set
             {
                 Application.Current.Properties[nameof(CompareRelations)] = value.ToString();
-                OnPropertyChanged(nameof(CompareRelations));
+                this.OnPropertyChanged(nameof(CompareRelations));
             }
         }
 
@@ -64,7 +64,7 @@
             set
             {
                 Application.Current.Properties[nameof(CompareObjects)] = value.ToString();
-                OnPropertyChanged(nameof(CompareObjects));
+                this.OnPropertyChanged(nameof(CompareObjects));
             }
         }
 
@@ -74,7 +74,7 @@
             set
             {
                 Application.Current.Properties[nameof(CompareIndexes)] = value.ToString();
-                OnPropertyChanged(nameof(CompareIndexes));
+                this.OnPropertyChanged(nameof(CompareIndexes));
             }
         }
 
@@ -84,7 +84,7 @@
             set
             {
                 Application.Current.Properties[nameof(ComparePermissions)] = value.ToString();
-                OnPropertyChanged(nameof(ComparePermissions));
+                this.OnPropertyChanged(nameof(ComparePermissions));
             }
         }
 
@@ -94,7 +94,7 @@
             set
             {
                 Application.Current.Properties[nameof(CompareProperties)] = value.ToString();
-                OnPropertyChanged(nameof(CompareProperties));
+                this.OnPropertyChanged(nameof(CompareProperties));
             }
         }
 
@@ -104,7 +104,7 @@
             set
             {
                 Application.Current.Properties[nameof(CompareTriggers)] = value.ToString();
-                OnPropertyChanged(nameof(CompareTriggers));
+                this.OnPropertyChanged(nameof(CompareTriggers));
             }
         }
 
@@ -114,7 +114,7 @@
             set
             {
                 Application.Current.Properties[nameof(CompareSynonyms)] = value.ToString();
-                OnPropertyChanged(nameof(CompareSynonyms));
+                this.OnPropertyChanged(nameof(CompareSynonyms));
             }
         }
 
@@ -124,7 +124,7 @@
             set
             {
                 Application.Current.Properties[nameof(CompareUserTypes)] = value.ToString();
-                OnPropertyChanged(nameof(CompareUserTypes));
+                this.OnPropertyChanged(nameof(CompareUserTypes));
             }
         }
 

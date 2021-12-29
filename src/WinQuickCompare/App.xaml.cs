@@ -15,46 +15,43 @@
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            ReadApplicationPropertiesFromFile();
-            InitialiseDefaultProperties();
+            this.ReadApplicationPropertiesFromFile();
+            this.InitialiseDefaultProperties();
 
-            AppDomain.CurrentDomain.UnhandledException += AppDomain_UnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += this.AppDomain_UnhandledException;
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
-            WriteApplicationPropertiesToFile();
+            this.WriteApplicationPropertiesToFile();
         }
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show($"An unhandled exception just occurred: {e.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            _ = MessageBox.Show($"An unhandled exception just occurred: {e.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             e.Handled = true;
         }
 
         private void AppDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            var exception = (Exception)e.ExceptionObject;
-            MessageBox.Show($"An unhandled exception just occurred: {exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
+            _ = MessageBox.Show($"An unhandled exception just occurred: {((Exception)e.ExceptionObject).Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
         }
 
         private void ReadApplicationPropertiesFromFile()
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
-            using (IsolatedStorageFileStream stream = new(filename, FileMode.OpenOrCreate, storage))
-            using (StreamReader reader = new(stream))
+            using IsolatedStorageFileStream stream = new(filename, FileMode.OpenOrCreate, storage);
+            using StreamReader reader = new(stream);
+            while (!reader.EndOfStream)
             {
-                while (!reader.EndOfStream)
-                {
-                    string[] keyValue = reader.ReadLine().Split(new char[] { ',' });
-                    Properties[keyValue[0]] = keyValue[1];
-                }
+                string[] keyValue = reader.ReadLine().Split(new char[] { ',' });
+                this.Properties[keyValue[0]] = keyValue[1];
             }
         }
 
         private void WriteApplicationPropertiesToFile()
         {
-            var storage = IsolatedStorageFile.GetUserStoreForDomain();
+            using IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
             using IsolatedStorageFileStream stream = new(filename, FileMode.Create, storage);
             using StreamWriter writer = new(stream);
             foreach (string key in this.Properties.Keys)
@@ -65,64 +62,64 @@
 
         private void InitialiseDefaultProperties()
         {
-            if (!Properties.Contains(nameof(QuickCompareContext.ConnectionString1)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.ConnectionString1)))
             {
-                Properties[nameof(QuickCompareContext.ConnectionString1)] = string.Empty;
+                this.Properties[nameof(QuickCompareContext.ConnectionString1)] = string.Empty;
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.ConnectionString2)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.ConnectionString2)))
             {
-                Properties[nameof(QuickCompareContext.ConnectionString2)] = string.Empty;
+                this.Properties[nameof(QuickCompareContext.ConnectionString2)] = string.Empty;
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.IgnoreSqlComments)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.IgnoreSqlComments)))
             {
-                Properties[nameof(QuickCompareContext.IgnoreSqlComments)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.IgnoreSqlComments)] = true.ToString();
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.CompareColumns)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareColumns)))
             {
-                Properties[nameof(QuickCompareContext.CompareColumns)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.CompareColumns)] = true.ToString();
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.CompareRelations)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareRelations)))
             {
-                Properties[nameof(QuickCompareContext.CompareRelations)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.CompareRelations)] = true.ToString();
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.CompareObjects)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareObjects)))
             {
-                Properties[nameof(QuickCompareContext.CompareObjects)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.CompareObjects)] = true.ToString();
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.ComparePermissions)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.ComparePermissions)))
             {
-                Properties[nameof(QuickCompareContext.ComparePermissions)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.ComparePermissions)] = true.ToString();
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.CompareProperties)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareProperties)))
             {
-                Properties[nameof(QuickCompareContext.CompareProperties)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.CompareProperties)] = true.ToString();
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.CompareTriggers)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareTriggers)))
             {
-                Properties[nameof(QuickCompareContext.CompareTriggers)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.CompareTriggers)] = true.ToString();
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.CompareSynonyms)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareSynonyms)))
             {
-                Properties[nameof(QuickCompareContext.CompareSynonyms)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.CompareSynonyms)] = true.ToString();
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.CompareUserTypes)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareUserTypes)))
             {
-                Properties[nameof(QuickCompareContext.CompareUserTypes)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.CompareUserTypes)] = true.ToString();
             }
 
-            if (!Properties.Contains(nameof(QuickCompareContext.CompareIndexes)))
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareIndexes)))
             {
-                Properties[nameof(QuickCompareContext.CompareIndexes)] = true.ToString();
+                this.Properties[nameof(QuickCompareContext.CompareIndexes)] = true.ToString();
             }
         }
     }
