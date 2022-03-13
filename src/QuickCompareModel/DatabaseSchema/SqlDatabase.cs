@@ -431,6 +431,8 @@
                         case "ROUTINE_TYPE":
                             routine.RoutineType = dr.GetString(i);
                             break;
+                        default:
+                            break;
                     }
 
                     i++;
@@ -486,6 +488,8 @@
                         index.IsUniqueKey = desc.Contains("unique key");
                         index.FileGroup = Regex.Match(desc, "located on  (.*)$").Groups[1].Value;
                         break;
+                    default:
+                        break;
                 }
                 i++;
             }
@@ -530,6 +534,8 @@
                         break;
                     case "DELETE_RULE":
                         relation.DeleteRule = dr.GetString(i);
+                        break;
+                    default:
                         break;
                 }
 
@@ -622,6 +628,8 @@
                     case "IS_ROW_GUID":
                         detail.IsRowGuid = dr.GetNullableInt32AsBoolean(i);
                         break;
+                    default:
+                        break;
                 }
 
                 i++;
@@ -665,6 +673,8 @@
                     case "is_assembly_type":
                         userType.IsAssemblyType = dr.GetInt32AsBoolean(i);
                         break;
+                    default:
+                        break;
                 }
 
                 i++;
@@ -704,6 +714,8 @@
                         break;
                     case "OBJECT_SCHEMA":
                         permission.ObjectSchema = dr.GetNullableString(i);
+                        break;
+                    default:
                         break;
                 }
 
@@ -747,6 +759,8 @@
                         break;
                     case "TABLE_SCHEMA":
                         property.TableSchema = dr.GetNullableString(i);
+                        break;
+                    default:
                         break;
                 }
 
@@ -796,6 +810,8 @@
                         break;
                     case "TRIGGER_CONTENT":
                         trigger.TriggerContent = dr.GetString(i);
+                        break;
+                    default:
                         break;
                 }
 
