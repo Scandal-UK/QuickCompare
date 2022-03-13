@@ -6,9 +6,7 @@
     using Microsoft.Extensions.Options;
     using QuickCompareModel;
 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    /// <summary> Interaction logic for the main window. </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -18,19 +16,21 @@
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.RunButton.IsEnabled = false;
-            if (!string.IsNullOrEmpty(this.OutputTextBox.Text))
+            this.ControlContainer.IsEnabled = false;
+            this.ClearOutput();
+
+            try
             {
-                this.ClearOutput();
+                DifferenceBuilder builder = new(this.CreateOptionsFromFormValues());
+                await builder.BuildDifferencesAsync();
+
+                this.OutputTextBox.Text = builder.Differences.ToString();
+                this.ComboBox1.ItemsSource = builder.DefinitionDifferences;
             }
-
-            DifferenceBuilder builder = new(this.CreateOptionsFromFormValues());
-            await builder.BuildDifferencesAsync();
-
-            this.OutputTextBox.Text = builder.Differences.ToString();
-            this.ComboBox1.ItemsSource = builder.DefinitionDifferences;
-
-            this.RunButton.IsEnabled = true;
+            finally
+            {
+                this.ControlContainer.IsEnabled = true;
+            }
         }
 
         private void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -45,10 +45,13 @@
 
         private void ClearOutput()
         {
-            this.OutputTextBox.Clear();
-            this.ComboBox1.SelectedItem = null;
-            this.DiffViewer1.OldText = string.Empty;
-            this.DiffViewer1.NewText = string.Empty;
+            if (this.OutputTextBox.Text != string.Empty)
+            {
+                this.OutputTextBox.Clear();
+                this.ComboBox1.SelectedItem = null;
+                this.DiffViewer1.OldText = string.Empty;
+                this.DiffViewer1.NewText = string.Empty;
+            }
         }
 
         private IOptions<QuickCompareOptions> CreateOptionsFromFormValues()
