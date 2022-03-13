@@ -6,9 +6,7 @@
     using System.Windows;
     using System.Windows.Threading;
 
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+    /// <summary> Global events for the application. </summary>
     public partial class App : Application
     {
         private const string filename = "QuickCompare.Settings.txt";
@@ -28,13 +26,13 @@
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            _ = MessageBox.Show($"An unhandled exception just occurred: {e.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            _ = MessageBox.Show(this.MainWindow, $"An unhandled exception occurred: {e.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             e.Handled = true;
         }
 
         private void AppDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            _ = MessageBox.Show($"An unhandled exception just occurred: {((Exception)e.ExceptionObject).Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
+            _ = MessageBox.Show(this.MainWindow, $"An unhandled exception occurred: {((Exception)e.ExceptionObject).Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
         }
 
         private void ReadApplicationPropertiesFromFile()
