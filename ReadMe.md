@@ -15,7 +15,9 @@
 
 This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
 
-It is free to use _without any restrictions_ (and always will be), but I do encourage everyone to contribute improvements to the project and raise issues as appropriate. If you find this project useful, considering clicking the star to add to your favourites!
+It is free to use _without any restrictions_ (and always will be), but I do encourage everyone to contribute improvements to the project and raise issues as appropriate. If you find this project useful, consider clicking the star to add to your favourites!
+
+![demo-screenshot](./win-preview1.png)
 
 ## How it works
 
@@ -33,7 +35,7 @@ I know there are many alternatives, but the best ones are not cheap (e.g. RedGat
 
 Finally, nobody seems to offer a _simple database comparison solution_ that meets my needs for free - even less so if you want to use them programmatically with C#.
 
-So here is a __free alternative__ that will remain open-source and fully unit-tested for us all to enjoy.
+So here is a __free alternative__ that will remain open-source and fully unit-tested for anyone to use.
 
 It is lean enough to be used in CI/CD pipelines and as it targets information schema views, it does not negatively impact the performance of the databases under interrogation.
 
