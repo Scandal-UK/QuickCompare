@@ -41,14 +41,12 @@
         private void ReadApplicationPropertiesFromFile()
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
-            using (IsolatedStorageFileStream stream = new(filename, FileMode.OpenOrCreate, storage))
-            using (StreamReader reader = new(stream))
+            using IsolatedStorageFileStream stream = new(filename, FileMode.OpenOrCreate, storage);
+            using StreamReader reader = new(stream);
+            while (!reader.EndOfStream)
             {
-                while (!reader.EndOfStream)
-                {
-                    string[] keyValue = reader.ReadLine().Split(new char[] { ',' });
-                    Properties[keyValue[0]] = keyValue[1];
-                }
+                string[] keyValue = reader.ReadLine().Split(new char[] { ',' });
+                Properties[keyValue[0]] = keyValue[1];
             }
         }
 
