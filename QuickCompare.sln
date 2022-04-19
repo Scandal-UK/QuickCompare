@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.6.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{24D025CC-A5BF-4834-B116-E596201DE756}"
 EndProject
@@ -21,6 +21,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTestQuickCompare", "src\ConsoleTestQuickCompare\ConsoleTestQuickCompare.csproj", "{3065B16C-6666-47F2-8E48-2E0B8B12BF8C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinQuickCompare", "src\WinQuickCompare\WinQuickCompare.csproj", "{7B38FEAC-CE4C-449B-B48B-9BFE23446661}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{380A4DAB-34E3-4AD8-A6ED-41C86850F21C}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
+		.github\codeql\codeql-config.yml = .github\codeql\codeql-config.yml
+		.github\workflows\sonarcloud.yml = .github\workflows\sonarcloud.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +97,7 @@ Global
 		{F835785D-FE84-40F9-84F8-D2BAC0C9BB5A} = {1375D335-4375-4F2F-AC9A-0E8BF1E27891}
 		{3065B16C-6666-47F2-8E48-2E0B8B12BF8C} = {24D025CC-A5BF-4834-B116-E596201DE756}
 		{7B38FEAC-CE4C-449B-B48B-9BFE23446661} = {24D025CC-A5BF-4834-B116-E596201DE756}
+		{380A4DAB-34E3-4AD8-A6ED-41C86850F21C} = {0A5E4151-39FA-4571-96D5-855BF3E4A2CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D453CD23-AC46-4481-89EC-E5BCF1246A90}
