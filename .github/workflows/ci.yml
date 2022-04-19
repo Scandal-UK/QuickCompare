@@ -2,6 +2,10 @@ name: Build and Test
 
 on: pull_request
 
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
 jobs:
   build:
     runs-on: windows-latest
@@ -17,3 +21,9 @@ jobs:
 
     - name: Test
       run: dotnet test --no-restore --no-build --verbosity normal --configuration Release
+
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: WinQuickCompare
+        path: src/WinQuickCompare/bin/Release/net6.0-windows
