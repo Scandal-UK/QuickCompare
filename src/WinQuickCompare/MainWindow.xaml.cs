@@ -62,6 +62,7 @@
                 ConnectionString2 = this.ConnectionString2.Text,
                 IgnoreSqlComments = this.IgnoreSqlComments.IsChecked ?? false,
                 CompareColumns = this.CompareColumns.IsChecked ?? false,
+                CompareCollation = this.CompareCollation.IsChecked ?? false,
                 CompareRelations = this.CompareRelations.IsChecked ?? false,
                 CompareObjects = this.CompareObjects.IsChecked ?? false,
                 CompareIndexes = this.CompareIndexes.IsChecked ?? false,

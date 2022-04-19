@@ -295,7 +295,7 @@
                 diff.Differences.Add($"has different character set - is {(string.IsNullOrEmpty(column1.CharacterSetName) ? "NULL" : column1.CharacterSetName)} in database 1 and is {(string.IsNullOrEmpty(column2.CharacterSetName) ? "NULL" : column2.CharacterSetName)} in database 2");
             }
 
-            if (column2.CollationName != column1.CollationName)
+            if (this.Options.CompareCollation && column2.CollationName != column1.CollationName)
             {
                 diff.Differences.Add($"has different collation - is {(string.IsNullOrEmpty(column1.CollationName) ? "NULL" : column1.CollationName)} in database 1 and is {(string.IsNullOrEmpty(column2.CollationName) ? "NULL" : column2.CollationName)} in database 2");
             }

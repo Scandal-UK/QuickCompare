@@ -86,6 +86,11 @@
                 this.Properties[nameof(QuickCompareContext.CompareColumns)] = true.ToString();
             }
 
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareCollation)))
+            {
+                this.Properties[nameof(QuickCompareContext.CompareCollation)] = true.ToString();
+            }
+
             if (!this.Properties.Contains(nameof(QuickCompareContext.CompareRelations)))
             {
                 this.Properties[nameof(QuickCompareContext.CompareRelations)] = true.ToString();

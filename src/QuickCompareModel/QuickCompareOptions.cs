@@ -26,6 +26,11 @@
         public bool CompareColumns { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether to compare text collation.
+        /// </summary>
+        public bool CompareCollation { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether to compare table relations.
         /// </summary>
         public bool CompareRelations { get; set; } = true;
