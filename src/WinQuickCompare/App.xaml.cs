@@ -42,9 +42,15 @@
             using StreamReader reader = new(stream);
             while (!reader.EndOfStream)
             {
-                string[] keyValue = reader.ReadLine().Split(new char[] { ',' });
-                this.Properties[keyValue[0]] = keyValue[1];
+                this.SetPropertyFromLineOfText(reader.ReadLine());
             }
+        }
+
+        private void SetPropertyFromLineOfText(string line)
+        {
+            string key = line[..line.IndexOf(',')];
+            string value = line[(line.IndexOf(',') + 1)..];
+            this.Properties[key] = value;
         }
 
         private void WriteApplicationPropertiesToFile()
