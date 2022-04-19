@@ -48,6 +48,16 @@
             }
         }
 
+        public bool CompareCollation
+        {
+            get => bool.Parse((string)Application.Current.Properties[nameof(CompareCollation)]);
+            set
+            {
+                Application.Current.Properties[nameof(CompareCollation)] = value.ToString();
+                this.OnPropertyChanged(nameof(CompareCollation));
+            }
+        }
+
         public bool CompareRelations
         {
             get => bool.Parse((string)Application.Current.Properties[nameof(CompareRelations)]);

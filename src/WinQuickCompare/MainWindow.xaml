@@ -31,6 +31,7 @@
                 <TextBox x:Name="ConnectionString2"  Margin="10,0" Text="{Binding Source={StaticResource localContext}, Path=ConnectionString2}" />
 
                 <CheckBox x:Name="CompareColumns" Margin="10 20 5 5" Content="Compare columns?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareColumns}" />
+                <CheckBox x:Name="CompareCollation" Margin="10 5" Content="Compare collation?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareCollation}" />
                 <CheckBox x:Name="CompareRelations" Margin="10 5" Content="Compare relations?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareRelations}" />
                 <CheckBox x:Name="CompareIndexes" Margin="10 5" Content="Compare indexes?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareIndexes}" />
                 <CheckBox x:Name="CompareTriggers" Margin="10 5" Content="Compare triggers?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareTriggers}" />

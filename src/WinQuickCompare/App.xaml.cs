@@ -42,9 +42,15 @@
             using StreamReader reader = new(stream);
             while (!reader.EndOfStream)
             {
-                string[] keyValue = reader.ReadLine().Split(new char[] { ',' });
-                this.Properties[keyValue[0]] = keyValue[1];
+                this.SetPropertyFromLineOfText(reader.ReadLine());
             }
+        }
+
+        private void SetPropertyFromLineOfText(string line)
+        {
+            string key = line[..line.IndexOf(',')];
+            string value = line[(line.IndexOf(',') + 1)..];
+            this.Properties[key] = value;
         }
 
         private void WriteApplicationPropertiesToFile()
@@ -78,6 +84,11 @@
             if (!this.Properties.Contains(nameof(QuickCompareContext.CompareColumns)))
             {
                 this.Properties[nameof(QuickCompareContext.CompareColumns)] = true.ToString();
+            }
+
+            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareCollation)))
+            {
+                this.Properties[nameof(QuickCompareContext.CompareCollation)] = true.ToString();
             }
 
             if (!this.Properties.Contains(nameof(QuickCompareContext.CompareRelations)))

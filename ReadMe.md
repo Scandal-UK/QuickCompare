@@ -10,8 +10,8 @@
 > __A simple, fast, free SQL database schema comparison library/app written in C#__
 
 - [QuickCompareModel](/src/QuickCompareModel) - the core library and NuGet package source code
-- [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample console application
-- [WinQuickCompare](/src/WinQuickCompare) - sample Windows application
+- [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample .NET 6 console application
+- [WinQuickCompare](/src/WinQuickCompare) - sample .NET 6 Windows application
 
 This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
 
@@ -29,7 +29,7 @@ The Difference objects also act as a report generator, with overridden `ToString
 
 Input parameters are accepted via the `IOptions` implementation; `QuickCompareOptions`. This aids automation because it allows the application to be easily run by anything that can provide application settings (such as Azure Pipelines).
 
-### Why write this??
+## Purpose
 
 I know there are many alternatives, but the best ones are not cheap (e.g. RedGate). Many paid solutions do not fit my purposes, mainly because of the amount of false-positive results or even differences that are not detected at all.
 
