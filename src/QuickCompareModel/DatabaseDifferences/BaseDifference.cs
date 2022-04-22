@@ -74,14 +74,14 @@
             return section.ToString();
         }
 
-        private static string StripMultiLineComments(string input) => Regex.Replace(input, @"/\*[^*]*\*+([^/*][^*]*\*+)*/", " ");
+        private static string StripMultiLineComments(string input) => Regex.Replace(input, @"/\*[^*]*\*+([^/*][^*]*\*+)*/", string.Empty);
 
-        private static string StripInlineComments(string input) => Regex.Replace(input, @"(--(.*|[\r\n]))", string.Empty);
+        private static string StripInlineComments(string input) => Regex.Replace(input, @"(--)([^\r\n]+)", string.Empty);
 
         private static string StripCommaWhitespace(string input) => Regex.Replace(input, @"\s*,\s*", ",");
 
         private static string NormaliseCommas(string input) => Regex.Replace(input, @"[,]", ", ");
 
-        private static string ReduceWhitespaceToSingleCharacter(string input) => Regex.Replace(input, @"[\s]{2,}", " ");
+        private static string ReduceWhitespaceToSingleCharacter(string input) => Regex.Replace(input, @"[\s]+", " ");
     }
 }
