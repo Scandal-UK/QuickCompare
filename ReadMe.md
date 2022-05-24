@@ -15,7 +15,7 @@
 
 This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
 
-It is free to use _without any restrictions_ (and always will be), but I do encourage everyone to contribute improvements to the project and raise issues as appropriate. If you find this project useful, consider clicking the star to add to your favourites!
+It is free to use _without any restrictions_ (and always will be) and everyone is encouraged to contribute improvements to the project and raise issues as appropriate. If you find this project useful, consider clicking the star to add to your favourites!
 
 ![demo-screenshot](./win-preview1.png)
 
@@ -31,9 +31,11 @@ Input parameters are accepted via the `IOptions` implementation; `QuickCompareOp
 
 ## Purpose
 
-I know there are many alternatives, but the best ones are not cheap (e.g. RedGate). Many paid solutions do not fit my purposes, mainly because of the amount of false-positive results or even differences that are not detected at all.
+Many paid solutions are very expensive and still return large numbers of false-positive results or even miss important differences that are not detected at all.
 
-Finally, nobody seems to offer a _simple database comparison solution_ that meets my needs for free - even less so if you want to use them programmatically with C#.
+False-positive results from other solutions might also include differences in remarks/comments, line-breaks or whitespace - all of which can be time-consuming to check but can be ignored in QuickCompare. If these differences do not affect the schema or functionality of the database, then you should be able to choose to ignore them.
+
+Finally, nobody seems to offer a _simple database comparison solution_ that meets these needs for free - even less so if you want to use them programmatically with C#.
 
 So here is a __free alternative__ that will remain open-source and fully unit-tested for anyone to use.
 
@@ -67,7 +69,7 @@ Inspecting two databases for differences is quick, but it is far from instantane
 
 The `DifferenceBuilder` class raises an event when the status changes - subscribe to `ComparisonStatusChanged` to return an instance of `StatusChangedEventArgs`. This EventArgs instance has a property named `StatusMessage` which could be presented in a UI layer or used to measure timing of steps.
 
-An example of consuming this event can be found in the sample console application.
+An example of consuming this event can be found in both [WinQuickCompare](/src/WinQuickCompare) and the [sample console application](/src/ConsoleTestQuickCompare).
 
 ### Database SQL queries
 
@@ -80,7 +82,6 @@ The queries do not require special permission for the master database and have m
 _Consider this a pre-release version until the first release appears on the GitHub project page!_
 
 #### To-Do:
-- Display status updates in Windows app UI
 - Compare System-Versioned table properties
 - Compare Database properties (e.g. compatibility version)
 - Add "upload report" feature for DevOps (XML/JSON?)

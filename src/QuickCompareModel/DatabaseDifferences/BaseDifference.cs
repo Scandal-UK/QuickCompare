@@ -49,7 +49,7 @@
             }
 
             definition = StripMultiLineComments(definition);
-            definition = StripInlineComments(definition);
+            definition = StripSingleLineComments(definition);
 
             if (stripWhiteSpace)
             {
@@ -76,7 +76,7 @@
 
         private static string StripMultiLineComments(string input) => Regex.Replace(input, @"/\*[^*]*\*+([^/*][^*]*\*+)*/", string.Empty);
 
-        private static string StripInlineComments(string input) => Regex.Replace(input, @"(--)([^\r\n]+)", string.Empty);
+        private static string StripSingleLineComments(string input) => Regex.Replace(input, @"(--)([^\r\n]+)", string.Empty);
 
         private static string StripCommaWhitespace(string input) => Regex.Replace(input, @"\s*,\s*", ",");
 

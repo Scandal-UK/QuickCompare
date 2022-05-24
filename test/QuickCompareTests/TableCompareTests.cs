@@ -183,6 +183,8 @@
             diff.ExtendedPropertyDifferences.ContainsKey("Key1").Should().BeTrue();
             diff.ExtendedPropertyDifferences["Key1"].ExistsInBothDatabases.Should().BeTrue();
             diff.ExtendedPropertyDifferences["Key1"].IsDifferent.Should().BeTrue();
+            diff.ToString().Trim()
+                .Should().Be("Extended property: Key1 value is different; [Value1] in database 1, [Value2] in database 2");
         }
 
         [Fact]

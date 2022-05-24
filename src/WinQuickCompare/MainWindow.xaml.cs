@@ -17,11 +17,14 @@
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             this.ControlContainer.IsEnabled = false;
+            this.StatusBarText.Visibility = Visibility.Visible;
             this.ClearOutput();
 
             try
             {
                 DifferenceBuilder builder = new(this.CreateOptionsFromFormValues());
+                builder.ComparisonStatusChanged += this.Comparison_StatusChanged;
+
                 await builder.BuildDifferencesAsync();
 
                 this.OutputTextBox.Text = builder.Differences.ToString();
@@ -30,7 +33,21 @@
             finally
             {
                 this.ControlContainer.IsEnabled = true;
+                this.StatusBarText.Content = string.Empty;
+                this.StatusBarText.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void Comparison_StatusChanged(object sender, StatusChangedEventArgs e)
+        {
+            string message = e.DatabaseInstance switch
+            {
+                DatabaseInstance.Database1 => $"{e.StatusMessage} for database 1",
+                DatabaseInstance.Database2 => $"{e.StatusMessage} for database 2",
+                _ => e.StatusMessage,
+            };
+
+            this.StatusBarText.Content = message;
         }
 
         private void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
