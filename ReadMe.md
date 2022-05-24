@@ -15,7 +15,7 @@
 
 This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
 
-It is free to use _without any restrictions_ (and always will be), but I do encourage everyone to contribute improvements to the project and raise issues as appropriate. If you find this project useful, consider clicking the star to add to your favourites!
+It is free to use _without any restrictions_ (and always will be) and everyone is encouraged to contribute improvements to the project and raise issues as appropriate. If you find this project useful, consider clicking the star to add to your favourites!
 
 ![demo-screenshot](./win-preview1.png)
 
@@ -69,7 +69,7 @@ Inspecting two databases for differences is quick, but it is far from instantane
 
 The `DifferenceBuilder` class raises an event when the status changes - subscribe to `ComparisonStatusChanged` to return an instance of `StatusChangedEventArgs`. This EventArgs instance has a property named `StatusMessage` which could be presented in a UI layer or used to measure timing of steps.
 
-An example of consuming this event can be found in the sample console application.
+An example of consuming this event can be found in both [WinQuickCompare](/src/WinQuickCompare) and the [sample console application](/src/ConsoleTestQuickCompare).
 
 ### Database SQL queries
 
@@ -82,7 +82,6 @@ The queries do not require special permission for the master database and have m
 _Consider this a pre-release version until the first release appears on the GitHub project page!_
 
 #### To-Do:
-- Display status updates in Windows app UI
 - Compare System-Versioned table properties
 - Compare Database properties (e.g. compatibility version)
 - Add "upload report" feature for DevOps (XML/JSON?)
