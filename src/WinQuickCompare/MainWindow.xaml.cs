@@ -16,9 +16,8 @@
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.ControlContainer.IsEnabled = false;
-            this.StatusBarText.Visibility = Visibility.Visible;
             this.ClearOutput();
+            this.ToggleForm(false);
 
             try
             {
@@ -32,22 +31,25 @@
             }
             finally
             {
-                this.ControlContainer.IsEnabled = true;
-                this.StatusBarText.Content = string.Empty;
-                this.StatusBarText.Visibility = Visibility.Collapsed;
+                this.ToggleForm(true);
             }
         }
 
         private void Comparison_StatusChanged(object sender, StatusChangedEventArgs e)
         {
-            string message = e.DatabaseInstance switch
+            switch (e.DatabaseInstance)
             {
-                DatabaseInstance.Database1 => $"{e.StatusMessage} for database 1",
-                DatabaseInstance.Database2 => $"{e.StatusMessage} for database 2",
-                _ => e.StatusMessage,
-            };
-
-            this.StatusBarText.Content = message;
+                case DatabaseInstance.Database1:
+                    this.StatusBarDatabase1.Content = $"Database 1: {e.StatusMessage}";
+                    break;
+                case DatabaseInstance.Database2:
+                    this.StatusBarDatabase2.Content = $"Database 2: {e.StatusMessage}";
+                    break;
+                default:
+                    this.StatusBarDatabase1.Content = e.StatusMessage;
+                    this.StatusBarDatabase2.Content = string.Empty;
+                    break;
+            }
         }
 
         private void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -66,9 +68,19 @@
             {
                 this.OutputTextBox.Clear();
                 this.ComboBox1.SelectedItem = null;
+
                 this.DiffViewer1.OldText = string.Empty;
                 this.DiffViewer1.NewText = string.Empty;
+
+                this.StatusBarDatabase1.Content = string.Empty;
+                this.StatusBarDatabase2.Content = string.Empty;
             }
+        }
+
+        private void ToggleForm(bool enabled)
+        {
+            this.StatusBar.Visibility = enabled ? Visibility.Collapsed : Visibility.Visible;
+            this.ControlContainer.IsEnabled = enabled;
         }
 
         private IOptions<QuickCompareOptions> CreateOptionsFromFormValues()
