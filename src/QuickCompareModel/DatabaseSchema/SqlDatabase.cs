@@ -86,6 +86,8 @@
             await LoadFullyQualifiedTableNamesAsync();
             await Task.WhenAll(RequiredItemTasks());
             await Task.WhenAll(DependentItemTasks());
+
+            RaiseStatusChanged("Done");
         }
 
         /// <summary>

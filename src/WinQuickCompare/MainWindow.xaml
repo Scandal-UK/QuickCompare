@@ -70,12 +70,18 @@
       </TabControl>
     </Grid>
 
-    <DockPanel Grid.Row="1">
-      <StatusBar>
-        <StatusBarItem>
-          <Label x:Name="StatusBarText" Visibility="Collapsed" />
-        </StatusBarItem>
-      </StatusBar>
-    </DockPanel>
+    <StatusBar x:Name="StatusBar" Grid.Row="1" Visibility="Collapsed">
+      <StatusBar.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel />
+        </ItemsPanelTemplate>
+      </StatusBar.ItemsPanel>
+      <StatusBarItem>
+        <Label x:Name="StatusBarDatabase1" />
+      </StatusBarItem>
+      <StatusBarItem>
+        <Label x:Name="StatusBarDatabase2" />
+      </StatusBarItem>
+    </StatusBar>
   </Grid>
 </Window>
