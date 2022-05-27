@@ -51,7 +51,5 @@
         public bool IsColumnSet { get; set; }
 
         public bool IsRowGuid { get; set; }
-
-        public string FullId => $"[{TableName}].[{ColumnName}]";
     }
 }
