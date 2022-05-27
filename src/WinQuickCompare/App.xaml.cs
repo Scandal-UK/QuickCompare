@@ -14,8 +14,6 @@
         private void App_Startup(object sender, StartupEventArgs e)
         {
             this.ReadApplicationPropertiesFromFile();
-            this.InitialiseDefaultProperties();
-
             AppDomain.CurrentDomain.UnhandledException += this.AppDomain_UnhandledException;
         }
 
@@ -61,74 +59,6 @@
             foreach (string key in this.Properties.Keys)
             {
                 writer.WriteLine("{0},{1}", key, this.Properties[key]);
-            }
-        }
-
-        private void InitialiseDefaultProperties()
-        {
-            if (!this.Properties.Contains(nameof(QuickCompareContext.ConnectionString1)))
-            {
-                this.Properties[nameof(QuickCompareContext.ConnectionString1)] = string.Empty;
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.ConnectionString2)))
-            {
-                this.Properties[nameof(QuickCompareContext.ConnectionString2)] = string.Empty;
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.IgnoreSqlComments)))
-            {
-                this.Properties[nameof(QuickCompareContext.IgnoreSqlComments)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareColumns)))
-            {
-                this.Properties[nameof(QuickCompareContext.CompareColumns)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareCollation)))
-            {
-                this.Properties[nameof(QuickCompareContext.CompareCollation)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareRelations)))
-            {
-                this.Properties[nameof(QuickCompareContext.CompareRelations)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareObjects)))
-            {
-                this.Properties[nameof(QuickCompareContext.CompareObjects)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.ComparePermissions)))
-            {
-                this.Properties[nameof(QuickCompareContext.ComparePermissions)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareProperties)))
-            {
-                this.Properties[nameof(QuickCompareContext.CompareProperties)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareTriggers)))
-            {
-                this.Properties[nameof(QuickCompareContext.CompareTriggers)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareSynonyms)))
-            {
-                this.Properties[nameof(QuickCompareContext.CompareSynonyms)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareUserTypes)))
-            {
-                this.Properties[nameof(QuickCompareContext.CompareUserTypes)] = true.ToString();
-            }
-
-            if (!this.Properties.Contains(nameof(QuickCompareContext.CompareIndexes)))
-            {
-                this.Properties[nameof(QuickCompareContext.CompareIndexes)] = true.ToString();
             }
         }
     }
