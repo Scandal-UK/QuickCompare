@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel
+﻿// <copyright file="DifferenceBuilder.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel
 {
     using System;
     using System.Collections.Generic;

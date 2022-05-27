@@ -1,4 +1,8 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="FunctionCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using FluentAssertions;
     using QuickCompareModel.DatabaseSchema;

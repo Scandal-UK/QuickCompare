@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel.DatabaseDifferences
+﻿// <copyright file="BaseDifference.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel.DatabaseDifferences
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -8,6 +12,9 @@
     /// <summary> Model to represent the most basic element and track the existence across two databases. </summary>
     public class BaseDifference
     {
+        /// <summary> Whitespace indentation used for output text. </summary>
+        protected const string TabIndent = "     ";
+
         /// <summary>
         /// Initialises a new instance of the <see cref="BaseDifference"/> class
         /// with values determining whether the item exists in each database.
@@ -16,8 +23,8 @@
         /// <param name="existsInDatabase2">Value indicating whether the item exists in database 2.</param>
         public BaseDifference(bool existsInDatabase1, bool existsInDatabase2)
         {
-            ExistsInDatabase1 = existsInDatabase1;
-            ExistsInDatabase2 = existsInDatabase2;
+            this.ExistsInDatabase1 = existsInDatabase1;
+            this.ExistsInDatabase2 = existsInDatabase2;
         }
 
         /// <summary> Gets or sets a value indicating whether the item exists in database 1. </summary>
@@ -27,15 +34,10 @@
         public bool ExistsInDatabase2 { get; set; }
 
         /// <summary> Gets a value indicating whether the item exists in both databases. </summary>
-        public bool ExistsInBothDatabases => ExistsInDatabase1 && ExistsInDatabase2;
+        public bool ExistsInBothDatabases => this.ExistsInDatabase1 && this.ExistsInDatabase2;
 
         /// <summary> Gets a value indicating whether there are any differences. </summary>
-        public virtual bool IsDifferent => !ExistsInBothDatabases;
-
-        /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
-        public override string ToString() => ExistsInBothDatabases ? string.Empty : $"does not exist in database {(ExistsInDatabase1 ? 2 : 1)}\r\n";
-
-        protected const string TabIndent = "     ";
+        public virtual bool IsDifferent => !this.ExistsInBothDatabases;
 
         /// <summary> A helper method to trim whitespace and comments from text to reduce false-positive results. </summary>
         /// <param name="definition">Text to modify.</param>
@@ -61,6 +63,15 @@
             return definition.Trim();
         }
 
+        /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
+        /// <returns> Difference description. </returns>
+        public override string ToString() => this.ExistsInBothDatabases ? string.Empty : $"does not exist in database {(this.ExistsInDatabase1 ? 2 : 1)}\r\n";
+
+        /// <summary> A helper method to list difference values for subsections. </summary>
+        /// <typeparam name="T">Implementation of <see cref="BaseDifference"/>.</typeparam>
+        /// <param name="source">Difference collection.</param>
+        /// <param name="name">Name of subsection.</param>
+        /// <returns>Text output for subsection.</returns>
         protected static string GetSubSectionDifferenceOutput<T>(Dictionary<string, T> source, string name)
             where T : BaseDifference
         {

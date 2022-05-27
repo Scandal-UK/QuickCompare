@@ -1,8 +1,12 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="TableCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
+    using System.Collections.Generic;
     using FluentAssertions;
     using QuickCompareModel.DatabaseSchema;
-    using System.Collections.Generic;
     using Xunit;
 
     public class TableCompareTests

@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel.DatabaseSchema
+﻿// <copyright file="SqlIndex.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel.DatabaseSchema
 {
     using System.Collections.Generic;
     using System.Text;

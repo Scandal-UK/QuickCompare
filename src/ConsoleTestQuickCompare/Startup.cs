@@ -1,4 +1,8 @@
-﻿namespace ConsoleTestQuickCompare
+﻿// <copyright file="Startup.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace ConsoleTestQuickCompare
 {
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;

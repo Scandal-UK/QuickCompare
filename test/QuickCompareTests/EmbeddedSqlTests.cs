@@ -1,3 +1,7 @@
+// <copyright file="EmbeddedSqlTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
 namespace QuickCompareTests
 {
     using FluentAssertions;

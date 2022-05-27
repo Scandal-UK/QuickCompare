@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel.DatabaseDifferences
+﻿// <copyright file="Differences.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel.DatabaseDifferences
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -47,35 +51,36 @@
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
         public bool HasDifferences =>
-            ExtendedPropertyDifferences.Any(x => x.Value.IsDifferent) ||
-            PermissionDifferences.Any(x => x.Value.IsDifferent) ||
-            TableDifferences.Any(x => x.Value.IsDifferent) ||
-            FunctionDifferences.Any(x => x.Value.IsDifferent) ||
-            StoredProcedureDifferences.Any(x => x.Value.IsDifferent) ||
-            ViewDifferences.Any(x => x.Value.IsDifferent) ||
-            SynonymDifferences.Any(x => x.Value.IsDifferent);
+            this.ExtendedPropertyDifferences.Any(x => x.Value.IsDifferent) ||
+            this.PermissionDifferences.Any(x => x.Value.IsDifferent) ||
+            this.TableDifferences.Any(x => x.Value.IsDifferent) ||
+            this.FunctionDifferences.Any(x => x.Value.IsDifferent) ||
+            this.StoredProcedureDifferences.Any(x => x.Value.IsDifferent) ||
+            this.ViewDifferences.Any(x => x.Value.IsDifferent) ||
+            this.SynonymDifferences.Any(x => x.Value.IsDifferent);
 
         /// <summary> Gets a report of the differences, whether any were detected or not. </summary>
+        /// <returns> Difference description. </returns>
         public override string ToString()
         {
             var output = new StringBuilder("QuickCompare schema comparison result\r\n\r\n");
-            output.AppendLine($"Database 1: {Database1}");
-            output.AppendLine($"Database 2: {Database2}\r\n");
+            output.AppendLine($"Database 1: {this.Database1}");
+            output.AppendLine($"Database 2: {this.Database2}\r\n");
 
-            if (!HasDifferences)
+            if (!this.HasDifferences)
             {
                 output.AppendLine("NO DIFFERENCES HAVE BEEN FOUND");
                 return output.ToString();
             }
 
-            output.Append(GetSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
-            output.Append(GetSectionDifferenceOutput(PermissionDifferences, "Permission"));
-            output.Append(GetSectionDifferenceOutput(TableDifferences, "Table"));
-            output.Append(GetSectionDifferenceOutput(UserTypeDifferences, "User type"));
-            output.Append(GetSectionDifferenceOutput(ViewDifferences, "View"));
-            output.Append(GetSectionDifferenceOutput(FunctionDifferences, "Function"));
-            output.Append(GetSectionDifferenceOutput(StoredProcedureDifferences, "Stored procedure"));
-            output.Append(GetSectionDifferenceOutput(SynonymDifferences, "Synonym"));
+            output.Append(GetSectionDifferenceOutput(this.ExtendedPropertyDifferences, "Extended property"));
+            output.Append(GetSectionDifferenceOutput(this.PermissionDifferences, "Permission"));
+            output.Append(GetSectionDifferenceOutput(this.TableDifferences, "Table"));
+            output.Append(GetSectionDifferenceOutput(this.UserTypeDifferences, "User type"));
+            output.Append(GetSectionDifferenceOutput(this.ViewDifferences, "View"));
+            output.Append(GetSectionDifferenceOutput(this.FunctionDifferences, "Function"));
+            output.Append(GetSectionDifferenceOutput(this.StoredProcedureDifferences, "Stored procedure"));
+            output.Append(GetSectionDifferenceOutput(this.SynonymDifferences, "Synonym"));
 
             return output.ToString();
         }

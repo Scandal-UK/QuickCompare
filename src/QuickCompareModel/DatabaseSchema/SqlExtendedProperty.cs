@@ -1,7 +1,14 @@
-﻿using QuickCompareModel.DatabaseSchema.Enums;
+﻿// <copyright file="SqlExtendedProperty.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
 
 namespace QuickCompareModel.DatabaseSchema
 {
+    using QuickCompareModel.DatabaseSchema.Enums;
+
+    /// <summary>
+    /// Class representing SQL extended property.
+    /// </summary>
     public class SqlExtendedProperty
     {
         public string PropertyType { get; set; }

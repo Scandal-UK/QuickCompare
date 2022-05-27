@@ -1,4 +1,8 @@
-﻿namespace QuickCompare
+﻿// <copyright file="App.xaml.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompare
 {
     using System;
     using System.IO;

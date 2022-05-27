@@ -1,4 +1,8 @@
-﻿namespace QuickCompare
+﻿// <copyright file="QuickCompareContext.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompare
 {
     using System.ComponentModel;
     using System.Windows;
@@ -12,14 +16,14 @@
     {
         public string ConnectionString1
         {
-            get => GetProperty(nameof(ConnectionString1), false);
-            set => SetProperty(nameof(ConnectionString1), value);
+            get => GetProperty(nameof(this.ConnectionString1), false);
+            set => this.SetProperty(nameof(this.ConnectionString1), value);
         }
 
         public string ConnectionString2
         {
-            get => GetProperty(nameof(ConnectionString2), false);
-            set => SetProperty(nameof(ConnectionString2), value);
+            get => GetProperty(nameof(this.ConnectionString2), false);
+            set => this.SetProperty(nameof(this.ConnectionString2), value);
         }
 
         public bool IgnoreSqlComments

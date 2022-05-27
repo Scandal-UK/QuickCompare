@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel.DatabaseDifferences
+﻿// <copyright file="ItemWithPropertiesDifference.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel.DatabaseDifferences
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -29,28 +33,29 @@
         public ItemWithPropertiesDifference(bool existsInDatabase1, bool existsInDatabase2, string itemType)
             : base(existsInDatabase1, existsInDatabase2) => this.ItemType = itemType;
 
-        /// <summary> Set of models to represent extended properties and track the differences across two databases. </summary>
+        /// <summary> Gets or sets a set of models to represent extended properties and track the differences across two databases. </summary>
         public Dictionary<string, ExtendedPropertyDifference> ExtendedPropertyDifferences { get; set; }
             = new Dictionary<string, ExtendedPropertyDifference>();
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public override bool IsDifferent => base.IsDifferent || ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
+        public override bool IsDifferent => base.IsDifferent || this.ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);
 
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
+        /// <returns> Difference description. </returns>
         public override string ToString()
         {
-            if (!IsDifferent)
+            if (!this.IsDifferent)
             {
                 return string.Empty;
             }
 
-            if (!ExistsInBothDatabases)
+            if (!this.ExistsInBothDatabases)
             {
                 return base.ToString();
             }
 
             var sb = new StringBuilder(base.ToString());
-            sb.Append(GetSubSectionDifferenceOutput(ExtendedPropertyDifferences, "Extended property"));
+            sb.Append(GetSubSectionDifferenceOutput(this.ExtendedPropertyDifferences, "Extended property"));
 
             return sb.ToString();
         }

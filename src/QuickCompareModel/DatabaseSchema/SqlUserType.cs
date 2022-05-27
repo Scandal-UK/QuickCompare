@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel.DatabaseSchema
+﻿// <copyright file="SqlUserType.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel.DatabaseSchema
 {
     public class SqlUserType
     {

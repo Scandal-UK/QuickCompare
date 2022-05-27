@@ -1,4 +1,8 @@
-﻿namespace ConsoleTestQuickCompare
+﻿// <copyright file="Program.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace ConsoleTestQuickCompare
 {
     using System;
     using System.Diagnostics;

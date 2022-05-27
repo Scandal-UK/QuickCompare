@@ -1,4 +1,8 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="TestHelper.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using Microsoft.Extensions.Options;
     using QuickCompareModel;

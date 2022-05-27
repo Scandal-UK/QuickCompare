@@ -1,7 +1,11 @@
-﻿using QuickCompareModel.DatabaseSchema.Enums;
+﻿// <copyright file="SqlPermission.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
 
 namespace QuickCompareModel.DatabaseSchema
 {
+    using QuickCompareModel.DatabaseSchema.Enums;
+
     public class SqlPermission
     {
         public string RoleName { get; set; }
