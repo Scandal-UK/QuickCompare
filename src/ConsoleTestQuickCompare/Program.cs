@@ -9,9 +9,11 @@ namespace ConsoleTestQuickCompare
     using Microsoft.Extensions.DependencyInjection;
     using QuickCompareModel;
 
-    static class Program
+    /// <summary> Main program loop. </summary>
+    internal static class Program
     {
-        static void Main(string[] args)
+        /// <summary> Entrance of program loop. </summary>
+        internal static void Main()
         {
             try
             {

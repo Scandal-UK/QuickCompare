@@ -13,7 +13,7 @@ namespace QuickCompare
     /// <summary> Global events for the application. </summary>
     public partial class App : Application
     {
-        private const string filename = "QuickCompare.Settings.txt";
+        private const string Filename = "QuickCompare.Settings.txt";
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
@@ -40,8 +40,8 @@ namespace QuickCompare
         private void ReadApplicationPropertiesFromFile()
         {
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
-            using IsolatedStorageFileStream stream = new(filename, FileMode.OpenOrCreate, storage);
-            using StreamReader reader = new(stream);
+            using IsolatedStorageFileStream stream = new (Filename, FileMode.OpenOrCreate, storage);
+            using StreamReader reader = new (stream);
             while (!reader.EndOfStream)
             {
                 this.SetPropertyFromLineOfText(reader.ReadLine());
@@ -51,15 +51,15 @@ namespace QuickCompare
         private void SetPropertyFromLineOfText(string line)
         {
             string key = line[..line.IndexOf(',')];
-            string value = line[(line.IndexOf(',') + 1)..];
+            string value = line[(line.IndexOf(',') + 1) ..];
             this.Properties[key] = value;
         }
 
         private void WriteApplicationPropertiesToFile()
         {
             using IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
-            using IsolatedStorageFileStream stream = new(filename, FileMode.Create, storage);
-            using StreamWriter writer = new(stream);
+            using IsolatedStorageFileStream stream = new (Filename, FileMode.Create, storage);
+            using StreamWriter writer = new (stream);
             foreach (string key in this.Properties.Keys)
             {
                 writer.WriteLine("{0},{1}", key, this.Properties[key]);

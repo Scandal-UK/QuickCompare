@@ -24,9 +24,9 @@ namespace QuickCompareModel.DatabaseSchema
 
         public string ObjectSchema { get; set; }
 
-        public string FullId => $"[{RoleName}].[{UserName}].[{PermissionType}].[{PermissionState}].[{ObjectType}].[{ObjectName}].[{ColumnName}]";
+        public string FullId => $"[{this.RoleName}].[{this.UserName}].[{this.PermissionType}].[{this.PermissionState}].[{this.ObjectType}].[{this.ObjectName}].[{this.ColumnName}]";
 
-        public PermissionObjectType Type => ObjectType switch
+        public PermissionObjectType Type => this.ObjectType switch
         {
             "SQL_STORED_PROCEDURE" => PermissionObjectType.SqlStoredProcedure,
             "USER_TABLE" => PermissionObjectType.UserTable,
@@ -40,12 +40,12 @@ namespace QuickCompareModel.DatabaseSchema
             _ => PermissionObjectType.Unknown,
         };
 
-        public override string ToString() => PermissionType == "REFERENCES"
-                ? $"REFERENCES column: [{ColumnName}] {(PermissionState == "GRANT" ? string.Empty : "DENIED ")}for {TargetType}: [{TargetName}]"
-                : $"[{PermissionType}] {(PermissionState == "GRANT" ? string.Empty : "DENIED ")}for {TargetType}: [{TargetName}]";
+        public override string ToString() => this.PermissionType == "REFERENCES"
+                ? $"REFERENCES column: [{this.ColumnName}] {(this.PermissionState == "GRANT" ? string.Empty : "DENIED ")}for {this.TargetType}: [{this.TargetName}]"
+                : $"[{this.PermissionType}] {(this.PermissionState == "GRANT" ? string.Empty : "DENIED ")}for {this.TargetType}: [{this.TargetName}]";
 
-        private string TargetName => string.IsNullOrEmpty(RoleName) ? UserName : RoleName;
+        private string TargetName => string.IsNullOrEmpty(this.RoleName) ? this.UserName : this.RoleName;
 
-        private string TargetType => string.IsNullOrEmpty(RoleName) ? "user" : "role";
+        private string TargetType => string.IsNullOrEmpty(this.RoleName) ? "user" : "role";
     }
 }

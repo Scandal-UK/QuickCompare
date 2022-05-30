@@ -86,22 +86,5 @@ namespace QuickCompareTests
             diff.ExistsInBothDatabases.Should().BeTrue();
             diff.ToString().Should().Be(string.Empty);
         }
-
-        //private SqlRelation GetTestRelationship()
-        //{
-        //    return new SqlRelation
-        //    {
-        //        RelationName = RelationName,
-        //        ChildSchema = SecondTableName.GetSchemaName(),
-        //        ChildTable = SecondTableName.GetObjectName(),
-        //        ChildColumns = "RelatedColumn",
-        //        UniqueConstraintName = "PK_Table1",
-        //        ParentSchema = TableName.GetSchemaName(),
-        //        ParentTable = TableName.GetObjectName(),
-        //        ParentColumns = "Column1",
-        //        UpdateRule = "NO ACTION",
-        //        DeleteRule = "NO ACTION",
-        //    };
-        //}
     }
 }

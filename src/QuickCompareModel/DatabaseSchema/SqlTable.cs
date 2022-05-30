@@ -17,6 +17,6 @@ namespace QuickCompareModel.DatabaseSchema
         public List<SqlTrigger> Triggers { get; set; } = new List<SqlTrigger>();
 
         public bool ColumnHasUniqueIndex(string columnName) =>
-            Indexes.Exists(x => x.Unique && x.Columns.ContainsKey(columnName) && x.Columns.Count == 1);
+            this.Indexes.Exists(x => x.Unique && x.Columns.ContainsKey(columnName) && x.Columns.Count == 1);
     }
 }

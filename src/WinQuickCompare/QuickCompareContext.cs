@@ -14,87 +14,105 @@ namespace QuickCompare
     /// </summary>
     public class QuickCompareContext
     {
+        /// <summary> Delegate for <see cref="INotifyPropertyChanged"/>. </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary> Gets or sets connection string 1. </summary>
         public string ConnectionString1
         {
             get => GetProperty(nameof(this.ConnectionString1), false);
             set => this.SetProperty(nameof(this.ConnectionString1), value);
         }
 
+        /// <summary> Gets or sets connection string 2. </summary>
         public string ConnectionString2
         {
             get => GetProperty(nameof(this.ConnectionString2), false);
             set => this.SetProperty(nameof(this.ConnectionString2), value);
         }
 
+        /// <summary> Gets or sets a value indicating whether to ignore SQL comments. </summary>
         public bool IgnoreSqlComments
         {
-            get => bool.Parse(GetProperty(nameof(IgnoreSqlComments)));
-            set => SetProperty(nameof(IgnoreSqlComments), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.IgnoreSqlComments)));
+            set => this.SetProperty(nameof(this.IgnoreSqlComments), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare table columns. </summary>
         public bool CompareColumns
         {
-            get => bool.Parse(GetProperty(nameof(CompareColumns)));
-            set => SetProperty(nameof(CompareColumns), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.CompareColumns)));
+            set => this.SetProperty(nameof(this.CompareColumns), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare collation. </summary>
         public bool CompareCollation
         {
-            get => bool.Parse(GetProperty(nameof(CompareCollation)));
-            set => SetProperty(nameof(CompareCollation), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.CompareCollation)));
+            set => this.SetProperty(nameof(this.CompareCollation), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare relations. </summary>
         public bool CompareRelations
         {
-            get => bool.Parse(GetProperty(nameof(CompareRelations)));
-            set => SetProperty(nameof(CompareRelations), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.CompareRelations)));
+            set => this.SetProperty(nameof(this.CompareRelations), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare objects. </summary>
         public bool CompareObjects
         {
-            get => bool.Parse(GetProperty(nameof(CompareObjects)));
-            set => SetProperty(nameof(CompareObjects), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.CompareObjects)));
+            set => this.SetProperty(nameof(this.CompareObjects), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare indexes. </summary>
         public bool CompareIndexes
         {
-            get => bool.Parse(GetProperty(nameof(CompareIndexes)));
-            set => SetProperty(nameof(CompareIndexes), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.CompareIndexes)));
+            set => this.SetProperty(nameof(this.CompareIndexes), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare permissions. </summary>
         public bool ComparePermissions
         {
-            get => bool.Parse(GetProperty(nameof(ComparePermissions)));
-            set => SetProperty(nameof(ComparePermissions), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.ComparePermissions)));
+            set => this.SetProperty(nameof(this.ComparePermissions), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare extended properties. </summary>
         public bool CompareProperties
         {
-            get => bool.Parse(GetProperty(nameof(CompareProperties)));
-            set => SetProperty(nameof(CompareProperties), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.CompareProperties)));
+            set => this.SetProperty(nameof(this.CompareProperties), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare triggers. </summary>
         public bool CompareTriggers
         {
-            get => bool.Parse(GetProperty(nameof(CompareTriggers)));
-            set => SetProperty(nameof(CompareTriggers), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.CompareTriggers)));
+            set => this.SetProperty(nameof(this.CompareTriggers), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare synonyms. </summary>
         public bool CompareSynonyms
         {
-            get => bool.Parse(GetProperty(nameof(CompareSynonyms)));
-            set => SetProperty(nameof(CompareSynonyms), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.CompareSynonyms)));
+            set => this.SetProperty(nameof(this.CompareSynonyms), value.ToString());
         }
 
+        /// <summary> Gets or sets a value indicating whether to compare user types. </summary>
         public bool CompareUserTypes
         {
-            get => bool.Parse(GetProperty(nameof(CompareUserTypes)));
-            set => SetProperty(nameof(CompareUserTypes), value.ToString());
+            get => bool.Parse(GetProperty(nameof(this.CompareUserTypes)));
+            set => this.SetProperty(nameof(this.CompareUserTypes), value.ToString());
         }
 
+        /// <summary> Generates an instance of <see cref="IOptions{QuickCompareOptions}"/>. </summary>
+        /// <returns>Instance of <see cref="IOptions{QuickCompareOptions}"/>.</returns>
         public IOptions<QuickCompareOptions> OptionsFromProperties()
         {
-            QuickCompareOptions settings = new()
+            QuickCompareOptions settings = new ()
             {
                 ConnectionString1 = this.ConnectionString1,
                 ConnectionString2 = this.ConnectionString2,
@@ -114,13 +132,13 @@ namespace QuickCompare
             return Options.Create(settings);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        /// <summary> Method to raise event when a property is changed. </summary>
+        /// <param name="propertyName">Name of property that changed.</param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
             if (this.PropertyChanged != null)
             {
-                PropertyChangedEventArgs e = new(propertyName);
+                PropertyChangedEventArgs e = new (propertyName);
                 this.PropertyChanged(this, e);
             }
         }

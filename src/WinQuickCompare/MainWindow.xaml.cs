@@ -12,10 +12,8 @@ namespace QuickCompare
     /// <summary> Interaction logic for the main window. </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
-        {
-            this.InitializeComponent();
-        }
+        /// <summary> Initialises a new instance of the <see cref="MainWindow"/> class. </summary>
+        public MainWindow() => this.InitializeComponent();
 
         private async void ButtonRunComparison_Click(object sender, RoutedEventArgs e)
         {
@@ -25,7 +23,7 @@ namespace QuickCompare
             try
             {
                 var context = (QuickCompareContext)this.FindResource(nameof(QuickCompareContext));
-                DifferenceBuilder builder = new(context.OptionsFromProperties());
+                DifferenceBuilder builder = new (context.OptionsFromProperties());
                 builder.ComparisonStatusChanged += this.Comparison_StatusChanged;
 
                 await builder.BuildDifferencesAsync();
@@ -80,7 +78,7 @@ namespace QuickCompare
                 this.StatusBarDatabase2.Content = string.Empty;
             }
 
-            // Temporary workaround for caret getting stuck on Enter & to trigger property-changed event on Enter:
+            // Workaround for caret getting stuck on Enter & to trigger property-changed event on Enter;
             this.ButtonRunComparison.Focus();
         }
 

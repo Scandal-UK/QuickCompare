@@ -18,7 +18,7 @@ namespace QuickCompareModel
         /// <param name="statusMessage">Current status message.</param>
         /// <param name="databaseInstance">The database in scope.</param>
         public StatusChangedEventArgs(string statusMessage, DatabaseInstance databaseInstance)
-            : this(statusMessage) => DatabaseInstance = databaseInstance;
+            : this(statusMessage) => this.DatabaseInstance = databaseInstance;
 
         /// <summary> Gets or sets the current status message. </summary>
         public string StatusMessage { get; set; }

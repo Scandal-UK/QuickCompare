@@ -10,8 +10,8 @@ namespace QuickCompareTests
 
     public class BaseDifferenceTests
     {
-        const bool TrimWhitespace = true;
-        const bool DoNotTrimWhitespace = false;
+        private const bool TrimWhitespace = true;
+        private const bool DoNotTrimWhitespace = false;
 
         [Fact]
         public void CleanDefinitionText_Trims_Input() =>

@@ -59,49 +59,49 @@ namespace QuickCompareModel
         /// <inheritdoc/>
         public async Task BuildDifferencesAsync()
         {
-            if (Database1 == null)
+            if (this.Database1 == null)
             {
-                await LoadDatabaseSchemas();
+                await this.LoadDatabaseSchemas();
             }
 
-            Differences = new Differences
+            this.Differences = new Differences
             {
                 Database1 = this.Database1.FriendlyName,
                 Database2 = this.Database2.FriendlyName,
             };
 
-            RaiseStatusChanged("Inspecting differences");
+            this.RaiseStatusChanged("Inspecting differences");
 
             if (this.Options.CompareProperties)
             {
-                InspectDatabaseExtendedProperties();
+                this.InspectDatabaseExtendedProperties();
             }
 
             if (this.Options.ComparePermissions)
             {
-                InspectDatabasePermissions();
+                this.InspectDatabasePermissions();
             }
 
-            InspectTables();
-            InspectTableDifferences();
+            this.InspectTables();
+            this.InspectTableDifferences();
 
             if (this.Options.CompareUserTypes)
             {
-                InspectUserTypes();
+                this.InspectUserTypes();
             }
 
             if (this.Options.CompareSynonyms)
             {
-                InspectSynonyms();
+                this.InspectSynonyms();
             }
 
             if (this.Options.CompareObjects)
             {
-                InspectViews();
-                InspectRoutines();
+                this.InspectViews();
+                this.InspectRoutines();
             }
 
-            RaiseStatusChanged("Difference inspection completed...");
+            this.RaiseStatusChanged("Difference inspection completed...");
         }
 
         protected virtual void RaiseStatusChanged(string message) =>
@@ -117,30 +117,30 @@ namespace QuickCompareModel
                 throw new InvalidOperationException("Connection strings must be set");
             }
 
-            Database1 = new SqlDatabase(this.Options.ConnectionString1, this.Options);
-            Database2 = new SqlDatabase(this.Options.ConnectionString2, this.Options);
+            this.Database1 = new SqlDatabase(this.Options.ConnectionString1, this.Options);
+            this.Database2 = new SqlDatabase(this.Options.ConnectionString2, this.Options);
 
-            if (Database1.FriendlyName.ToLower() == Database2.FriendlyName.ToLower())
+            if (this.Database1.FriendlyName.ToLower() == this.Database2.FriendlyName.ToLower())
             {
                 throw new InvalidOperationException("Connection strings must target different database instances");
             }
 
-            Database1.LoaderStatusChanged += (object sender, StatusChangedEventArgs e) =>
-                RaiseStatusChanged(e.StatusMessage, DatabaseInstance.Database1);
+            this.Database1.LoaderStatusChanged += (object sender, StatusChangedEventArgs e) =>
+                this.RaiseStatusChanged(e.StatusMessage, DatabaseInstance.Database1);
 
-            Database2.LoaderStatusChanged += (object sender, StatusChangedEventArgs e) =>
-                RaiseStatusChanged(e.StatusMessage, DatabaseInstance.Database2);
+            this.Database2.LoaderStatusChanged += (object sender, StatusChangedEventArgs e) =>
+                this.RaiseStatusChanged(e.StatusMessage, DatabaseInstance.Database2);
 
-            await Task.WhenAll(Database1.PopulateSchemaModelAsync(), Database2.PopulateSchemaModelAsync());
+            await Task.WhenAll(this.Database1.PopulateSchemaModelAsync(), this.Database2.PopulateSchemaModelAsync());
         }
 
         private void InspectDatabaseExtendedProperties()
         {
-            foreach (var property1 in Database1.ExtendedProperties.Where(x => x.Type == PropertyObjectType.Database))
+            foreach (var property1 in this.Database1.ExtendedProperties.Where(x => x.Type == PropertyObjectType.Database))
             {
                 var diff = new ExtendedPropertyDifference(true, false);
 
-                var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
+                var property2 = this.Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
                 if (property2 != null)
                 {
                     diff.ExistsInDatabase2 = true;
@@ -148,97 +148,97 @@ namespace QuickCompareModel
                     diff.Value2 = property2.PropertyValue;
                 }
 
-                Differences.ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
+                this.Differences.ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
             }
 
-            foreach (var property2 in Database2.ExtendedProperties.Where(x => x.Type == PropertyObjectType.Database && !Differences.ExtendedPropertyDifferences.ContainsKey(x.PropertyName)))
+            foreach (var property2 in this.Database2.ExtendedProperties.Where(x => x.Type == PropertyObjectType.Database && !this.Differences.ExtendedPropertyDifferences.ContainsKey(x.PropertyName)))
             {
-                Differences.ExtendedPropertyDifferences.Add(property2.PropertyName, new ExtendedPropertyDifference(false, true));
+                this.Differences.ExtendedPropertyDifferences.Add(property2.PropertyName, new ExtendedPropertyDifference(false, true));
             }
         }
 
         private void InspectDatabasePermissions()
         {
-            foreach (var permission1 in Database1.Permissions.Where(x => x.Type == PermissionObjectType.Database))
+            foreach (var permission1 in this.Database1.Permissions.Where(x => x.Type == PermissionObjectType.Database))
             {
-                Differences.PermissionDifferences.Add(
+                this.Differences.PermissionDifferences.Add(
                     permission1.ToString(),
-                    new BaseDifference(true, Database2.Permissions.Exists(x => x.FullId == permission1.FullId)));
+                    new BaseDifference(true, this.Database2.Permissions.Exists(x => x.FullId == permission1.FullId)));
             }
 
-            foreach (var permission2 in Database2.Permissions.Where(x => x.Type == PermissionObjectType.Database && !Differences.PermissionDifferences.ContainsKey(x.ToString())))
+            foreach (var permission2 in this.Database2.Permissions.Where(x => x.Type == PermissionObjectType.Database && !this.Differences.PermissionDifferences.ContainsKey(x.ToString())))
             {
-                Differences.PermissionDifferences.Add(permission2.ToString(), new BaseDifference(false, true));
+                this.Differences.PermissionDifferences.Add(permission2.ToString(), new BaseDifference(false, true));
             }
         }
 
         private void InspectTables()
         {
-            foreach (var table1 in Database1.Tables.Keys)
+            foreach (var table1 in this.Database1.Tables.Keys)
             {
-                Differences.TableDifferences.Add(table1, new TableDifference(true, Database2.Tables.Keys.Any(x => x == table1)));
+                this.Differences.TableDifferences.Add(table1, new TableDifference(true, this.Database2.Tables.Keys.Any(x => x == table1)));
             }
 
-            foreach (var table2 in Database2.Tables.Keys.Where(x => !Differences.TableDifferences.ContainsKey(x)))
+            foreach (var table2 in this.Database2.Tables.Keys.Where(x => !this.Differences.TableDifferences.ContainsKey(x)))
             {
-                Differences.TableDifferences.Add(table2, new TableDifference(false, true));
+                this.Differences.TableDifferences.Add(table2, new TableDifference(false, true));
             }
         }
 
         private void InspectTableDifferences()
         {
-            foreach (var fullyQualifiedTableName in Differences.TableDifferences.Keys.Where(x => Differences.TableDifferences[x].ExistsInBothDatabases))
+            foreach (var fullyQualifiedTableName in this.Differences.TableDifferences.Keys.Where(x => this.Differences.TableDifferences[x].ExistsInBothDatabases))
             {
                 if (this.Options.CompareColumns)
                 {
-                    InspectTableColumns(fullyQualifiedTableName);
+                    this.InspectTableColumns(fullyQualifiedTableName);
                 }
 
                 if (this.Options.CompareIndexes)
                 {
-                    InspectIndexes(fullyQualifiedTableName);
+                    this.InspectIndexes(fullyQualifiedTableName);
                 }
 
                 if (this.Options.CompareRelations)
                 {
-                    InspectRelations(fullyQualifiedTableName);
+                    this.InspectRelations(fullyQualifiedTableName);
                 }
 
                 if (this.Options.ComparePermissions)
                 {
-                    InspectTablePermissions(fullyQualifiedTableName);
+                    this.InspectTablePermissions(fullyQualifiedTableName);
                 }
 
                 if (this.Options.CompareProperties)
                 {
-                    InspectTableProperties(fullyQualifiedTableName);
+                    this.InspectTableProperties(fullyQualifiedTableName);
                 }
 
                 if (this.Options.CompareTriggers)
                 {
-                    InspectTriggers(fullyQualifiedTableName);
+                    this.InspectTriggers(fullyQualifiedTableName);
                 }
             }
         }
 
         private void InspectTableColumns(string fullyQualifiedTableName)
         {
-            foreach (var column1 in Database1.Tables[fullyQualifiedTableName].ColumnDetails)
+            foreach (var column1 in this.Database1.Tables[fullyQualifiedTableName].ColumnDetails)
             {
                 var diff = new ItemWithPropertiesDifference(true, false);
 
-                var column2 = Database2.Tables[fullyQualifiedTableName].ColumnDetails.FirstOrDefault(x => x.ColumnName == column1.ColumnName);
+                var column2 = this.Database2.Tables[fullyQualifiedTableName].ColumnDetails.FirstOrDefault(x => x.ColumnName == column1.ColumnName);
                 if (column2 != null)
                 {
-                    InspectColumns(fullyQualifiedTableName, diff, column1, column2);
+                    this.InspectColumns(fullyQualifiedTableName, diff, column1, column2);
                 }
 
-                Differences.TableDifferences[fullyQualifiedTableName].ColumnDifferences.Add(column1.ColumnName, diff);
+                this.Differences.TableDifferences[fullyQualifiedTableName].ColumnDifferences.Add(column1.ColumnName, diff);
             }
 
-            foreach (var column2 in Database2.Tables[fullyQualifiedTableName].ColumnDetails.Where(x => !Differences.TableDifferences[fullyQualifiedTableName].ColumnDifferences.ContainsKey(x.ColumnName)))
+            foreach (var column2 in this.Database2.Tables[fullyQualifiedTableName].ColumnDetails.Where(x => !this.Differences.TableDifferences[fullyQualifiedTableName].ColumnDifferences.ContainsKey(x.ColumnName)))
             {
-                Differences.TableDifferences[fullyQualifiedTableName].ColumnDifferences.Add(column2.ColumnName, new ItemWithPropertiesDifference(false, true));
+                this.Differences.TableDifferences[fullyQualifiedTableName].ColumnDifferences.Add(column2.ColumnName, new ItemWithPropertiesDifference(false, true));
             }
         }
 
@@ -352,14 +352,14 @@ namespace QuickCompareModel
                 diff.Differences.Add($"has different custom datatype - is {(string.IsNullOrEmpty(column1.DomainName) ? "NULL" : column1.DomainName.PrependSchemaName(column1.DomainSchema))} in database 1 and is {(string.IsNullOrEmpty(column2.DomainName) ? "NULL" : column2.DomainName.PrependSchemaName(column2.DomainSchema))} in database 2");
             }
 
-            if (Database2.Tables[fullyQualifiedTableName].ColumnHasUniqueIndex(column2.ColumnName) != Database1.Tables[fullyQualifiedTableName].ColumnHasUniqueIndex(column1.ColumnName))
+            if (this.Database2.Tables[fullyQualifiedTableName].ColumnHasUniqueIndex(column2.ColumnName) != this.Database1.Tables[fullyQualifiedTableName].ColumnHasUniqueIndex(column1.ColumnName))
             {
-                diff.Differences.Add($"{(Database1.Tables[fullyQualifiedTableName].ColumnHasUniqueIndex(column1.ColumnName) ? "has" : "does not have")} a unique constraint in database 1 and {(Database2.Tables[fullyQualifiedTableName].ColumnHasUniqueIndex(column2.ColumnName) ? "has" : "does not have")} a unique constraint in database 2");
+                diff.Differences.Add($"{(this.Database1.Tables[fullyQualifiedTableName].ColumnHasUniqueIndex(column1.ColumnName) ? "has" : "does not have")} a unique constraint in database 1 and {(this.Database2.Tables[fullyQualifiedTableName].ColumnHasUniqueIndex(column2.ColumnName) ? "has" : "does not have")} a unique constraint in database 2");
             }
 
             if (this.Options.CompareProperties)
             {
-                InspectColumnProperties(fullyQualifiedTableName, column2.ColumnName, diff);
+                this.InspectColumnProperties(fullyQualifiedTableName, column2.ColumnName, diff);
             }
 
             diff.ExistsInDatabase2 = true;
@@ -369,11 +369,11 @@ namespace QuickCompareModel
         {
             var hasFoundColumn1Description = false;
 
-            foreach (var property1 in Database1.ExtendedProperties.Where(x => x.Type == PropertyObjectType.TableColumn && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName && x.ColumnName == columnName))
+            foreach (var property1 in this.Database1.ExtendedProperties.Where(x => x.Type == PropertyObjectType.TableColumn && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName && x.ColumnName == columnName))
             {
                 var diff = new ExtendedPropertyDifference(true, false);
 
-                var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
+                var property2 = this.Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
                 if (property2 != null)
                 {
                     diff.ExistsInDatabase2 = true;
@@ -399,7 +399,7 @@ namespace QuickCompareModel
                 }
             }
 
-            foreach (var property2 in Database2.ExtendedProperties.Where(x => x.Type == PropertyObjectType.TableColumn && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName && x.ColumnName == columnName))
+            foreach (var property2 in this.Database2.ExtendedProperties.Where(x => x.Type == PropertyObjectType.TableColumn && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName && x.ColumnName == columnName))
             {
                 if (property2.PropertyName == "MS_Description")
                 {
@@ -417,11 +417,11 @@ namespace QuickCompareModel
 
         private void InspectIndexes(string fullyQualifiedTableName)
         {
-            foreach (var index1 in Database1.Tables[fullyQualifiedTableName].Indexes)
+            foreach (var index1 in this.Database1.Tables[fullyQualifiedTableName].Indexes)
             {
                 var diff = new ItemWithPropertiesDifference(true, false, index1.ItemType);
 
-                var index2 = Database2.Tables[fullyQualifiedTableName].Indexes.FirstOrDefault(x => x.FullId == index1.FullId);
+                var index2 = this.Database2.Tables[fullyQualifiedTableName].Indexes.FirstOrDefault(x => x.FullId == index1.FullId);
                 if (index2 != null)
                 {
                     if (index2.Clustered != index1.Clustered)
@@ -497,32 +497,31 @@ namespace QuickCompareModel
 
                     if (this.Options.CompareProperties)
                     {
-                        InspectIndexProperties(fullyQualifiedTableName, index2.IndexName, diff);
+                        this.InspectIndexProperties(fullyQualifiedTableName, index2.IndexName, diff);
                     }
 
                     diff.ExistsInDatabase2 = true;
                 }
 
-                Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.Add(index1.IndexName, diff);
+                this.Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.Add(index1.IndexName, diff);
             }
 
-
-            foreach (var index in Database2.Tables[fullyQualifiedTableName].Indexes.Where(x =>
-                !Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.ContainsKey(x.IndexName)))
+            foreach (var index in this.Database2.Tables[fullyQualifiedTableName].Indexes.Where(x =>
+                !this.Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.ContainsKey(x.IndexName)))
             {
-                Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.Add(index.IndexName, new ItemWithPropertiesDifference(false, true, index.ItemType));
+                this.Differences.TableDifferences[fullyQualifiedTableName].IndexDifferences.Add(index.IndexName, new ItemWithPropertiesDifference(false, true, index.ItemType));
             }
         }
 
         private void InspectIndexProperties(string fullyQualifiedTableName, string indexName, ItemWithPropertiesDifference indexDiff)
         {
-            foreach (var property1 in Database1.ExtendedProperties)
+            foreach (var property1 in this.Database1.ExtendedProperties)
             {
                 var propertyTableName = property1.TableName.PrependSchemaName(property1.TableSchema);
                 if (property1.Type == PropertyObjectType.Index && propertyTableName == fullyQualifiedTableName && property1.IndexName == indexName)
                 {
                     var diff = new ExtendedPropertyDifference(true, false);
-                    var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
+                    var property2 = this.Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
                     if (property2 != null)
                     {
                         diff.ExistsInDatabase2 = true;
@@ -534,7 +533,7 @@ namespace QuickCompareModel
                 }
             }
 
-            foreach (var property in Database2.ExtendedProperties.Where(x =>
+            foreach (var property in this.Database2.ExtendedProperties.Where(x =>
                 x.PropertyType == "INDEX" &&
                 x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName &&
                 x.IndexName == indexName &&
@@ -546,11 +545,11 @@ namespace QuickCompareModel
 
         private void InspectRelations(string fullyQualifiedTableName)
         {
-            foreach (var relation1 in Database1.Tables[fullyQualifiedTableName].Relations)
+            foreach (var relation1 in this.Database1.Tables[fullyQualifiedTableName].Relations)
             {
                 var diff = new ItemDifference(true, false);
 
-                var relation2 = Database2.Tables[fullyQualifiedTableName].Relations.FirstOrDefault(x => x.RelationName == relation1.RelationName);
+                var relation2 = this.Database2.Tables[fullyQualifiedTableName].Relations.FirstOrDefault(x => x.RelationName == relation1.RelationName);
                 if (relation2 != null)
                 {
                     if (relation2.ChildColumns != relation1.ChildColumns)
@@ -576,47 +575,47 @@ namespace QuickCompareModel
                     diff.ExistsInDatabase2 = true;
                 }
 
-                Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.Add(relation1.RelationName, diff);
+                this.Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.Add(relation1.RelationName, diff);
             }
 
-            foreach (var relation in Database2.Tables[fullyQualifiedTableName].Relations.Where(x => !Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.ContainsKey(x.RelationName)))
+            foreach (var relation in this.Database2.Tables[fullyQualifiedTableName].Relations.Where(x => !this.Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.ContainsKey(x.RelationName)))
             {
-                Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.Add(relation.RelationName, new ItemDifference(false, true));
+                this.Differences.TableDifferences[fullyQualifiedTableName].RelationshipDifferences.Add(relation.RelationName, new ItemDifference(false, true));
             }
         }
 
         private void InspectTablePermissions(string fullyQualifiedTableName)
         {
-            foreach (var permission1 in Database1.Permissions)
+            foreach (var permission1 in this.Database1.Permissions)
             {
                 var permissionTableName = permission1.ObjectName.PrependSchemaName(permission1.ObjectSchema);
                 if (permission1.Type == PermissionObjectType.UserTable && permissionTableName == fullyQualifiedTableName)
                 {
-                    Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(
+                    this.Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(
                         permission1.ToString(),
-                        new BaseDifference(true, Database2.Permissions.Exists(x => x.FullId == permission1.FullId)));
+                        new BaseDifference(true, this.Database2.Permissions.Exists(x => x.FullId == permission1.FullId)));
                 }
             }
 
-            foreach (var permission in Database2.Permissions.Where(x =>
+            foreach (var permission in this.Database2.Permissions.Where(x =>
                 x.ObjectType == "USER_TABLE" &&
                 x.ObjectName.PrependSchemaName(x.ObjectSchema) == fullyQualifiedTableName &&
-                !Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.ContainsKey(x.ToString())))
+                !this.Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.ContainsKey(x.ToString())))
             {
-                Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(permission.ToString(), new ExtendedPropertyDifference(false, true));
+                this.Differences.TableDifferences[fullyQualifiedTableName].PermissionDifferences.Add(permission.ToString(), new ExtendedPropertyDifference(false, true));
             }
         }
 
         private void InspectTableProperties(string fullyQualifiedTableName)
         {
-            foreach (var property1 in Database1.ExtendedProperties)
+            foreach (var property1 in this.Database1.ExtendedProperties)
             {
                 var propertyTableName = property1.TableName.PrependSchemaName(property1.TableSchema);
                 if (property1.Type == PropertyObjectType.Table && propertyTableName == fullyQualifiedTableName)
                 {
                     var diff = new ExtendedPropertyDifference(true, false);
 
-                    var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
+                    var property2 = this.Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
                     if (property2 != null)
                     {
                         diff.ExistsInDatabase2 = true;
@@ -624,26 +623,26 @@ namespace QuickCompareModel
                         diff.Value2 = property2.PropertyValue;
                     }
 
-                    Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
+                    this.Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.Add(property1.PropertyName, diff);
                 }
             }
 
-            foreach (var property in Database2.ExtendedProperties.Where(x =>
+            foreach (var property in this.Database2.ExtendedProperties.Where(x =>
                 x.ColumnName == null &&
                 x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName &&
-                !Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.ContainsKey(x.PropertyName)))
+                !this.Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.ContainsKey(x.PropertyName)))
             {
-                Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.Add(property.PropertyName, new ExtendedPropertyDifference(false, true));
+                this.Differences.TableDifferences[fullyQualifiedTableName].ExtendedPropertyDifferences.Add(property.PropertyName, new ExtendedPropertyDifference(false, true));
             }
         }
 
         private void InspectTriggers(string fullyQualifiedTableName)
         {
-            foreach (var trigger1 in Database1.Tables[fullyQualifiedTableName].Triggers)
+            foreach (var trigger1 in this.Database1.Tables[fullyQualifiedTableName].Triggers)
             {
                 var diff = new ItemDifference(true, false);
 
-                var trigger2 = Database2.Tables[fullyQualifiedTableName].Triggers.FirstOrDefault(x => x.TriggerName == trigger1.TriggerName && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName);
+                var trigger2 = this.Database2.Tables[fullyQualifiedTableName].Triggers.FirstOrDefault(x => x.TriggerName == trigger1.TriggerName && x.TableName.PrependSchemaName(x.TableSchema) == fullyQualifiedTableName);
                 if (trigger2 != null)
                 {
                     if (trigger2.FileGroup != trigger1.FileGroup)
@@ -694,26 +693,26 @@ namespace QuickCompareModel
                     diff.ExistsInDatabase2 = true;
                 }
 
-                Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.Add(trigger1.TriggerName, diff);
+                this.Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.Add(trigger1.TriggerName, diff);
             }
 
-            foreach (var trigger2 in Database2.Tables[fullyQualifiedTableName].Triggers.Where(x => !Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.ContainsKey(x.TriggerName)))
+            foreach (var trigger2 in this.Database2.Tables[fullyQualifiedTableName].Triggers.Where(x => !this.Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.ContainsKey(x.TriggerName)))
             {
-                Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.Add(trigger2.TriggerName, new ItemDifference(false, true));
+                this.Differences.TableDifferences[fullyQualifiedTableName].TriggerDifferences.Add(trigger2.TriggerName, new ItemDifference(false, true));
             }
         }
 
         private void InspectUserTypes()
         {
-            foreach (var userTypeName in Database1.UserTypes.Keys)
+            foreach (var userTypeName in this.Database1.UserTypes.Keys)
             {
                 var diff = new ItemDifference(true, false);
 
-                var userType = Database2.UserTypes.FirstOrDefault(x => x.Key == userTypeName);
+                var userType = this.Database2.UserTypes.FirstOrDefault(x => x.Key == userTypeName);
                 if (!userType.Equals(default(KeyValuePair<string, SqlUserType>)))
                 {
-                    var item1 = Database1.UserTypes[userTypeName];
-                    var item2 = Database2.UserTypes[userTypeName];
+                    var item1 = this.Database1.UserTypes[userTypeName];
+                    var item2 = this.Database2.UserTypes[userTypeName];
 
                     if (item1.UnderlyingTypeName != item2.UnderlyingTypeName)
                     {
@@ -737,7 +736,7 @@ namespace QuickCompareModel
 
                     if (item1.IsNullable != item2.IsNullable)
                     {
-                        diff.Differences.Add($"is{(item1.IsNullable ? "" : " not")} nullable in database 1 and is{(item2.IsNullable ? "" : " not")} nullable in database 2");
+                        diff.Differences.Add($"is{(item1.IsNullable ? string.Empty : " not")} nullable in database 1 and is{(item2.IsNullable ? string.Empty : " not")} nullable in database 2");
                     }
 
                     if (item1.CollationName != item2.CollationName)
@@ -747,120 +746,120 @@ namespace QuickCompareModel
 
                     if (item1.IsAssemblyType != item2.IsAssemblyType)
                     {
-                        diff.Differences.Add($"is{(item1.IsAssemblyType ? "" : " not")} assembly type in database 1 and is{(item2.IsAssemblyType ? "" : " not")} assembly type in database 2");
+                        diff.Differences.Add($"is{(item1.IsAssemblyType ? string.Empty : " not")} assembly type in database 1 and is{(item2.IsAssemblyType ? string.Empty : " not")} assembly type in database 2");
                     }
 
                     diff.ExistsInDatabase2 = true;
                 }
 
-                Differences.UserTypeDifferences.Add(userTypeName, diff);
+                this.Differences.UserTypeDifferences.Add(userTypeName, diff);
             }
 
-            foreach (var userType in Database2.UserTypes.Where(x => !Differences.UserTypeDifferences.ContainsKey(x.Key)))
+            foreach (var userType in this.Database2.UserTypes.Where(x => !this.Differences.UserTypeDifferences.ContainsKey(x.Key)))
             {
-                Differences.UserTypeDifferences.Add(userType.Key, new ItemDifference(false, true));
+                this.Differences.UserTypeDifferences.Add(userType.Key, new ItemDifference(false, true));
             }
         }
 
         private void InspectSynonyms()
         {
-            foreach (var synonymName in Database1.Synonyms.Keys)
+            foreach (var synonymName in this.Database1.Synonyms.Keys)
             {
                 var diff = new DatabaseObjectDifference(true, false);
 
-                var synonym = Database2.Synonyms.FirstOrDefault(x => x.Key == synonymName);
+                var synonym = this.Database2.Synonyms.FirstOrDefault(x => x.Key == synonymName);
                 if (!synonym.Equals(default(KeyValuePair<string, string>)))
                 {
                     if (this.Options.CompareProperties)
                     {
-                        InspectObjectProperties(synonymName, diff);
+                        this.InspectObjectProperties(synonymName, diff);
                     }
 
                     if (this.Options.ComparePermissions)
                     {
-                        InspectObjectPermissions(synonymName, PermissionObjectType.Synonym, diff);
+                        this.InspectObjectPermissions(synonymName, PermissionObjectType.Synonym, diff);
                     }
 
-                    diff.ObjectDefinition1 = Database1.Synonyms[synonymName];
-                    diff.ObjectDefinition2 = Database2.Synonyms[synonymName];
+                    diff.ObjectDefinition1 = this.Database1.Synonyms[synonymName];
+                    diff.ObjectDefinition2 = this.Database2.Synonyms[synonymName];
 
                     diff.ExistsInDatabase2 = true;
                 }
 
-                Differences.SynonymDifferences.Add(synonymName, diff);
+                this.Differences.SynonymDifferences.Add(synonymName, diff);
             }
 
-            foreach (var synonym in Database2.Synonyms.Where(x => !Differences.SynonymDifferences.ContainsKey(x.Key)))
+            foreach (var synonym in this.Database2.Synonyms.Where(x => !this.Differences.SynonymDifferences.ContainsKey(x.Key)))
             {
-                Differences.SynonymDifferences.Add(synonym.Key, new DatabaseObjectDifference(false, true));
+                this.Differences.SynonymDifferences.Add(synonym.Key, new DatabaseObjectDifference(false, true));
             }
         }
 
         private void InspectViews()
         {
-            foreach (var viewName in Database1.Views.Keys)
+            foreach (var viewName in this.Database1.Views.Keys)
             {
                 var diff = new DatabaseObjectDifference(true, false);
 
-                var view = Database2.Views.FirstOrDefault(x => x.Key == viewName);
+                var view = this.Database2.Views.FirstOrDefault(x => x.Key == viewName);
                 if (!view.Equals(default(KeyValuePair<string, string>)))
                 {
                     if (this.Options.CompareProperties)
                     {
-                        InspectObjectProperties(viewName, diff);
+                        this.InspectObjectProperties(viewName, diff);
                     }
 
                     if (this.Options.ComparePermissions)
                     {
-                        InspectObjectPermissions(viewName, PermissionObjectType.View, diff);
+                        this.InspectObjectPermissions(viewName, PermissionObjectType.View, diff);
                     }
 
-                    diff.ObjectDefinition1 = Database1.Views[viewName];
+                    diff.ObjectDefinition1 = this.Database1.Views[viewName];
                     diff.ObjectDefinition2 = view.Value;
 
                     if (diff.DefinitionsAreDifferent)
                     {
-                        DefinitionDifferences.Add(viewName, (diff.ObjectDefinition1, diff.ObjectDefinition2));
+                        this.DefinitionDifferences.Add(viewName, (diff.ObjectDefinition1, diff.ObjectDefinition2));
                     }
 
                     diff.ExistsInDatabase2 = true;
                 }
 
-                Differences.ViewDifferences.Add(viewName, diff);
+                this.Differences.ViewDifferences.Add(viewName, diff);
             }
 
-            foreach (var view in Database2.Views.Where(x => !Differences.ViewDifferences.ContainsKey(x.Key)))
+            foreach (var view in this.Database2.Views.Where(x => !this.Differences.ViewDifferences.ContainsKey(x.Key)))
             {
-                Differences.ViewDifferences.Add(view.Key, new DatabaseObjectDifference(false, true));
+                this.Differences.ViewDifferences.Add(view.Key, new DatabaseObjectDifference(false, true));
             }
         }
 
         private void InspectRoutines()
         {
-            foreach (var routineName in Database1.UserRoutines.Keys)
+            foreach (var routineName in this.Database1.UserRoutines.Keys)
             {
                 var diff = new DatabaseObjectDifference(true, false);
-                var isFunction = Database1.UserRoutines[routineName].RoutineType.ToLower() == "function";
+                var isFunction = this.Database1.UserRoutines[routineName].RoutineType.ToLower() == "function";
 
-                var routine = Database2.UserRoutines.FirstOrDefault(x => x.Key == routineName);
+                var routine = this.Database2.UserRoutines.FirstOrDefault(x => x.Key == routineName);
                 if (!routine.Equals(default(KeyValuePair<string, SqlUserRoutine>)))
                 {
                     if (this.Options.CompareProperties)
                     {
-                        InspectObjectProperties(routineName, diff);
+                        this.InspectObjectProperties(routineName, diff);
                     }
 
                     if (this.Options.ComparePermissions)
                     {
-                        InspectObjectPermissions(routineName, isFunction ? PermissionObjectType.SqlFunction : PermissionObjectType.SqlStoredProcedure, diff);
+                        this.InspectObjectPermissions(routineName, isFunction ? PermissionObjectType.SqlFunction : PermissionObjectType.SqlStoredProcedure, diff);
                     }
 
-                    diff.ObjectDefinition1 = Database1.UserRoutines[routineName].RoutineDefinition;
+                    diff.ObjectDefinition1 = this.Database1.UserRoutines[routineName].RoutineDefinition;
                     diff.ObjectDefinition2 = routine.Value.RoutineDefinition;
 
                     if (diff.DefinitionsAreDifferent)
                     {
-                        DefinitionDifferences.Add(routineName, (diff.ObjectDefinition1, diff.ObjectDefinition2));
+                        this.DefinitionDifferences.Add(routineName, (diff.ObjectDefinition1, diff.ObjectDefinition2));
                     }
 
                     diff.ExistsInDatabase2 = true;
@@ -868,28 +867,28 @@ namespace QuickCompareModel
 
                 if (isFunction)
                 {
-                    Differences.FunctionDifferences.Add(routineName, diff);
+                    this.Differences.FunctionDifferences.Add(routineName, diff);
                 }
                 else
                 {
-                    Differences.StoredProcedureDifferences.Add(routineName, diff);
+                    this.Differences.StoredProcedureDifferences.Add(routineName, diff);
                 }
             }
 
-            foreach (var routineName in Database2.UserRoutines.Keys)
+            foreach (var routineName in this.Database2.UserRoutines.Keys)
             {
-                if (Database2.UserRoutines[routineName].RoutineType.ToLower() == "function")
+                if (this.Database2.UserRoutines[routineName].RoutineType.ToLower() == "function")
                 {
-                    if (!Differences.FunctionDifferences.ContainsKey(routineName))
+                    if (!this.Differences.FunctionDifferences.ContainsKey(routineName))
                     {
-                        Differences.FunctionDifferences.Add(routineName, new DatabaseObjectDifference(false, true));
+                        this.Differences.FunctionDifferences.Add(routineName, new DatabaseObjectDifference(false, true));
                     }
                 }
                 else
                 {
-                    if (!Differences.StoredProcedureDifferences.ContainsKey(routineName))
+                    if (!this.Differences.StoredProcedureDifferences.ContainsKey(routineName))
                     {
-                        Differences.StoredProcedureDifferences.Add(routineName, new DatabaseObjectDifference(false, true));
+                        this.Differences.StoredProcedureDifferences.Add(routineName, new DatabaseObjectDifference(false, true));
                     }
                 }
             }
@@ -897,14 +896,14 @@ namespace QuickCompareModel
 
         private void InspectObjectProperties(string fullyQualifiedObjectName, DatabaseObjectDifference objectDiff)
         {
-            foreach (var property1 in Database1.ExtendedProperties)
+            foreach (var property1 in this.Database1.ExtendedProperties)
             {
                 var propertyObjectName = property1.ObjectName.PrependSchemaName(property1.ObjectSchema);
                 if (property1.Type == PropertyObjectType.Routine && propertyObjectName == fullyQualifiedObjectName)
                 {
                     var diff = new ExtendedPropertyDifference(true, false);
 
-                    var property2 = Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
+                    var property2 = this.Database2.ExtendedProperties.FirstOrDefault(x => x.FullId == property1.FullId);
                     if (property2 != null)
                     {
                         diff.ExistsInDatabase2 = true;
@@ -916,7 +915,7 @@ namespace QuickCompareModel
                 }
             }
 
-            foreach (var property2 in Database2.ExtendedProperties)
+            foreach (var property2 in this.Database2.ExtendedProperties)
             {
                 var propertyObjectName = property2.ObjectName.PrependSchemaName(property2.ObjectSchema);
                 if (property2.Type == PropertyObjectType.Routine &&
@@ -930,18 +929,18 @@ namespace QuickCompareModel
 
         private void InspectObjectPermissions(string fullyQualifiedObjectName, PermissionObjectType objectType, DatabaseObjectDifference objectDiff)
         {
-            foreach (var permission1 in Database1.Permissions)
+            foreach (var permission1 in this.Database1.Permissions)
             {
                 var permissionObjectName = permission1.ObjectName.PrependSchemaName(permission1.ObjectSchema);
                 if (permission1.Type == objectType && permissionObjectName == fullyQualifiedObjectName)
                 {
                     objectDiff.PermissionDifferences.Add(
                         permission1.ToString(),
-                        new BaseDifference(true, Database2.Permissions.Exists(x => x.FullId == permission1.FullId)));
+                        new BaseDifference(true, this.Database2.Permissions.Exists(x => x.FullId == permission1.FullId)));
                 }
             }
 
-            foreach (var permission2 in Database2.Permissions)
+            foreach (var permission2 in this.Database2.Permissions)
             {
                 var permissionObjectName = permission2.ObjectName.PrependSchemaName(permission2.ObjectSchema);
                 if (permission2.Type == objectType &&
