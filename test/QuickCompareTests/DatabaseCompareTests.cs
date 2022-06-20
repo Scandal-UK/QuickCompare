@@ -34,6 +34,7 @@ namespace QuickCompareTests
                 .FriendlyName.Should().Be(expectedResult);
         }
 
+        /// <summary> Test missing property is reported. </summary>
         [Fact]
         public void TablePropertyMissingFromDatabase1_IsReported()
         {
@@ -54,6 +55,7 @@ namespace QuickCompareTests
             builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase1.Should().BeFalse();
         }
 
+        /// <summary> Test missing property is reported. </summary>
         [Fact]
         public void TablePropertyMissingFromDatabase2_IsReported()
         {
@@ -74,6 +76,7 @@ namespace QuickCompareTests
             builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase2.Should().BeFalse();
         }
 
+        /// <summary> Test property difference is reported. </summary>
         [Fact]
         public void TablePropertyDifference_IsReported()
         {

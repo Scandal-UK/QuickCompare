@@ -12,6 +12,7 @@ namespace QuickCompareTests
     /// </summary>
     public class ViewCompareTests
     {
+        /// <summary> Test view difference is reported. </summary>
         [Fact]
         public void ViewMissingFromDatabase1_IsReported()
         {
@@ -22,7 +23,7 @@ namespace QuickCompareTests
             builder.Database2.Views.Add(viewName, "foobar");
 
             // Act
-            builder.BuildDifferencesAsync();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.ViewDifferences.Should().ContainKey(viewName);
@@ -33,6 +34,7 @@ namespace QuickCompareTests
             diff.ToString().Should().Be("does not exist in database 1\r\n");
         }
 
+        /// <summary> Test view difference is reported. </summary>
         [Fact]
         public void ViewMissingFromDatabase2_IsReported()
         {
@@ -43,7 +45,7 @@ namespace QuickCompareTests
             builder.Database1.Views.Add(viewName, "foobar");
 
             // Act
-            builder.BuildDifferencesAsync();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.ViewDifferences.Should().ContainKey(viewName);
@@ -54,6 +56,7 @@ namespace QuickCompareTests
             diff.ToString().Should().Be("does not exist in database 2\r\n");
         }
 
+        /// <summary> Test view difference is reported. </summary>
         [Fact]
         public void ViewsInBothDatabases_AreNotReported()
         {
@@ -65,7 +68,7 @@ namespace QuickCompareTests
             builder.Database2.Views.Add(viewName, "foobar");
 
             // Act
-            builder.BuildDifferencesAsync();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.ViewDifferences.Should().ContainKey(viewName);

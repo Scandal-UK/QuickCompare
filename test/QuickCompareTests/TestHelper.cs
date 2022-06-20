@@ -8,8 +8,17 @@ namespace QuickCompareTests
     using QuickCompareModel;
     using QuickCompareModel.DatabaseSchema;
 
+    /// <summary>
+    /// Class to provide common setup methods for tests.
+    /// </summary>
     public static class TestHelper
     {
+        /// <summary>
+        /// Gets a <see cref="DifferenceBuilder"/> with the table name and column name both specified.
+        /// </summary>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="columnName">Name of the column.</param>
+        /// <returns>Instance of <see cref="DifferenceBuilder"/>.</returns>
         public static DifferenceBuilder GetBuilderWithSingleTable(string tableName, string columnName)
         {
             var builder = GetBasicBuilder();
@@ -21,6 +30,10 @@ namespace QuickCompareTests
             return builder;
         }
 
+        /// <summary>
+        /// Gets a <see cref="DifferenceBuilder"/>.
+        /// </summary>
+        /// <returns>Instance of <see cref="DifferenceBuilder"/>.</returns>
         public static DifferenceBuilder GetBasicBuilder()
         {
             var options = GetDefaultOptions();

@@ -16,6 +16,7 @@ namespace QuickCompareTests
         private const string FunctionName = "[dbo].[Function1]";
         private const string FunctionRoutineType = "FUNCTION";
 
+        /// <summary> Test function difference is reported. </summary>
         [Fact]
         public void FunctionMissingFromDatabase1_IsReported()
         {
@@ -35,6 +36,7 @@ namespace QuickCompareTests
             diff.ToString().Should().Contain("does not exist in database 1");
         }
 
+        /// <summary> Test function difference is reported. </summary>
         [Fact]
         public void FunctionMissingFromDatabase2_IsReported()
         {
@@ -54,6 +56,7 @@ namespace QuickCompareTests
             diff.ToString().Should().Contain("does not exist in database 2");
         }
 
+        /// <summary> Test function difference is not reported. </summary>
         [Fact]
         public void FunctionsInBothDatabases_AreNotReported()
         {
@@ -73,6 +76,7 @@ namespace QuickCompareTests
             diff.IsDifferent.Should().BeFalse();
         }
 
+        /// <summary> Test function difference is reported. </summary>
         [Fact]
         public void FunctionDefinitionDifference_IsReported()
         {

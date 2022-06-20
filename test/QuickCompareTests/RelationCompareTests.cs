@@ -16,6 +16,7 @@ namespace QuickCompareTests
         private const string RelationName = "FK_Table2_Table1";
         private const string TableName = "[dbo].[Table1]";
 
+        /// <summary> Test relation difference is reported. </summary>
         [Fact]
         public void RelationMissingFromDatabase1_IsReported()
         {
@@ -41,6 +42,7 @@ namespace QuickCompareTests
                 .ToString().Should().Contain($"Relation: {RelationName} does not exist in database 1");
         }
 
+        /// <summary> Test relation difference is reported. </summary>
         [Fact]
         public void RelationMissingFromDatabase2_IsReported()
         {
@@ -66,6 +68,7 @@ namespace QuickCompareTests
                 .ToString().Should().Contain($"Relation: {RelationName} does not exist in database 2");
         }
 
+        /// <summary> Test relation difference is not reported. </summary>
         [Fact]
         public void RelationsInBothDatabases_AreNotReported()
         {

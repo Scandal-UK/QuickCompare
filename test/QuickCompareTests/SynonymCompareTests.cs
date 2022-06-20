@@ -12,6 +12,7 @@ namespace QuickCompareTests
     /// </summary>
     public class SynonymCompareTests
     {
+        /// <summary> Test synonym difference is reported. </summary>
         [Fact]
         public void SynonymMissingFromDatabase1_IsReported()
         {
@@ -33,6 +34,7 @@ namespace QuickCompareTests
             diff.ToString().Should().Be("does not exist in database 1\r\n");
         }
 
+        /// <summary> Test synonym difference is reported. </summary>
         [Fact]
         public void SynonymMissingFromDatabase2_IsReported()
         {
@@ -54,6 +56,7 @@ namespace QuickCompareTests
             diff.ToString().Should().Be("does not exist in database 2\r\n");
         }
 
+        /// <summary> Test synonym difference is not reported. </summary>
         [Fact]
         public void SynonymsInBothDatabases_AreNotReported()
         {

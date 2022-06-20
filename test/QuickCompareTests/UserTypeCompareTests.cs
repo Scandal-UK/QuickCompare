@@ -13,6 +13,7 @@ namespace QuickCompareTests
     /// </summary>
     public class UserTypeCompareTests
     {
+        /// <summary> Test user type difference is reported. </summary>
         [Fact]
         public void UserTypeMissingFromDatabase1_IsReported()
         {
@@ -34,6 +35,7 @@ namespace QuickCompareTests
             diff.ToString().Should().Contain("does not exist in database 1");
         }
 
+        /// <summary> Test user type difference is reported. </summary>
         [Fact]
         public void UserTypeMissingFromDatabase2_IsReported()
         {
@@ -55,6 +57,7 @@ namespace QuickCompareTests
             diff.ToString().Should().Contain("does not exist in database 2");
         }
 
+        /// <summary> Test user type difference is not reported. </summary>
         [Fact]
         public void UserTypeInBothDatabases_IsNotReported()
         {
@@ -77,36 +80,43 @@ namespace QuickCompareTests
             diff.ToString().Should().Be(string.Empty);
         }
 
+        /// <summary> Test user type difference is reported. </summary>
         [Fact]
         public void UnderlyingTypeName_Difference_IsReported() =>
             ComparisonResultContainsValue(new SqlUserType { UnderlyingTypeName = "char" }, "underlying type")
                 .Should().BeTrue();
 
+        /// <summary> Test user type difference is reported. </summary>
         [Fact]
         public void Precision_Difference_IsReported() =>
             ComparisonResultContainsValue(new SqlUserType { Precision = 2 }, "precision")
                 .Should().BeTrue();
 
+        /// <summary> Test user type difference is reported. </summary>
         [Fact]
         public void Scale_Difference_IsReported() =>
             ComparisonResultContainsValue(new SqlUserType { Scale = 2 }, "scale")
                 .Should().BeTrue();
 
+        /// <summary> Test user type difference is reported. </summary>
         [Fact]
         public void MaxLength_Difference_IsReported() =>
             ComparisonResultContainsValue(new SqlUserType { MaxLength = 2 }, "max length")
                 .Should().BeTrue();
 
+        /// <summary> Test user type difference is reported. </summary>
         [Fact]
         public void IsNullable_Difference_IsReported() =>
             ComparisonResultContainsValue(new SqlUserType { IsNullable = true }, "nullable")
                 .Should().BeTrue();
 
+        /// <summary> Test user type difference is reported. </summary>
         [Fact]
         public void CollationName_Difference_IsReported() =>
             ComparisonResultContainsValue(new SqlUserType { CollationName = "foobar" }, "collation")
                 .Should().BeTrue();
 
+        /// <summary> Test user type difference is reported. </summary>
         [Fact]
         public void IsAssemblyType_Difference_IsReported() =>
             ComparisonResultContainsValue(new SqlUserType { IsAssemblyType = true }, "assembly")
