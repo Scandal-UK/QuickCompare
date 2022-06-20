@@ -7,7 +7,7 @@ namespace QuickCompareModel
     using System;
 
     /// <summary> Custom derivative of <see cref="EventArgs"/> to contain a status message. </summary>
-    [Serializable()]
+    [Serializable]
     public class StatusChangedEventArgs : EventArgs
     {
         /// <summary> Initialises a new instance of the <see cref="StatusChangedEventArgs"/> class. </summary>

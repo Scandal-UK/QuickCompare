@@ -8,6 +8,9 @@ namespace QuickCompareTests
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of trigger differences.
+    /// </summary>
     public class TriggerCompareTests
     {
         [Fact]

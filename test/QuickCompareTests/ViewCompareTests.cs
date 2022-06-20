@@ -7,6 +7,9 @@ namespace QuickCompareTests
     using FluentAssertions;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of view differences.
+    /// </summary>
     public class ViewCompareTests
     {
         [Fact]

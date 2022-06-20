@@ -9,6 +9,9 @@ namespace QuickCompareTests
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of table differences.
+    /// </summary>
     public class TableCompareTests
     {
         private const string TableName = "[dbo].[Table1]";

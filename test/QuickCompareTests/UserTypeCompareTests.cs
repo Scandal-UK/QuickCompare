@@ -8,6 +8,9 @@ namespace QuickCompareTests
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of user-type differences.
+    /// </summary>
     public class UserTypeCompareTests
     {
         [Fact]

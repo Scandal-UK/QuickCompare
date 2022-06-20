@@ -8,6 +8,9 @@ namespace QuickCompareTests
     using QuickCompareModel.DatabaseDifferences;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the base difference class.
+    /// </summary>
     public class BaseDifferenceTests
     {
         private const bool TrimWhitespace = true;

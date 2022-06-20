@@ -8,11 +8,13 @@ namespace QuickCompareTests
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of relation differences.
+    /// </summary>
     public class RelationCompareTests
     {
         private const string RelationName = "FK_Table2_Table1";
         private const string TableName = "[dbo].[Table1]";
-        private const string SecondTableName = "[dbo].[Table2]";
 
         [Fact]
         public void RelationMissingFromDatabase1_IsReported()

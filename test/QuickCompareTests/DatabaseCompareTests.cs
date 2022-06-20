@@ -5,10 +5,12 @@
 namespace QuickCompareTests
 {
     using FluentAssertions;
-    using QuickCompareModel;
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of two databases.
+    /// </summary>
     public class DatabaseCompareTests
     {
         /// <summary>

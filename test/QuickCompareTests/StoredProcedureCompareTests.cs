@@ -8,6 +8,9 @@ namespace QuickCompareTests
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of stored procedure differences.
+    /// </summary>
     public class StoredProcedureCompareTests
     {
         private const string StoredProcedureName = "[dbo].[StoredProcedure1]";

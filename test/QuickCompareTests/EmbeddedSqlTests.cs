@@ -8,6 +8,9 @@ namespace QuickCompareTests
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the existence of required SQL scripts.
+    /// </summary>
     public class EmbeddedSqlTests
     {
         private const string TextStartsWithSelectRegex = "^[SELECT]";

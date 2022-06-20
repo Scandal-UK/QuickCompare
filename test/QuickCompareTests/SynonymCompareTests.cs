@@ -7,6 +7,9 @@ namespace QuickCompareTests
     using FluentAssertions;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of synonym differences.
+    /// </summary>
     public class SynonymCompareTests
     {
         [Fact]

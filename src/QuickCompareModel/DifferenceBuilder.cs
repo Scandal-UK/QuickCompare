@@ -13,9 +13,7 @@ namespace QuickCompareModel
     using QuickCompareModel.DatabaseSchema;
     using QuickCompareModel.DatabaseSchema.Enums;
 
-    /// <summary>
-    /// Class responsible for building a set of differences between two database instances.
-    /// </summary>
+    /// <summary> Class responsible for building a set of differences between two database instances. </summary>
     public class DifferenceBuilder : IDifferenceBuilder
     {
         /// <summary>
@@ -39,6 +37,9 @@ namespace QuickCompareModel
         }
 
         /// <inheritdoc/>
+        public event EventHandler<StatusChangedEventArgs> ComparisonStatusChanged;
+
+        /// <inheritdoc/>
         public QuickCompareOptions Options { get; set; }
 
         /// <inheritdoc/>
@@ -46,9 +47,6 @@ namespace QuickCompareModel
 
         /// <inheritdoc/>
         public SqlDatabase Database2 { get; set; }
-
-        /// <inheritdoc/>
-        public event EventHandler<StatusChangedEventArgs> ComparisonStatusChanged;
 
         /// <inheritdoc/>
         public Differences Differences { get; set; }
@@ -104,9 +102,14 @@ namespace QuickCompareModel
             this.RaiseStatusChanged("Difference inspection completed...");
         }
 
+        /// <summary> Raise the status changed event. </summary>
+        /// <param name="message">Current status message.</param>
         protected virtual void RaiseStatusChanged(string message) =>
             this.ComparisonStatusChanged?.Invoke(this, new StatusChangedEventArgs(message));
 
+        /// <summary> Raise the status changed event. </summary>
+        /// <param name="message">Current status message.</param>
+        /// <param name="databaseInstance">Specified database instance.</param>
         protected virtual void RaiseStatusChanged(string message, DatabaseInstance databaseInstance) =>
             this.ComparisonStatusChanged?.Invoke(this, new StatusChangedEventArgs(message, databaseInstance));
 
