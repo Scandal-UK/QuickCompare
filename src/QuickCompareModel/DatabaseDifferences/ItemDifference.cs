@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel.DatabaseDifferences
+﻿// <copyright file="ItemDifference.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel.DatabaseDifferences
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -20,28 +24,29 @@
         {
         }
 
-        /// <summary> Gets a list of tracked difference strings. </summary>
+        /// <summary> Gets or sets a list of tracked difference strings. </summary>
         public List<string> Differences { get; set; } = new List<string>();
 
-        /// <summary> Gets the item type. </summary>
+        /// <summary> Gets or sets the item type. </summary>
         public string ItemType { get; set; }
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public override bool IsDifferent => base.IsDifferent || Differences.Count > 0;
+        public override bool IsDifferent => base.IsDifferent || this.Differences.Count > 0;
 
-        /// <summary> Gets a text description of the <see cref="Differences"/> or returns an empty string if no difference is detected. </summary>
+        /// <summary> Gets a text description of the list of differences or returns an empty string if no difference is detected. </summary>
+        /// <returns> Ttext description of the list of differences. </returns>
         public string DifferenceList()
         {
             var sb = new StringBuilder();
 
-            if (Differences.Count == 1)
+            if (this.Differences.Count == 1)
             {
-                sb.AppendLine(Differences.Single());
+                sb.AppendLine(this.Differences.Single());
             }
-            else if (Differences.Count > 1)
+            else if (this.Differences.Count > 1)
             {
                 sb.Append($"\r\n{TabIndent} - ");
-                sb.AppendLine(string.Join($"\r\n{TabIndent} - ", Differences.ToArray()));
+                sb.AppendLine(string.Join($"\r\n{TabIndent} - ", this.Differences.ToArray()));
             }
             else
             {
@@ -52,8 +57,9 @@
         }
 
         /// <summary> Gets a text description of the differences or returns an empty string if no difference is detected. </summary>
-        public override string ToString() => IsDifferent
-            ? base.IsDifferent ? base.ToString() : DifferenceList()
+        /// <returns> Difference description. </returns>
+        public override string ToString() => this.IsDifferent
+            ? base.IsDifferent ? base.ToString() : this.DifferenceList()
             : string.Empty;
     }
 }

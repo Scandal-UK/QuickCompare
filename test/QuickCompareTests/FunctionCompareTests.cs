@@ -1,14 +1,22 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="FunctionCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using FluentAssertions;
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of function differences.
+    /// </summary>
     public class FunctionCompareTests
     {
         private const string FunctionName = "[dbo].[Function1]";
         private const string FunctionRoutineType = "FUNCTION";
 
+        /// <summary> Test function difference is reported. </summary>
         [Fact]
         public void FunctionMissingFromDatabase1_IsReported()
         {
@@ -28,6 +36,7 @@
             diff.ToString().Should().Contain("does not exist in database 1");
         }
 
+        /// <summary> Test function difference is reported. </summary>
         [Fact]
         public void FunctionMissingFromDatabase2_IsReported()
         {
@@ -47,6 +56,7 @@
             diff.ToString().Should().Contain("does not exist in database 2");
         }
 
+        /// <summary> Test function difference is not reported. </summary>
         [Fact]
         public void FunctionsInBothDatabases_AreNotReported()
         {
@@ -66,6 +76,7 @@
             diff.IsDifferent.Should().BeFalse();
         }
 
+        /// <summary> Test function difference is reported. </summary>
         [Fact]
         public void FunctionDefinitionDifference_IsReported()
         {

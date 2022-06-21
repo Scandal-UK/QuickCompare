@@ -1,10 +1,16 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="DatabaseCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using FluentAssertions;
-    using QuickCompareModel;
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of two databases.
+    /// </summary>
     public class DatabaseCompareTests
     {
         /// <summary>
@@ -28,6 +34,7 @@
                 .FriendlyName.Should().Be(expectedResult);
         }
 
+        /// <summary> Test missing property is reported. </summary>
         [Fact]
         public void TablePropertyMissingFromDatabase1_IsReported()
         {
@@ -48,6 +55,7 @@
             builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase1.Should().BeFalse();
         }
 
+        /// <summary> Test missing property is reported. </summary>
         [Fact]
         public void TablePropertyMissingFromDatabase2_IsReported()
         {
@@ -68,6 +76,7 @@
             builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase2.Should().BeFalse();
         }
 
+        /// <summary> Test property difference is reported. </summary>
         [Fact]
         public void TablePropertyDifference_IsReported()
         {

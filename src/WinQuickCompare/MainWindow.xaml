@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="QuickCompare UI" Height="550" Width="800">
   <Window.Resources>
-    <local:QuickCompareContext x:Key="localContext" />
+    <local:QuickCompareContext x:Key="QuickCompareContext" />
   </Window.Resources>
 
   <Grid>
@@ -31,40 +31,40 @@
 
         <StackPanel Grid.Row="0" Margin="5,10,5,0">
           <Label Margin="5,0" Content="Connection string 1" />
-          <TextBox x:Name="ConnectionString1" Margin="10,0" Text="{Binding Source={StaticResource localContext}, Path=ConnectionString1}" />
+          <TextBox x:Name="ConnectionString1" Margin="10,0" Text="{Binding Source={StaticResource QuickCompareContext}, Path=ConnectionString1}" />
 
           <Label Margin="5,10,5,0" Content="Connection string 2" />
-          <TextBox x:Name="ConnectionString2"  Margin="10,0" Text="{Binding Source={StaticResource localContext}, Path=ConnectionString2}" />
+          <TextBox x:Name="ConnectionString2"  Margin="10,0" Text="{Binding Source={StaticResource QuickCompareContext}, Path=ConnectionString2}" />
 
-          <CheckBox x:Name="CompareColumns" Margin="10 20 5 5" Content="Compare columns?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareColumns}" />
-          <CheckBox x:Name="CompareCollation" Margin="10 5" Content="Compare collation?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareCollation}" />
-          <CheckBox x:Name="CompareRelations" Margin="10 5" Content="Compare relations?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareRelations}" />
-          <CheckBox x:Name="CompareIndexes" Margin="10 5" Content="Compare indexes?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareIndexes}" />
-          <CheckBox x:Name="CompareTriggers" Margin="10 5" Content="Compare triggers?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareTriggers}" />
-          <CheckBox x:Name="CompareObjects" Margin="10 5" Content="Compare functions/views/procedures?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareObjects}" />
-          <CheckBox x:Name="ComparePermissions" Margin="10 5" Content="Compare permissions?" IsChecked="{Binding Source={StaticResource localContext}, Path=ComparePermissions}" />
-          <CheckBox x:Name="CompareProperties" Margin="10 5" Content="Compare extended properties?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareProperties}" />
-          <CheckBox x:Name="CompareUserTypes" Margin="10 5" Content="Compare user types?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareUserTypes}" />
-          <CheckBox x:Name="CompareSynonyms" Margin="10 5" Content="Compare synonyms?" IsChecked="{Binding Source={StaticResource localContext}, Path=CompareSynonyms}" />
-          <CheckBox x:Name="IgnoreSqlComments" Margin="10 5" Content="Ignore SQL comments?" IsChecked="{Binding Source={StaticResource localContext}, Path=IgnoreSqlComments}" />
+          <CheckBox x:Name="CompareColumns" Margin="10 20 5 5" Content="Compare columns?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=CompareColumns}" />
+          <CheckBox x:Name="CompareCollation" Margin="10 5" Content="Compare collation?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=CompareCollation}" />
+          <CheckBox x:Name="CompareRelations" Margin="10 5" Content="Compare relations?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=CompareRelations}" />
+          <CheckBox x:Name="CompareIndexes" Margin="10 5" Content="Compare indexes?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=CompareIndexes}" />
+          <CheckBox x:Name="CompareTriggers" Margin="10 5" Content="Compare triggers?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=CompareTriggers}" />
+          <CheckBox x:Name="CompareObjects" Margin="10 5" Content="Compare functions/views/procedures?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=CompareObjects}" />
+          <CheckBox x:Name="ComparePermissions" Margin="10 5" Content="Compare permissions?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=ComparePermissions}" />
+          <CheckBox x:Name="CompareProperties" Margin="10 5" Content="Compare extended properties?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=CompareProperties}" />
+          <CheckBox x:Name="CompareUserTypes" Margin="10 5" Content="Compare user types?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=CompareUserTypes}" />
+          <CheckBox x:Name="CompareSynonyms" Margin="10 5" Content="Compare synonyms?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=CompareSynonyms}" />
+          <CheckBox x:Name="IgnoreSqlComments" Margin="10 5" Content="Ignore SQL comments?" IsChecked="{Binding Source={StaticResource QuickCompareContext}, Path=IgnoreSqlComments}" />
         </StackPanel>
 
-        <Button x:Name="RunButton" Grid.Row="1" Margin="20" Content="Run comparison" IsDefault="True" Click="Button_Click" />
+        <Button x:Name="ButtonRunComparison" Grid.Row="1" Margin="20" Content="Run comparison" IsDefault="True" Click="ButtonRunComparison_Click" />
       </Grid>
 
       <TabControl Grid.Column="1">
         <TabItem Header="Results">
           <TextBox x:Name="OutputTextBox"
-                         IsReadOnly="True"
-                         TextWrapping="NoWrap"
-                         VerticalScrollBarVisibility="Auto"
-                         HorizontalScrollBarVisibility="Auto" />
+                   IsReadOnly="True"
+                   TextWrapping="NoWrap"
+                   VerticalScrollBarVisibility="Auto"
+                   HorizontalScrollBarVisibility="Auto" />
         </TabItem>
 
         <TabItem Header="Definition differences">
           <DockPanel Margin="0,5">
-            <ComboBox x:Name="ComboBox1" DisplayMemberPath="Key" SelectionChanged="ComboBox1_SelectionChanged" DockPanel.Dock="Top" />
-            <diffplex:DiffViewer x:Name="DiffViewer1" OldTextHeader="Database 1" NewTextHeader="Database 2" />
+            <ComboBox x:Name="ComboBoxDefinitions" DisplayMemberPath="Key" SelectionChanged="ComboBoxDefinitions_SelectionChanged" DockPanel.Dock="Top" />
+            <diffplex:DiffViewer x:Name="DiffViewer" OldTextHeader="Database 1" NewTextHeader="Database 2" />
           </DockPanel>
         </TabItem>
       </TabControl>

@@ -1,13 +1,19 @@
-﻿namespace ConsoleTestQuickCompare
+﻿// <copyright file="Program.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace ConsoleTestQuickCompare
 {
     using System;
     using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
     using QuickCompareModel;
 
-    static class Program
+    /// <summary> Main program loop. </summary>
+    internal static class Program
     {
-        static void Main(string[] args)
+        /// <summary> Entrance of program loop. </summary>
+        internal static void Main()
         {
             try
             {

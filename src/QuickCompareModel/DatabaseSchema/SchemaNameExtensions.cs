@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel.DatabaseSchema
+﻿// <copyright file="SchemaNameExtensions.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel.DatabaseSchema
 {
     /// <summary> Extensions to derive the schema and object names from a full object ID. </summary>
     public static class SchemaNameExtensions

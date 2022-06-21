@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel.DatabaseSchema
+﻿// <copyright file="DataReaderExtensions.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel.DatabaseSchema
 {
     using System.Data.SqlClient;
 

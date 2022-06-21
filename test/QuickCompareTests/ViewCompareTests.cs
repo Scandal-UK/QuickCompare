@@ -1,10 +1,18 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="ViewCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using FluentAssertions;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of view differences.
+    /// </summary>
     public class ViewCompareTests
     {
+        /// <summary> Test view difference is reported. </summary>
         [Fact]
         public void ViewMissingFromDatabase1_IsReported()
         {
@@ -15,7 +23,7 @@
             builder.Database2.Views.Add(viewName, "foobar");
 
             // Act
-            builder.BuildDifferencesAsync();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.ViewDifferences.Should().ContainKey(viewName);
@@ -26,6 +34,7 @@
             diff.ToString().Should().Be("does not exist in database 1\r\n");
         }
 
+        /// <summary> Test view difference is reported. </summary>
         [Fact]
         public void ViewMissingFromDatabase2_IsReported()
         {
@@ -36,7 +45,7 @@
             builder.Database1.Views.Add(viewName, "foobar");
 
             // Act
-            builder.BuildDifferencesAsync();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.ViewDifferences.Should().ContainKey(viewName);
@@ -47,6 +56,7 @@
             diff.ToString().Should().Be("does not exist in database 2\r\n");
         }
 
+        /// <summary> Test view difference is reported. </summary>
         [Fact]
         public void ViewsInBothDatabases_AreNotReported()
         {
@@ -58,7 +68,7 @@
             builder.Database2.Views.Add(viewName, "foobar");
 
             // Act
-            builder.BuildDifferencesAsync();
+            builder.BuildDifferencesAsync().Wait();
 
             // Assert
             builder.Differences.ViewDifferences.Should().ContainKey(viewName);

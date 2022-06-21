@@ -1,14 +1,22 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="StoredProcedureCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using FluentAssertions;
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of stored procedure differences.
+    /// </summary>
     public class StoredProcedureCompareTests
     {
         private const string StoredProcedureName = "[dbo].[StoredProcedure1]";
         private const string StoredProcedureRoutineType = "PROCEDURE";
 
+        /// <summary> Test stored procedure difference is reported. </summary>
         [Fact]
         public void StoredProcedureMissingFromDatabase1_IsReported()
         {
@@ -28,6 +36,7 @@
             diff.ToString().Should().Contain("does not exist in database 1");
         }
 
+        /// <summary> Test stored procedure difference is reported. </summary>
         [Fact]
         public void StoredProcedureMissingFromDatabase2_IsReported()
         {
@@ -47,6 +56,7 @@
             diff.ToString().Should().Contain("does not exist in database 2");
         }
 
+        /// <summary> Test stored procedure difference is not reported. </summary>
         [Fact]
         public void StoredProceduresInBothDatabases_AreNotReported()
         {
@@ -66,6 +76,7 @@
             diff.IsDifferent.Should().BeFalse();
         }
 
+        /// <summary> Test stored procedure difference is reported. </summary>
         [Fact]
         public void StoredProcedureDefinitionDifference_IsReported()
         {
@@ -85,6 +96,7 @@
             diff.IsDifferent.Should().BeTrue();
         }
 
+        /// <summary> Test stored procedure difference is reported. </summary>
         [Fact]
         public void StoredProcedurePropertyMissingFromDatabase1_IsReported()
         {
@@ -114,6 +126,7 @@
             diff.ExtendedPropertyDifferences["Key1"].ExistsInDatabase1.Should().BeFalse();
         }
 
+        /// <summary> Test stored procedure difference is reported. </summary>
         [Fact]
         public void StoredProcedurePropertyMissingFromDatabase2_IsReported()
         {
@@ -143,6 +156,7 @@
             diff.ExtendedPropertyDifferences["Key1"].ExistsInDatabase2.Should().BeFalse();
         }
 
+        /// <summary> Test stored procedure difference is reported. </summary>
         [Fact]
         public void StoredProcedurePropertyDifference_IsReported()
         {

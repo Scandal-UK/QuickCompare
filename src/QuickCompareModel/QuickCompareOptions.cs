@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel
+﻿// <copyright file="QuickCompareOptions.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel
 {
     /// <summary>
     /// Settings for the database comparison.

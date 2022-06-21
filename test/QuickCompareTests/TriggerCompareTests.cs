@@ -1,13 +1,21 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="TriggerCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using FluentAssertions;
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of trigger differences.
+    /// </summary>
     public class TriggerCompareTests
     {
+        /// <summary> Test trigger difference is reported. </summary>
         [Fact]
-        public void IndexMissingFromDatabase1_IsReported()
+        public void TriggerMissingFromDatabase1_IsReported()
         {
             // Arrange
             var builder = TestHelper.GetBasicBuilder();
@@ -33,8 +41,9 @@
                 .ToString().Should().Contain($"Trigger: {triggerName} does not exist in database 1");
         }
 
+        /// <summary> Test trigger difference is reported. </summary>
         [Fact]
-        public void IndexMissingFromDatabase2_IsReported()
+        public void TriggerMissingFromDatabase2_IsReported()
         {
             // Arrange
             var builder = TestHelper.GetBasicBuilder();
@@ -60,8 +69,9 @@
                 .ToString().Should().Contain($"Trigger: {triggerName} does not exist in database 2");
         }
 
+        /// <summary> Test trigger difference is not reported. </summary>
         [Fact]
-        public void IndexInBothDatabases_IsNotReported()
+        public void TriggerInBothDatabases_IsNotReported()
         {
             // Arrange
             var builder = TestHelper.GetBasicBuilder();

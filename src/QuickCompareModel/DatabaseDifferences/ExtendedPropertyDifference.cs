@@ -1,4 +1,8 @@
-﻿namespace QuickCompareModel.DatabaseDifferences
+﻿// <copyright file="ExtendedPropertyDifference.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareModel.DatabaseDifferences
 {
     /// <summary> Model to represent an extended property and track the differences across two databases. </summary>
     public class ExtendedPropertyDifference : BaseDifference
@@ -21,11 +25,12 @@
         public string Value2 { get; set; }
 
         /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
-        public override bool IsDifferent => base.IsDifferent || Value1 != Value2;
+        public override bool IsDifferent => base.IsDifferent || this.Value1 != this.Value2;
 
         /// <summary> Gets a text description of the difference or returns an empty string if no difference is detected. </summary>
-        public override string ToString() => IsDifferent
-                ? base.IsDifferent ? base.ToString() : $"value is different; [{Value1}] in database 1, [{Value2}] in database 2\r\n"
+        /// <returns> Difference description. </returns>
+        public override string ToString() => this.IsDifferent
+                ? base.IsDifferent ? base.ToString() : $"value is different; [{this.Value1}] in database 1, [{this.Value2}] in database 2\r\n"
                 : string.Empty;
     }
 }

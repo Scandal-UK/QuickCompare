@@ -7,6 +7,7 @@
         <PackageTags>database compare;database comparison;database schema;schema checker;schema compare;schema comparison;database schema compare;database schema comparison</PackageTags>
         <Description>A simple, fast, free SQL database schema comparison library written in C#.</Description>
         <RepositoryUrl>https://github.com/scandal-uk/quickcompare</RepositoryUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
     
     <PropertyGroup>
@@ -24,6 +25,10 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     </ItemGroup>
 
@@ -41,6 +46,10 @@
         <None Remove="DatabaseSchema\Queries\UserRoutines.sql" />
         <None Remove="DatabaseSchema\Queries\UserTypes.sql" />
         <None Remove="DatabaseSchema\Queries\Views.sql" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>

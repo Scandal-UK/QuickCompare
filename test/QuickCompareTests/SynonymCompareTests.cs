@@ -1,10 +1,18 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="SynonymCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using FluentAssertions;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of synonym differences.
+    /// </summary>
     public class SynonymCompareTests
     {
+        /// <summary> Test synonym difference is reported. </summary>
         [Fact]
         public void SynonymMissingFromDatabase1_IsReported()
         {
@@ -26,6 +34,7 @@
             diff.ToString().Should().Be("does not exist in database 1\r\n");
         }
 
+        /// <summary> Test synonym difference is reported. </summary>
         [Fact]
         public void SynonymMissingFromDatabase2_IsReported()
         {
@@ -47,6 +56,7 @@
             diff.ToString().Should().Be("does not exist in database 2\r\n");
         }
 
+        /// <summary> Test synonym difference is not reported. </summary>
         [Fact]
         public void SynonymsInBothDatabases_AreNotReported()
         {

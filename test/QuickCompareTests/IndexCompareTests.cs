@@ -1,11 +1,19 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="IndexCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using FluentAssertions;
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of index differences.
+    /// </summary>
     public class IndexCompareTests
     {
+        /// <summary> Test index difference is reported. </summary>
         [Fact]
         public void Index_MissingFromDatabase1_IsReported()
         {
@@ -32,6 +40,7 @@
                 .ToString().Should().Contain($"Index: {indexName} does not exist in database 1");
         }
 
+        /// <summary> Test index difference is reported. </summary>
         [Fact]
         public void Index_MissingFromDatabase2_IsReported()
         {
@@ -58,6 +67,7 @@
                 .ToString().Should().Contain($"Index: {indexName} does not exist in database 2");
         }
 
+        /// <summary> Test index difference is not reported. </summary>
         [Fact]
         public void Index_InBothDatabases_IsNotReported()
         {
@@ -83,6 +93,7 @@
             diff.IsDifferent.Should().BeFalse();
         }
 
+        /// <summary> Test index difference is reported. </summary>
         [Fact]
         public void IndexType_PrimaryKey_MissingFromDatabase1_IsReported()
         {
@@ -106,6 +117,7 @@
             diff.ToString().Should().Contain($"Primary key: {indexName} does not exist in database 1");
         }
 
+        /// <summary> Test index difference is reported. </summary>
         [Fact]
         public void IndexType_PrimaryKey_MissingFromDatabase2_IsReported()
         {
@@ -129,6 +141,7 @@
             diff.ToString().Should().Contain($"Primary key: {indexName} does not exist in database 2");
         }
 
+        /// <summary> Test index difference is reported. </summary>
         [Fact]
         public void IndexType_UniqueKey_MissingFromDatabase1_IsReported()
         {
@@ -152,6 +165,7 @@
             diff.ToString().Should().Contain($"Unique key: {indexName} does not exist in database 1");
         }
 
+        /// <summary> Test index difference is reported. </summary>
         [Fact]
         public void IndexType_UniqueKey_MissingFromDatabase2_IsReported()
         {

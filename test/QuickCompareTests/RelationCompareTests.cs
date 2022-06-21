@@ -1,15 +1,22 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="RelationCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
     using FluentAssertions;
     using QuickCompareModel.DatabaseSchema;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of relation differences.
+    /// </summary>
     public class RelationCompareTests
     {
         private const string RelationName = "FK_Table2_Table1";
         private const string TableName = "[dbo].[Table1]";
-        private const string SecondTableName = "[dbo].[Table2]";
 
+        /// <summary> Test relation difference is reported. </summary>
         [Fact]
         public void RelationMissingFromDatabase1_IsReported()
         {
@@ -35,6 +42,7 @@
                 .ToString().Should().Contain($"Relation: {RelationName} does not exist in database 1");
         }
 
+        /// <summary> Test relation difference is reported. </summary>
         [Fact]
         public void RelationMissingFromDatabase2_IsReported()
         {
@@ -60,6 +68,7 @@
                 .ToString().Should().Contain($"Relation: {RelationName} does not exist in database 2");
         }
 
+        /// <summary> Test relation difference is not reported. </summary>
         [Fact]
         public void RelationsInBothDatabases_AreNotReported()
         {
@@ -82,22 +91,5 @@
             diff.ExistsInBothDatabases.Should().BeTrue();
             diff.ToString().Should().Be(string.Empty);
         }
-
-        //private SqlRelation GetTestRelationship()
-        //{
-        //    return new SqlRelation
-        //    {
-        //        RelationName = RelationName,
-        //        ChildSchema = SecondTableName.GetSchemaName(),
-        //        ChildTable = SecondTableName.GetObjectName(),
-        //        ChildColumns = "RelatedColumn",
-        //        UniqueConstraintName = "PK_Table1",
-        //        ParentSchema = TableName.GetSchemaName(),
-        //        ParentTable = TableName.GetObjectName(),
-        //        ParentColumns = "Column1",
-        //        UpdateRule = "NO ACTION",
-        //        DeleteRule = "NO ACTION",
-        //    };
-        //}
     }
 }

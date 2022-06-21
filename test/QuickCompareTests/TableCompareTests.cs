@@ -1,15 +1,23 @@
-﻿namespace QuickCompareTests
+﻿// <copyright file="TableCompareTests.cs" company="Dan Ware">
+// Copyright (c) Dan Ware. All rights reserved.
+// </copyright>
+
+namespace QuickCompareTests
 {
+    using System.Collections.Generic;
     using FluentAssertions;
     using QuickCompareModel.DatabaseSchema;
-    using System.Collections.Generic;
     using Xunit;
 
+    /// <summary>
+    /// Tests for the comparison of table differences.
+    /// </summary>
     public class TableCompareTests
     {
         private const string TableName = "[dbo].[Table1]";
         private const string TabIndent = "     ";
 
+        /// <summary> Test table difference is reported. </summary>
         [Fact]
         public void TableMissingFromDatabase1_IsReported()
         {
@@ -29,6 +37,7 @@
             diff.ToString().Should().Contain("does not exist in database 1");
         }
 
+        /// <summary> Test table difference is reported. </summary>
         [Fact]
         public void TableMissingFromDatabase2_IsReported()
         {
@@ -48,6 +57,7 @@
             diff.ToString().Should().Contain("does not exist in database 2");
         }
 
+        /// <summary> Test table difference is not reported. </summary>
         [Fact]
         public void TablesInBothDatabases_AreNotReported()
         {
@@ -69,6 +79,7 @@
             diff.ToString().Should().Be(string.Empty);
         }
 
+        /// <summary> Test table difference is reported. </summary>
         [Fact]
         public void TablePropertyMissingFromDatabase1_IsReported()
         {
@@ -105,6 +116,7 @@
                 .ToString().Should().Contain("Extended property: Key1 does not exist in database 1");
         }
 
+        /// <summary> Test table difference is reported. </summary>
         [Fact]
         public void TablePropertyMissingFromDatabase2_IsReported()
         {
@@ -142,6 +154,7 @@
                 .ToString().Should().Contain("Extended property: Key1 does not exist in database 2");
         }
 
+        /// <summary> Test table difference is reported. </summary>
         [Fact]
         public void TablePropertyDifference_IsReported()
         {
@@ -187,6 +200,7 @@
                 .Should().Be("Extended property: Key1 value is different; [Value1] in database 1, [Value2] in database 2");
         }
 
+        /// <summary> Test table difference is reported. </summary>
         [Fact]
         public void TablePermissionMissingFromDatabase1_IsReported()
         {
@@ -220,6 +234,7 @@
                 .ToString().Should().Contain("Permission: [INSERT] DENIED for user: [foobar] does not exist in database 1");
         }
 
+        /// <summary> Test table difference is reported. </summary>
         [Fact]
         public void TablePermissionMissingFromDatabase2_IsReported()
         {
@@ -253,6 +268,7 @@
                 .ToString().Should().Contain("Permission: [INSERT] DENIED for user: [foobar] does not exist in database 2");
         }
 
+        /// <summary> Test table difference is not reported. </summary>
         [Fact]
         public void TablePermissionInBothDatabases_IsNotReported()
         {
@@ -297,6 +313,7 @@
             builder.Differences.TableDifferences[TableName].IsDifferent.Should().BeFalse();
         }
 
+        /// <summary> Test table difference is reported. </summary>
         [Fact]
         public void TableColumn_WithSingleDifference_IsSingleLine()
         {
@@ -319,6 +336,7 @@
             diff.ToString().Should().Be($"\r\n{TabIndent}Column: foobar has different ordinal position - is 1 in database 1 and is 0 in database 2\r\n");
         }
 
+        /// <summary> Test table difference is reported. </summary>
         [Fact]
         public void TableColumn_WithMultipleDifferences_IsMultipleLines()
         {
