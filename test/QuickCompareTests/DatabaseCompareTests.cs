@@ -2,107 +2,106 @@
 // Copyright (c) Dan Ware. All rights reserved.
 // </copyright>
 
-namespace QuickCompareTests
+namespace QuickCompareTests;
+
+using System.Threading.Tasks;
+using FluentAssertions;
+using QuickCompareModel.DatabaseSchema;
+using Xunit;
+
+/// <summary> Tests for the comparison of two databases. </summary>
+public class DatabaseCompareTests
 {
-    using FluentAssertions;
-    using QuickCompareModel.DatabaseSchema;
-    using Xunit;
-
-    /// <summary>
-    /// Tests for the comparison of two databases.
-    /// </summary>
-    public class DatabaseCompareTests
+    /// <summary> Test to ensure the correct server/database names are derived from the connection string. </summary>
+    [Fact]
+    public void Database_FriendlyName_ReturnsAsExpected()
     {
-        /// <summary>
-        /// Test to ensure the correct server/database names are derived from the connection string.
-        /// </summary>
-        [Fact]
-        public void Database_FriendlyName_ReturnsAsExpected()
+        var expectedResult = "[localhost].[Northwind]";
+
+        new SqlDatabase("Data Source=localhost;Initial Catalog=Northwind;Integrated Security=True")
+            .FriendlyName.Should().Be(expectedResult);
+
+        new SqlDatabase("Server=localhost;Database=Northwind;Integrated Security=True")
+            .FriendlyName.Should().Be(expectedResult);
+
+        new SqlDatabase("Data Source=localhost;Database=Northwind;Integrated Security=True")
+            .FriendlyName.Should().Be(expectedResult);
+
+        new SqlDatabase("Server=localhost;Initial Catalog=Northwind;Integrated Security=True")
+            .FriendlyName.Should().Be(expectedResult);
+    }
+
+    /// <summary> Test missing property is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task TablePropertyMissingFromDatabase1_IsReported()
+    {
+        // Arrange
+        var builder = TestHelper.GetBasicBuilder();
+        builder.Database2.ExtendedProperties.Add(new SqlExtendedProperty
         {
-            var expectedResult = "[localhost].[Northwind]";
+            PropertyType = "DATABASE",
+            PropertyName = "Key1",
+            PropertyValue = "Value1",
+        });
 
-            new SqlDatabase("Data Source=localhost;Initial Catalog=Northwind;Integrated Security=True")
-                .FriendlyName.Should().Be(expectedResult);
+        // Act
+        await builder.BuildDifferencesAsync();
 
-            new SqlDatabase("Server=localhost;Database=Northwind;Integrated Security=True")
-                .FriendlyName.Should().Be(expectedResult);
+        // Assert
+        builder.Differences.ExtendedPropertyDifferences.Count.Should().Be(1);
+        builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase1.Should().BeFalse();
+    }
 
-            new SqlDatabase("Data Source=localhost;Database=Northwind;Integrated Security=True")
-                .FriendlyName.Should().Be(expectedResult);
-
-            new SqlDatabase("Server=localhost;Initial Catalog=Northwind;Integrated Security=True")
-                .FriendlyName.Should().Be(expectedResult);
-        }
-
-        /// <summary> Test missing property is reported. </summary>
-        [Fact]
-        public void TablePropertyMissingFromDatabase1_IsReported()
+    /// <summary> Test missing property is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task TablePropertyMissingFromDatabase2_IsReported()
+    {
+        // Arrange
+        var builder = TestHelper.GetBasicBuilder();
+        builder.Database1.ExtendedProperties.Add(new SqlExtendedProperty
         {
-            // Arrange
-            var builder = TestHelper.GetBasicBuilder();
-            builder.Database2.ExtendedProperties.Add(new SqlExtendedProperty
-            {
-                PropertyType = "DATABASE",
-                PropertyName = "Key1",
-                PropertyValue = "Value1",
-            });
+            PropertyType = "DATABASE",
+            PropertyName = "Key1",
+            PropertyValue = "Value1",
+        });
 
-            // Act
-            builder.BuildDifferencesAsync().Wait();
+        // Act
+        await builder.BuildDifferencesAsync();
 
-            // Assert
-            builder.Differences.ExtendedPropertyDifferences.Count.Should().Be(1);
-            builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase1.Should().BeFalse();
-        }
+        // Assert
+        builder.Differences.ExtendedPropertyDifferences.Count.Should().Be(1);
+        builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase2.Should().BeFalse();
+    }
 
-        /// <summary> Test missing property is reported. </summary>
-        [Fact]
-        public void TablePropertyMissingFromDatabase2_IsReported()
+    /// <summary> Test property difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+    [Fact]
+    public async Task TablePropertyDifference_IsReported()
+    {
+        // Arrange
+        var builder = TestHelper.GetBasicBuilder();
+        builder.Database1.ExtendedProperties.Add(new SqlExtendedProperty
         {
-            // Arrange
-            var builder = TestHelper.GetBasicBuilder();
-            builder.Database1.ExtendedProperties.Add(new SqlExtendedProperty
-            {
-                PropertyType = "DATABASE",
-                PropertyName = "Key1",
-                PropertyValue = "Value1",
-            });
+            PropertyType = "DATABASE",
+            PropertyName = "Key1",
+            PropertyValue = "Value1",
+        });
 
-            // Act
-            builder.BuildDifferencesAsync().Wait();
-
-            // Assert
-            builder.Differences.ExtendedPropertyDifferences.Count.Should().Be(1);
-            builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase2.Should().BeFalse();
-        }
-
-        /// <summary> Test property difference is reported. </summary>
-        [Fact]
-        public void TablePropertyDifference_IsReported()
+        builder.Database2.ExtendedProperties.Add(new SqlExtendedProperty
         {
-            // Arrange
-            var builder = TestHelper.GetBasicBuilder();
-            builder.Database1.ExtendedProperties.Add(new SqlExtendedProperty
-            {
-                PropertyType = "DATABASE",
-                PropertyName = "Key1",
-                PropertyValue = "Value1",
-            });
+            PropertyType = "DATABASE",
+            PropertyName = "Key1",
+            PropertyValue = "Value2",
+        });
 
-            builder.Database2.ExtendedProperties.Add(new SqlExtendedProperty
-            {
-                PropertyType = "DATABASE",
-                PropertyName = "Key1",
-                PropertyValue = "Value2",
-            });
+        // Act
+        await builder.BuildDifferencesAsync();
 
-            // Act
-            builder.BuildDifferencesAsync().Wait();
-
-            // Assert
-            builder.Differences.ExtendedPropertyDifferences.Count.Should().Be(1);
-            builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInBothDatabases.Should().BeTrue();
-            builder.Differences.ExtendedPropertyDifferences["Key1"].IsDifferent.Should().BeTrue();
-        }
+        // Assert
+        builder.Differences.ExtendedPropertyDifferences.Count.Should().Be(1);
+        builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInBothDatabases.Should().BeTrue();
+        builder.Differences.ExtendedPropertyDifferences["Key1"].IsDifferent.Should().BeTrue();
     }
 }
