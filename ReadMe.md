@@ -5,13 +5,13 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=alert_status)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=security_rating)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Scandal-UK_QuickCompare)
 
 > __A simple, fast, free SQL database schema comparison library/app written in C#__
 
 - [QuickCompareModel](/src/QuickCompareModel) - the core library and NuGet package source code
-- [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample .NET 6 console application
-- [WinQuickCompare](/src/WinQuickCompare) - sample .NET 6 Windows application
+- [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample .NET 8 console application
+- [WinQuickCompare](/src/WinQuickCompare) - sample .NET 8 Windows application
 
 This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
 
