@@ -2,64 +2,63 @@
 // Copyright (c) Dan Ware. All rights reserved.
 // </copyright>
 
-namespace ConsoleTestQuickCompare
+namespace ConsoleTestQuickCompare;
+
+using System;
+using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
+using QuickCompareModel;
+
+/// <summary> Main program loop. </summary>
+internal static class Program
 {
-    using System;
-    using System.Diagnostics;
-    using Microsoft.Extensions.DependencyInjection;
-    using QuickCompareModel;
-
-    /// <summary> Main program loop. </summary>
-    internal static class Program
+    /// <summary> Entrance of program loop. </summary>
+    internal static void Main()
     {
-        /// <summary> Entrance of program loop. </summary>
-        internal static void Main()
+        try
         {
-            try
-            {
-                var provider = GetServiceProvider();
-                var builder = provider.GetService<IDifferenceBuilder>();
+            var provider = GetServiceProvider();
+            var builder = provider.GetService<IDifferenceBuilder>();
 
-                builder.ComparisonStatusChanged += OnComparisonStatusChanged;
-                builder.BuildDifferencesAsync().Wait();
+            builder.ComparisonStatusChanged += OnComparisonStatusChanged;
+            builder.BuildDifferencesAsync().Wait();
 
-                Console.WriteLine("\r\n--------------------------------");
+            Console.WriteLine("\r\n--------------------------------");
 
-                string report = builder.Differences.ToString();
-                Console.Write(report);
-                Trace.Write(report);
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex);
-                Trace.Write(ex);
-            }
-            finally
-            {
-                Console.ReadKey();
-            }
+            string report = builder.Differences.ToString();
+            Console.Write(report);
+            Trace.Write(report);
         }
-
-        /// <summary> Gets the <see cref="IServiceProvider"/> DI container configured in <see cref="Startup"/>. </summary>
-        /// <returns> An instance of <see cref="IServiceProvider"/>. </returns>
-        private static IServiceProvider GetServiceProvider()
+        catch (Exception ex)
         {
-            var services = new ServiceCollection();
-            new Startup().ConfigureServices(services);
-            return services.BuildServiceProvider();
+            Console.Write(ex);
+            Trace.Write(ex);
         }
-
-        private static void OnComparisonStatusChanged(object sender, StatusChangedEventArgs e)
+        finally
         {
-            string message = e.DatabaseInstance switch
-            {
-                DatabaseInstance.Database1 => $"{e.StatusMessage} for database 1",
-                DatabaseInstance.Database2 => $"{e.StatusMessage} for database 2",
-                _ => e.StatusMessage,
-            };
-
-            Console.Write($"\r{message,-70}");
-            Trace.WriteLine($"[{DateTime.UtcNow:HH:mm:ss.ff}] {message}");
+            Console.ReadKey();
         }
+    }
+
+    /// <summary> Gets the <see cref="IServiceProvider"/> DI container configured in <see cref="Startup"/>. </summary>
+    /// <returns> An instance of <see cref="IServiceProvider"/>. </returns>
+    private static IServiceProvider GetServiceProvider()
+    {
+        var services = new ServiceCollection();
+        new Startup().ConfigureServices(services);
+        return services.BuildServiceProvider();
+    }
+
+    private static void OnComparisonStatusChanged(object sender, StatusChangedEventArgs e)
+    {
+        string message = e.DatabaseInstance switch
+        {
+            DatabaseInstance.Database1 => $"{e.StatusMessage} for database 1",
+            DatabaseInstance.Database2 => $"{e.StatusMessage} for database 2",
+            _ => e.StatusMessage,
+        };
+
+        Console.Write($"\r{message,-70}");
+        Trace.WriteLine($"[{DateTime.UtcNow:HH:mm:ss.ff}] {message}");
     }
 }
