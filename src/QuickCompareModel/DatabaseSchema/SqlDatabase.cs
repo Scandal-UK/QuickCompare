@@ -24,7 +24,7 @@ using QuickCompareModel.Models;
 /// </remarks>
 /// <param name="connectionString">The database connection string for the current instance being inspected.</param>
 /// <param name="options">Collection of configuration settings.</param>
-public class SqlDatabase(string connectionString, QuickCompareOptions options)
+public partial class SqlDatabase(string connectionString, QuickCompareOptions options)
 {
     private readonly string connectionString = connectionString;
     private readonly QuickCompareOptions options = options;
@@ -136,7 +136,7 @@ public class SqlDatabase(string connectionString, QuickCompareOptions options)
                     index.Clustered = !desc.Contains("nonclustered");
                     index.Unique = desc.Contains("unique");
                     index.IsUniqueKey = desc.Contains("unique key");
-                    index.FileGroup = Regex.Match(desc, "located on  (.*)$").Groups[1].Value;
+                    index.FileGroup = FileGroupRegex().Match(desc).Groups[1].Value;
                     break;
                 default:
                     break;
@@ -472,6 +472,8 @@ public class SqlDatabase(string connectionString, QuickCompareOptions options)
         return trigger;
     }
 
+    [GeneratedRegex("located on (.*)$")] private static partial Regex FileGroupRegex();
+
     private Task[] RequiredItemTasks()
     {
         var tasks = new List<Task>() { this.LoadRelationsAsync(), this.LoadColumnDetailsAsync() };
@@ -514,7 +516,7 @@ public class SqlDatabase(string connectionString, QuickCompareOptions options)
             }
         }
 
-        return tasks.ToArray();
+        return [.. tasks];
     }
 
     private Task[] DependentItemTasks()
@@ -536,7 +538,7 @@ public class SqlDatabase(string connectionString, QuickCompareOptions options)
             }
         }
 
-        return tasks.ToArray();
+        return [.. tasks];
     }
 
     private async Task LoadFullyQualifiedTableNamesAsync()
@@ -813,7 +815,7 @@ public class SqlDatabase(string connectionString, QuickCompareOptions options)
         var sb = new StringBuilder();
         foreach (var routine in this.UserRoutines.Keys)
         {
-            this.RaiseStatusChanged($"Reading routine definition {Array.IndexOf(this.UserRoutines.Keys.ToArray(), routine) + 1} of {this.UserRoutines.Count}");
+            this.RaiseStatusChanged($"Reading routine definition {Array.IndexOf([.. this.UserRoutines.Keys], routine) + 1} of {this.UserRoutines.Count}");
 
             command.Parameters["@routinename"].Value = routine.GetObjectName();
             await connection.OpenAsync();

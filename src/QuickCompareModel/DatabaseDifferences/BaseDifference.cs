@@ -16,7 +16,7 @@ using System.Text.RegularExpressions;
 /// </remarks>
 /// <param name="existsInDatabase1">Value indicating whether the item exists in database 1.</param>
 /// <param name="existsInDatabase2">Value indicating whether the item exists in database 2.</param>
-public class BaseDifference(bool existsInDatabase1, bool existsInDatabase2)
+public partial class BaseDifference(bool existsInDatabase1, bool existsInDatabase2)
 {
     /// <summary> Whitespace indentation used for output text. </summary>
     protected const string TabIndent = "     ";
@@ -79,13 +79,23 @@ public class BaseDifference(bool existsInDatabase1, bool existsInDatabase2)
         return section.ToString();
     }
 
-    private static string StripMultiLineComments(string input) => Regex.Replace(input, @"/\*[^*]*\*+([^/*][^*]*\*+)*/", string.Empty);
+    private static string StripMultiLineComments(string input) => MultilineCommentRegex().Replace(input, string.Empty);
 
-    private static string StripSingleLineComments(string input) => Regex.Replace(input, @"(--)([^\r\n]+)", string.Empty);
+    private static string StripSingleLineComments(string input) => SingleLineCommentRegex().Replace(input, string.Empty);
 
-    private static string StripCommaWhitespace(string input) => Regex.Replace(input, @"\s*,\s*", ",");
+    private static string StripCommaWhitespace(string input) => CommaWitespaceRegex().Replace(input, ",");
 
-    private static string NormaliseCommas(string input) => Regex.Replace(input, @"[,]", ", ");
+    private static string NormaliseCommas(string input) => CommaRegex().Replace(input, ", ");
 
-    private static string ReduceWhitespaceToSingleCharacter(string input) => Regex.Replace(input, @"[\s]+", " ");
+    private static string ReduceWhitespaceToSingleCharacter(string input) => WhitespaceRegex().Replace(input, " ");
+
+    [GeneratedRegex(@"/\*[^*]*\*+([^/*][^*]*\*+)*/")] private static partial Regex MultilineCommentRegex();
+
+    [GeneratedRegex(@"(--)([^\r\n]+)")] private static partial Regex SingleLineCommentRegex();
+
+    [GeneratedRegex(@"\s*,\s*")] private static partial Regex CommaWitespaceRegex();
+
+    [GeneratedRegex(@"[,]")] private static partial Regex CommaRegex();
+
+    [GeneratedRegex(@"[\s]+")] private static partial Regex WhitespaceRegex();
 }
