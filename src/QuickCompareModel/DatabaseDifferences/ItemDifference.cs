@@ -37,7 +37,7 @@ public class ItemDifference(bool existsInDatabase1, bool existsInDatabase2) : Ba
         else if (this.Differences.Count > 1)
         {
             sb.Append($"\r\n{TabIndent} - ");
-            sb.AppendLine(string.Join($"\r\n{TabIndent} - ", [.. this.Differences]));
+            sb.AppendLine(string.Join($"\r\n{TabIndent} - ", this.Differences.ToArray()));
         }
         else
         {

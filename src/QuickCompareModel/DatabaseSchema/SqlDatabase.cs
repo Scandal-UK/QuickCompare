@@ -538,7 +538,7 @@ public partial class SqlDatabase(string connectionString, QuickCompareOptions op
             }
         }
 
-        return [.. tasks];
+        return tasks.ToArray();
     }
 
     private async Task LoadFullyQualifiedTableNamesAsync()
