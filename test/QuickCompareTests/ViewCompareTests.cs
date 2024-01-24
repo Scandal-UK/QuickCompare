@@ -4,6 +4,7 @@
 
 namespace QuickCompareTests;
 
+using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
@@ -13,8 +14,9 @@ using Xunit;
 public class ViewCompareTests
 {
     /// <summary> Test view difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void ViewMissingFromDatabase1_IsReported()
+    public async Task ViewMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -23,7 +25,7 @@ public class ViewCompareTests
         builder.Database2.Views.Add(viewName, "foobar");
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.ViewDifferences.Should().ContainKey(viewName);
@@ -35,8 +37,9 @@ public class ViewCompareTests
     }
 
     /// <summary> Test view difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void ViewMissingFromDatabase2_IsReported()
+    public async Task ViewMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -45,7 +48,7 @@ public class ViewCompareTests
         builder.Database1.Views.Add(viewName, "foobar");
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.ViewDifferences.Should().ContainKey(viewName);
@@ -57,8 +60,9 @@ public class ViewCompareTests
     }
 
     /// <summary> Test view difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void ViewsInBothDatabases_AreNotReported()
+    public async Task ViewsInBothDatabases_AreNotReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -68,7 +72,7 @@ public class ViewCompareTests
         builder.Database2.Views.Add(viewName, "foobar");
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.ViewDifferences.Should().ContainKey(viewName);

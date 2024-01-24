@@ -4,6 +4,7 @@
 
 namespace QuickCompareTests;
 
+using System.Threading.Tasks;
 using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
@@ -14,8 +15,9 @@ using Xunit;
 public class UserTypeCompareTests
 {
     /// <summary> Test user type difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void UserTypeMissingFromDatabase1_IsReported()
+    public async Task UserTypeMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -24,7 +26,7 @@ public class UserTypeCompareTests
         builder.Database2.UserTypes.Add(userTypeName, new SqlUserType());
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.UserTypeDifferences.Should().ContainKey(userTypeName);
@@ -36,8 +38,9 @@ public class UserTypeCompareTests
     }
 
     /// <summary> Test user type difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void UserTypeMissingFromDatabase2_IsReported()
+    public async Task UserTypeMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -46,7 +49,7 @@ public class UserTypeCompareTests
         builder.Database1.UserTypes.Add(userTypeName, new SqlUserType());
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.UserTypeDifferences.Should().ContainKey(userTypeName);
@@ -58,8 +61,9 @@ public class UserTypeCompareTests
     }
 
     /// <summary> Test user type difference is not reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void UserTypeInBothDatabases_IsNotReported()
+    public async Task UserTypeInBothDatabases_IsNotReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -69,7 +73,7 @@ public class UserTypeCompareTests
         builder.Database2.UserTypes.Add(userTypeName, new SqlUserType());
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.UserTypeDifferences.Should().ContainKey(userTypeName);
@@ -81,48 +85,69 @@ public class UserTypeCompareTests
     }
 
     /// <summary> Test user type difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void UnderlyingTypeName_Difference_IsReported() =>
-        ComparisonResultContainsValue(new SqlUserType { UnderlyingTypeName = "char" }, "underlying type")
-            .Should().BeTrue();
+    public async Task UnderlyingTypeName_Difference_IsReported()
+    {
+        var result = await ComparisonResultContainsValue(new SqlUserType { UnderlyingTypeName = "char" }, "underlying type");
+        result.Should().BeTrue();
+    }
 
     /// <summary> Test user type difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void Precision_Difference_IsReported() =>
-        ComparisonResultContainsValue(new SqlUserType { Precision = 2 }, "precision")
-            .Should().BeTrue();
+    public async Task Precision_Difference_IsReported()
+    {
+        var result = await ComparisonResultContainsValue(new SqlUserType { Precision = 2 }, "precision");
+        result.Should().BeTrue();
+    }
 
     /// <summary> Test user type difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void Scale_Difference_IsReported() =>
-        ComparisonResultContainsValue(new SqlUserType { Scale = 2 }, "scale")
-            .Should().BeTrue();
+    public async Task Scale_Difference_IsReported()
+    {
+        var result = await ComparisonResultContainsValue(new SqlUserType { Scale = 2 }, "scale");
+        result.Should().BeTrue();
+    }
 
     /// <summary> Test user type difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void MaxLength_Difference_IsReported() =>
-        ComparisonResultContainsValue(new SqlUserType { MaxLength = 2 }, "max length")
-            .Should().BeTrue();
+    public async Task MaxLength_Difference_IsReported()
+    {
+        var result = await ComparisonResultContainsValue(new SqlUserType { MaxLength = 2 }, "max length");
+        result.Should().BeTrue();
+    }
 
     /// <summary> Test user type difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void IsNullable_Difference_IsReported() =>
-        ComparisonResultContainsValue(new SqlUserType { IsNullable = true }, "nullable")
-            .Should().BeTrue();
+    public async Task IsNullable_Difference_IsReported()
+    {
+        var result = await ComparisonResultContainsValue(new SqlUserType { IsNullable = true }, "nullable");
+        result.Should().BeTrue();
+    }
 
     /// <summary> Test user type difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void CollationName_Difference_IsReported() =>
-        ComparisonResultContainsValue(new SqlUserType { CollationName = "foobar" }, "collation")
-            .Should().BeTrue();
+    public async Task CollationName_Difference_IsReported()
+    {
+        var result = await ComparisonResultContainsValue(new SqlUserType { CollationName = "foobar" }, "collation");
+        result.Should().BeTrue();
+    }
 
     /// <summary> Test user type difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void IsAssemblyType_Difference_IsReported() =>
-        ComparisonResultContainsValue(new SqlUserType { IsAssemblyType = true }, "assembly")
-            .Should().BeTrue();
+    public async Task IsAssemblyType_Difference_IsReported()
+    {
+        var result = await ComparisonResultContainsValue(new SqlUserType { IsAssemblyType = true }, "assembly");
+        result.Should().BeTrue();
+    }
 
-    private static bool ComparisonResultContainsValue(SqlUserType userType, string value)
+    private static async Task<bool> ComparisonResultContainsValue(SqlUserType userType, string value)
     {
         // Arrange
         var userTypeName = "Type1";
@@ -132,7 +157,7 @@ public class UserTypeCompareTests
         builder.Database2.UserTypes.Add(userTypeName, new SqlUserType());
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         var diff = builder.Differences.UserTypeDifferences[userTypeName];

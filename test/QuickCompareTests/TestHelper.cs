@@ -7,6 +7,7 @@ namespace QuickCompareTests;
 using Microsoft.Extensions.Options;
 using QuickCompareModel;
 using QuickCompareModel.DatabaseSchema;
+using QuickCompareModel.Models;
 
 /// <summary>
 /// Class to provide common setup methods for tests.

@@ -8,6 +8,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using QuickCompareModel;
+using QuickCompareModel.Models;
 
 /// <summary> Main program loop. </summary>
 internal static class Program

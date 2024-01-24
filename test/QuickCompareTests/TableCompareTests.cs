@@ -5,6 +5,7 @@
 namespace QuickCompareTests;
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
@@ -18,15 +19,16 @@ public class TableCompareTests
     private const string TabIndent = "     ";
 
     /// <summary> Test table difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TableMissingFromDatabase1_IsReported()
+    public async Task TableMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
         builder.Database2.Tables.Add(TableName, new SqlTable());
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -38,15 +40,16 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TableMissingFromDatabase2_IsReported()
+    public async Task TableMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
         builder.Database1.Tables.Add(TableName, new SqlTable());
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -58,8 +61,9 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is not reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TablesInBothDatabases_AreNotReported()
+    public async Task TablesInBothDatabases_AreNotReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -67,7 +71,7 @@ public class TableCompareTests
         builder.Database2.Tables.Add(TableName, new SqlTable());
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -80,8 +84,9 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TablePropertyMissingFromDatabase1_IsReported()
+    public async Task TablePropertyMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -99,7 +104,7 @@ public class TableCompareTests
         });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -117,8 +122,9 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TablePropertyMissingFromDatabase2_IsReported()
+    public async Task TablePropertyMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -136,7 +142,7 @@ public class TableCompareTests
         });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -155,8 +161,9 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TablePropertyDifference_IsReported()
+    public async Task TablePropertyDifference_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -184,7 +191,7 @@ public class TableCompareTests
         });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -201,8 +208,9 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TablePermissionMissingFromDatabase1_IsReported()
+    public async Task TablePermissionMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -219,7 +227,7 @@ public class TableCompareTests
         });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -235,8 +243,9 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TablePermissionMissingFromDatabase2_IsReported()
+    public async Task TablePermissionMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -253,7 +262,7 @@ public class TableCompareTests
         });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -269,8 +278,9 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is not reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TablePermissionInBothDatabases_IsNotReported()
+    public async Task TablePermissionInBothDatabases_IsNotReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -296,7 +306,7 @@ public class TableCompareTests
         });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -314,17 +324,18 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TableColumn_WithSingleDifference_IsSingleLine()
+    public async Task TableColumn_WithSingleDifference_IsSingleLine()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
-        builder.Database1.Tables.Add(TableName, new SqlTable { ColumnDetails = new List<SqlColumnDetail> { new SqlColumnDetail { ColumnName = "foobar" } } });
+        builder.Database1.Tables.Add(TableName, new SqlTable { ColumnDetails = [new SqlColumnDetail { ColumnName = "foobar" }] });
         builder.Database1.Tables[TableName].ColumnDetails[0].OrdinalPosition = 1;
-        builder.Database2.Tables.Add(TableName, new SqlTable { ColumnDetails = new List<SqlColumnDetail> { new SqlColumnDetail { ColumnName = "foobar" } } });
+        builder.Database2.Tables.Add(TableName, new SqlTable { ColumnDetails = [new SqlColumnDetail { ColumnName = "foobar" }] });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);
@@ -337,18 +348,19 @@ public class TableCompareTests
     }
 
     /// <summary> Test table difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TableColumn_WithMultipleDifferences_IsMultipleLines()
+    public async Task TableColumn_WithMultipleDifferences_IsMultipleLines()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
-        builder.Database1.Tables.Add(TableName, new SqlTable { ColumnDetails = new List<SqlColumnDetail> { new SqlColumnDetail { ColumnName = "foobar" } } });
+        builder.Database1.Tables.Add(TableName, new SqlTable { ColumnDetails = [new SqlColumnDetail { ColumnName = "foobar" }] });
         builder.Database1.Tables[TableName].ColumnDetails[0].OrdinalPosition = 1;
         builder.Database1.Tables[TableName].ColumnDetails[0].NumericPrecision = 1;
-        builder.Database2.Tables.Add(TableName, new SqlTable { ColumnDetails = new List<SqlColumnDetail> { new SqlColumnDetail { ColumnName = "foobar" } } });
+        builder.Database2.Tables.Add(TableName, new SqlTable { ColumnDetails = [new SqlColumnDetail { ColumnName = "foobar" }] });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences.Should().ContainKey(TableName);

@@ -29,7 +29,8 @@ public class BaseDifferenceTests
             "-- Line comment\r\n" +
             "SELECT * -- Inline comment\r\n" +
             "FROM Table\r\n" +
-            "-- Line comment", DoNotStripWhitespace)
+            "-- Line comment",
+            DoNotStripWhitespace)
             .Should().Be("SELECT * \r\nFROM Table");
 
     /// <summary> Test multi-line comments are stripped. </summary>
@@ -38,7 +39,8 @@ public class BaseDifferenceTests
         BaseDifference.CleanDefinitionText(
             "/******************\r\n" +
             " ** Comment body **\r\n" +
-            " ******************/ SELECT * FROM Table", DoNotStripWhitespace)
+            " ******************/ SELECT * FROM Table",
+            DoNotStripWhitespace)
             .Should().Be("SELECT * FROM Table");
 
     /// <summary> Test enclosed comments are stripped. </summary>
@@ -53,7 +55,8 @@ public class BaseDifferenceTests
     public void CleanDefinitionText_Normalises_CommaWhitespace() =>
         BaseDifference.CleanDefinitionText(
             "SELECT ID , Name ,Email,  Phone  , FootSize\r" +
-            ",Timestamp FROM Table", StripWhitespace)
+            ",Timestamp FROM Table",
+            StripWhitespace)
             .Should().Be("SELECT ID, Name, Email, Phone, FootSize, Timestamp FROM Table");
 
     /// <summary> Test whitespace gets condensed to a single space. </summary>

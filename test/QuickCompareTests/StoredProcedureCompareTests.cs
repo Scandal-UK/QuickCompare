@@ -4,6 +4,7 @@
 
 namespace QuickCompareTests;
 
+using System.Threading.Tasks;
 using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
@@ -17,15 +18,16 @@ public class StoredProcedureCompareTests
     private const string StoredProcedureRoutineType = "PROCEDURE";
 
     /// <summary> Test stored procedure difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void StoredProcedureMissingFromDatabase1_IsReported()
+    public async Task StoredProcedureMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
         builder.Database2.UserRoutines.Add(StoredProcedureName, new SqlUserRoutine { RoutineType = StoredProcedureRoutineType });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -37,15 +39,16 @@ public class StoredProcedureCompareTests
     }
 
     /// <summary> Test stored procedure difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void StoredProcedureMissingFromDatabase2_IsReported()
+    public async Task StoredProcedureMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
         builder.Database1.UserRoutines.Add(StoredProcedureName, new SqlUserRoutine { RoutineType = StoredProcedureRoutineType });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -57,8 +60,9 @@ public class StoredProcedureCompareTests
     }
 
     /// <summary> Test stored procedure difference is not reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void StoredProceduresInBothDatabases_AreNotReported()
+    public async Task StoredProceduresInBothDatabases_AreNotReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -66,7 +70,7 @@ public class StoredProcedureCompareTests
         builder.Database2.UserRoutines.Add(StoredProcedureName, new SqlUserRoutine { RoutineType = StoredProcedureRoutineType });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -77,8 +81,9 @@ public class StoredProcedureCompareTests
     }
 
     /// <summary> Test stored procedure difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void StoredProcedureDefinitionDifference_IsReported()
+    public async Task StoredProcedureDefinitionDifference_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -86,7 +91,7 @@ public class StoredProcedureCompareTests
         builder.Database2.UserRoutines.Add(StoredProcedureName, new SqlUserRoutine { RoutineType = StoredProcedureRoutineType, RoutineDefinition = "bar" });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -97,8 +102,9 @@ public class StoredProcedureCompareTests
     }
 
     /// <summary> Test stored procedure difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void StoredProcedurePropertyMissingFromDatabase1_IsReported()
+    public async Task StoredProcedurePropertyMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -115,7 +121,7 @@ public class StoredProcedureCompareTests
         });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -127,8 +133,9 @@ public class StoredProcedureCompareTests
     }
 
     /// <summary> Test stored procedure difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void StoredProcedurePropertyMissingFromDatabase2_IsReported()
+    public async Task StoredProcedurePropertyMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -145,7 +152,7 @@ public class StoredProcedureCompareTests
         });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);
@@ -157,8 +164,9 @@ public class StoredProcedureCompareTests
     }
 
     /// <summary> Test stored procedure difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void StoredProcedurePropertyDifference_IsReported()
+    public async Task StoredProcedurePropertyDifference_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -184,7 +192,7 @@ public class StoredProcedureCompareTests
         });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.StoredProcedureDifferences.Should().ContainKey(StoredProcedureName);

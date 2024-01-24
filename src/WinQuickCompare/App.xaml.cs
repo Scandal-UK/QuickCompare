@@ -40,8 +40,8 @@ public partial class App : Application
     private void ReadApplicationPropertiesFromFile()
     {
         IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
-        using IsolatedStorageFileStream stream = new (Filename, FileMode.OpenOrCreate, storage);
-        using StreamReader reader = new (stream);
+        using IsolatedStorageFileStream stream = new(Filename, FileMode.OpenOrCreate, storage);
+        using StreamReader reader = new(stream);
         while (!reader.EndOfStream)
         {
             this.SetPropertyFromLineOfText(reader.ReadLine());
@@ -51,15 +51,15 @@ public partial class App : Application
     private void SetPropertyFromLineOfText(string line)
     {
         string key = line[..line.IndexOf(',')];
-        string value = line[(line.IndexOf(',') + 1) ..];
+        string value = line[(line.IndexOf(',') + 1)..];
         this.Properties[key] = value;
     }
 
     private void WriteApplicationPropertiesToFile()
     {
         using IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForDomain();
-        using IsolatedStorageFileStream stream = new (Filename, FileMode.Create, storage);
-        using StreamWriter writer = new (stream);
+        using IsolatedStorageFileStream stream = new(Filename, FileMode.Create, storage);
+        using StreamWriter writer = new(stream);
         foreach (string key in this.Properties.Keys)
         {
             writer.WriteLine("{0},{1}", key, this.Properties[key]);

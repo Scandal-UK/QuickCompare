@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using QuickCompareModel;
+using QuickCompareModel.Models;
 
 /// <summary> Interaction logic for the main window. </summary>
 public partial class MainWindow : Window
@@ -23,7 +24,7 @@ public partial class MainWindow : Window
         try
         {
             var context = (QuickCompareContext)this.FindResource(nameof(QuickCompareContext));
-            DifferenceBuilder builder = new (context.OptionsFromProperties());
+            DifferenceBuilder builder = new(context.OptionsFromProperties());
             builder.ComparisonStatusChanged += this.Comparison_StatusChanged;
 
             await builder.BuildDifferencesAsync();
