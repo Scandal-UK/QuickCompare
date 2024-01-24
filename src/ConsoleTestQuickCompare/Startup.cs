@@ -7,6 +7,7 @@ namespace ConsoleTestQuickCompare;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QuickCompareModel;
+using QuickCompareModel.Models;
 
 /// <summary>  Initialises the dependency injection container from app settings.  </summary>
 internal class Startup

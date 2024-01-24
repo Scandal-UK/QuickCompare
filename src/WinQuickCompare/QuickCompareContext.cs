@@ -7,7 +7,7 @@ namespace QuickCompare;
 using System.ComponentModel;
 using System.Windows;
 using Microsoft.Extensions.Options;
-using QuickCompareModel;
+using QuickCompareModel.Models;
 
 /// <summary>
 /// View model class which uses application properties to persist form input between restarts.
@@ -112,7 +112,7 @@ public class QuickCompareContext
     /// <returns>Instance of <see cref="IOptions{QuickCompareOptions}"/>.</returns>
     public IOptions<QuickCompareOptions> OptionsFromProperties()
     {
-        QuickCompareOptions settings = new ()
+        QuickCompareOptions settings = new()
         {
             ConnectionString1 = this.ConnectionString1,
             ConnectionString2 = this.ConnectionString2,
@@ -138,7 +138,7 @@ public class QuickCompareContext
     {
         if (this.PropertyChanged != null)
         {
-            PropertyChangedEventArgs e = new (propertyName);
+            PropertyChangedEventArgs e = new(propertyName);
             this.PropertyChanged(this, e);
         }
     }

@@ -4,6 +4,7 @@
 
 namespace QuickCompareTests;
 
+using System.Threading.Tasks;
 using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
@@ -14,8 +15,9 @@ using Xunit;
 public class TriggerCompareTests
 {
     /// <summary> Test trigger difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TriggerMissingFromDatabase1_IsReported()
+    public async Task TriggerMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -27,7 +29,7 @@ public class TriggerCompareTests
         builder.Database2.Tables[tableName].Triggers.Add(new SqlTrigger { TriggerName = triggerName });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences[tableName]
@@ -42,8 +44,9 @@ public class TriggerCompareTests
     }
 
     /// <summary> Test trigger difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TriggerMissingFromDatabase2_IsReported()
+    public async Task TriggerMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -55,7 +58,7 @@ public class TriggerCompareTests
         builder.Database2.Tables.Add(tableName, new SqlTable());
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences[tableName]
@@ -70,8 +73,9 @@ public class TriggerCompareTests
     }
 
     /// <summary> Test trigger difference is not reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void TriggerInBothDatabases_IsNotReported()
+    public async Task TriggerInBothDatabases_IsNotReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -84,7 +88,7 @@ public class TriggerCompareTests
         builder.Database2.Tables[tableName].Triggers.Add(new SqlTrigger { TriggerName = triggerName, TableName = tableName });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences[tableName]

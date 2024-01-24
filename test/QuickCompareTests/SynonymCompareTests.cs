@@ -4,6 +4,7 @@
 
 namespace QuickCompareTests;
 
+using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
@@ -13,8 +14,9 @@ using Xunit;
 public class SynonymCompareTests
 {
     /// <summary> Test synonym difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void SynonymMissingFromDatabase1_IsReported()
+    public async Task SynonymMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -23,7 +25,7 @@ public class SynonymCompareTests
         builder.Database2.Synonyms.Add(synonymName, "foobar");
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.SynonymDifferences.Should().ContainKey(synonymName);
@@ -35,8 +37,9 @@ public class SynonymCompareTests
     }
 
     /// <summary> Test synonym difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void SynonymMissingFromDatabase2_IsReported()
+    public async Task SynonymMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -45,7 +48,7 @@ public class SynonymCompareTests
         builder.Database1.Synonyms.Add(synonymName, "foobar");
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.SynonymDifferences.Should().ContainKey(synonymName);
@@ -57,8 +60,9 @@ public class SynonymCompareTests
     }
 
     /// <summary> Test synonym difference is not reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void SynonymsInBothDatabases_AreNotReported()
+    public async Task SynonymsInBothDatabases_AreNotReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -68,7 +72,7 @@ public class SynonymCompareTests
         builder.Database2.Synonyms.Add(synonymName, "foobar");
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.SynonymDifferences.Should().ContainKey(synonymName);

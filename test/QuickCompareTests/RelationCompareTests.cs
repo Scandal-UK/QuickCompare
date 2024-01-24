@@ -4,6 +4,7 @@
 
 namespace QuickCompareTests;
 
+using System.Threading.Tasks;
 using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
@@ -17,8 +18,9 @@ public class RelationCompareTests
     private const string TableName = "[dbo].[Table1]";
 
     /// <summary> Test relation difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void RelationMissingFromDatabase1_IsReported()
+    public async Task RelationMissingFromDatabase1_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -28,7 +30,7 @@ public class RelationCompareTests
         builder.Database2.Tables[TableName].Relations.Add(new SqlRelation { RelationName = RelationName });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences[TableName]
@@ -43,8 +45,9 @@ public class RelationCompareTests
     }
 
     /// <summary> Test relation difference is reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void RelationMissingFromDatabase2_IsReported()
+    public async Task RelationMissingFromDatabase2_IsReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -54,7 +57,7 @@ public class RelationCompareTests
         builder.Database2.Tables.Add(TableName, new SqlTable());
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences[TableName]
@@ -69,8 +72,9 @@ public class RelationCompareTests
     }
 
     /// <summary> Test relation difference is not reported. </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void RelationsInBothDatabases_AreNotReported()
+    public async Task RelationsInBothDatabases_AreNotReported()
     {
         // Arrange
         var builder = TestHelper.GetBasicBuilder();
@@ -81,7 +85,7 @@ public class RelationCompareTests
         builder.Database2.Tables[TableName].Relations.Add(new SqlRelation { RelationName = RelationName });
 
         // Act
-        builder.BuildDifferencesAsync().Wait();
+        await builder.BuildDifferencesAsync();
 
         // Assert
         builder.Differences.TableDifferences[TableName]
