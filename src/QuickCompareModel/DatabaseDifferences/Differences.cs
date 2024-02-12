@@ -18,36 +18,28 @@ public class Differences
     public string Database2 { get; set; }
 
     /// <summary> Gets or sets a set of models to represent extended properties and track the differences across two databases. </summary>
-    public Dictionary<string, ExtendedPropertyDifference> ExtendedPropertyDifferences { get; set; }
-        = [];
+    public Dictionary<string, ExtendedPropertyDifference> ExtendedPropertyDifferences { get; set; } = [];
 
     /// <summary> Gets or sets a set of models to represent permissions and track the differences across two databases. </summary>
-    public Dictionary<string, BaseDifference> PermissionDifferences { get; set; }
-        = [];
+    public Dictionary<string, BaseDifference> PermissionDifferences { get; set; } = [];
 
     /// <summary> Gets or sets a set of models to represent tables and track the differences across two databases. </summary>
-    public Dictionary<string, TableDifference> TableDifferences { get; set; }
-        = [];
+    public Dictionary<string, TableDifference> TableDifferences { get; set; } = [];
 
     /// <summary> Gets or sets a set of models to represent user types and track the differences across two databases. </summary>
-    public Dictionary<string, ItemDifference> UserTypeDifferences { get; set; }
-        = [];
+    public Dictionary<string, ItemDifference> UserTypeDifferences { get; set; } = [];
 
     /// <summary> Gets or sets a set of models to represent functions and track the differences across two databases. </summary>
-    public Dictionary<string, DatabaseObjectDifference> FunctionDifferences { get; set; }
-        = [];
+    public Dictionary<string, DatabaseObjectDifference> FunctionDifferences { get; set; } = [];
 
     /// <summary> Gets or sets a set of models to represent stored procedures and track the differences across two databases. </summary>
-    public Dictionary<string, DatabaseObjectDifference> StoredProcedureDifferences { get; set; }
-        = [];
+    public Dictionary<string, DatabaseObjectDifference> StoredProcedureDifferences { get; set; } = [];
 
     /// <summary> Gets or sets a set of models to represent views and track the differences across two databases. </summary>
-    public Dictionary<string, DatabaseObjectDifference> ViewDifferences { get; set; }
-        = [];
+    public Dictionary<string, DatabaseObjectDifference> ViewDifferences { get; set; } = [];
 
     /// <summary> Gets or sets a set of models to represent synonyms and track the differences across two databases. </summary>
-    public Dictionary<string, DatabaseObjectDifference> SynonymDifferences { get; set; }
-        = [];
+    public Dictionary<string, DatabaseObjectDifference> SynonymDifferences { get; set; } = [];
 
     /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
     public bool HasDifferences =>

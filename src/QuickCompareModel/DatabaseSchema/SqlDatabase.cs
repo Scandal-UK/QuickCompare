@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,19 +23,10 @@ using QuickCompareModel.Models;
 /// </remarks>
 /// <param name="connectionString">The database connection string for the current instance being inspected.</param>
 /// <param name="options">Collection of configuration settings.</param>
-public partial class SqlDatabase(string connectionString, QuickCompareOptions options)
+public partial class SqlDatabase(string connectionString, QuickCompareOptions options = null)
 {
     private readonly string connectionString = connectionString;
-    private readonly QuickCompareOptions options = options;
-
-    /// <summary>
-    /// Initialises a new instance of the <see cref="SqlDatabase"/> class with a connection string.
-    /// </summary>
-    /// <param name="connectionString">The database connection string for the current instance being inspected.</param>
-    public SqlDatabase(string connectionString)
-        : this(connectionString, new QuickCompareOptions())
-    {
-    }
+    private readonly QuickCompareOptions options = options ?? new();
 
     /// <summary> Handler for when the status message changes. </summary>
     public event EventHandler<StatusChangedEventArgs> LoaderStatusChanged;

@@ -5,8 +5,6 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-  schedule:
-    - cron: '17 3 * * 4'
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -36,7 +34,7 @@ jobs:
         dotnet-version: '8.x'
 
     - name: Initialise CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
@@ -48,4 +46,4 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3

@@ -43,7 +43,7 @@ internal static class Program
 
     /// <summary> Gets the <see cref="IServiceProvider"/> DI container configured in <see cref="Startup"/>. </summary>
     /// <returns> An instance of <see cref="IServiceProvider"/>. </returns>
-    private static IServiceProvider GetServiceProvider()
+    private static ServiceProvider GetServiceProvider()
     {
         var services = new ServiceCollection();
         new Startup().ConfigureServices(services);
