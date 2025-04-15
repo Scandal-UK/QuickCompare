@@ -4,9 +4,7 @@
 
 namespace QuickCompareModel.DatabaseSchema;
 
-/// <summary>
-/// Class to represent a custom type in the database.
-/// </summary>
+/// <summary> Class to represent a custom type in the database. </summary>
 public class SqlUserType
 {
     /// <summary> Gets or sets the custom type name. </summary>

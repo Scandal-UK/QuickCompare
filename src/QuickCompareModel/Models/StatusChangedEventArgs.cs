@@ -7,7 +7,6 @@ namespace QuickCompareModel.Models;
 using System;
 
 /// <summary> Custom derivative of <see cref="EventArgs"/> to contain a status message. </summary>
-/// <param name="statusMessage">Current status message.</param>
 [Serializable]
 public class StatusChangedEventArgs(string statusMessage)
     : EventArgs

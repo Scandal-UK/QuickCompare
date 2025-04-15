@@ -9,16 +9,11 @@ using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
 
-/// <summary>
-/// Tests for the comparison of relation differences.
-/// </summary>
 public class RelationCompareTests
 {
     private const string RelationName = "FK_Table2_Table1";
     private const string TableName = "[dbo].[Table1]";
 
-    /// <summary> Test relation difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task RelationMissingFromDatabase1_IsReported()
     {
@@ -44,8 +39,6 @@ public class RelationCompareTests
             .ToString().Should().Contain($"Relation: {RelationName} does not exist in database 1");
     }
 
-    /// <summary> Test relation difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task RelationMissingFromDatabase2_IsReported()
     {
@@ -71,8 +64,6 @@ public class RelationCompareTests
             .ToString().Should().Contain($"Relation: {RelationName} does not exist in database 2");
     }
 
-    /// <summary> Test relation difference is not reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task RelationsInBothDatabases_AreNotReported()
     {

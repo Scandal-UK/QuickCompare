@@ -9,10 +9,8 @@ using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
 
-/// <summary> Tests for the comparison of two databases. </summary>
 public class DatabaseCompareTests
 {
-    /// <summary> Test to ensure the correct server/database names are derived from the connection string. </summary>
     [Fact]
     public void Database_FriendlyName_ReturnsAsExpected()
     {
@@ -31,8 +29,6 @@ public class DatabaseCompareTests
             .FriendlyName.Should().Be(expectedResult);
     }
 
-    /// <summary> Test missing property is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task TablePropertyMissingFromDatabase1_IsReported()
     {
@@ -53,8 +49,6 @@ public class DatabaseCompareTests
         builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase1.Should().BeFalse();
     }
 
-    /// <summary> Test missing property is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task TablePropertyMissingFromDatabase2_IsReported()
     {
@@ -75,8 +69,6 @@ public class DatabaseCompareTests
         builder.Differences.ExtendedPropertyDifferences["Key1"].ExistsInDatabase2.Should().BeFalse();
     }
 
-    /// <summary> Test property difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task TablePropertyDifference_IsReported()
     {

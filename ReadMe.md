@@ -10,8 +10,8 @@
 > __A simple, fast, free SQL database schema comparison library/app written in C#__
 
 - [QuickCompareModel](/src/QuickCompareModel) - the core library and NuGet package source code
-- [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample .NET 8 console application
-- [WinQuickCompare](/src/WinQuickCompare) - sample .NET 8 Windows application
+- [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample dotnet console application
+- [WinQuickCompare](/src/WinQuickCompare) - sample dotnet Windows application
 
 This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
 
@@ -73,7 +73,7 @@ An example of consuming this event can be found in both [WinQuickCompare](/src/W
 
 ### Database SQL queries
 
-The SQL queries are located in the folder DatabaseSchema/Queries. These have been written for backwards-compatibility with SQL Server 2000.
+The SQL queries are located in the folder DatabaseSchema/Queries. These have been written for backwards-compatibility with SQL Server 2000, while also utilising the features of new versions.
 
 The queries do not require special permission for the master database and have minimal impact on database performance, even during busy periods.
 

@@ -4,9 +4,7 @@
 
 namespace QuickCompareModel.DatabaseSchema.Enums;
 
-/// <summary>
-/// Object type that extended property applies to.
-/// </summary>
+/// <summary> Object type that extended property applies to. </summary>
 public enum PropertyObjectType
 {
     /// <summary> Database. </summary>

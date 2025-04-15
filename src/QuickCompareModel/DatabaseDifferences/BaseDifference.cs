@@ -10,12 +10,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 /// <summary> Model to represent the most basic element and track the existence across two databases. </summary>
-/// <remarks>
-/// Initialises a new instance of the <see cref="BaseDifference"/> class
-/// with values determining whether the item exists in each database.
-/// </remarks>
-/// <param name="existsInDatabase1">Value indicating whether the item exists in database 1.</param>
-/// <param name="existsInDatabase2">Value indicating whether the item exists in database 2.</param>
 public partial class BaseDifference(bool existsInDatabase1, bool existsInDatabase2)
 {
     /// <summary> Whitespace indentation used for output text. </summary>

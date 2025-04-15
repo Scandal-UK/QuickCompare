@@ -6,9 +6,7 @@ namespace QuickCompareModel.DatabaseSchema;
 
 using QuickCompareModel.DatabaseSchema.Enums;
 
-/// <summary>
-/// Class to represent a permission in the database.
-/// </summary>
+/// <summary> Class to represent a permission in the database. </summary>
 public class SqlPermission
 {
     /// <summary> Gets or sets the role name. </summary>

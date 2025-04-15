@@ -9,8 +9,6 @@ using System.Linq;
 using System.Text;
 
 /// <summary> Model to represent the table element and track the differences across two databases. </summary>
-/// <param name="existsInDatabase1">Value indicating whether the item exists in database 1.</param>
-/// <param name="existsInDatabase2">Value indicating whether the item exists in database 2.</param>
 public class TableDifference(bool existsInDatabase1, bool existsInDatabase2) : BaseDifference(existsInDatabase1, existsInDatabase2)
 {
     /// <summary> Gets or sets a set of models to represent columns and track the differences across two databases. </summary>

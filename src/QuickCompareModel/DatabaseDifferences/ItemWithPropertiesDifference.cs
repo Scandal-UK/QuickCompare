@@ -34,8 +34,7 @@ public class ItemWithPropertiesDifference
         : base(existsInDatabase1, existsInDatabase2) => this.ItemType = itemType;
 
     /// <summary> Gets or sets a set of models to represent extended properties and track the differences across two databases. </summary>
-    public Dictionary<string, ExtendedPropertyDifference> ExtendedPropertyDifferences { get; set; }
-        = [];
+    public Dictionary<string, ExtendedPropertyDifference> ExtendedPropertyDifferences { get; set; } = [];
 
     /// <summary> Gets a value indicating whether any differences have been tracked. </summary>
     public override bool IsDifferent => base.IsDifferent || this.ExtendedPropertyDifferences.Values.Any(x => x.IsDifferent);

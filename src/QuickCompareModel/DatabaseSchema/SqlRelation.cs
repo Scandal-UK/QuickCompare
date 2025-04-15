@@ -4,9 +4,7 @@
 
 namespace QuickCompareModel.DatabaseSchema;
 
-/// <summary>
-/// Class to represent a relationship in the database.
-/// </summary>
+/// <summary> Class to represent a relationship in the database. </summary>
 public class SqlRelation
 {
     /// <summary> Gets or sets the relation nName. </summary>

@@ -7,9 +7,7 @@ namespace QuickCompareModel.DatabaseSchema;
 using System.Collections.Generic;
 using System.Text;
 
-/// <summary>
-/// Class to represent an index in the database.
-/// </summary>
+/// <summary> Class to represent an index in the database. </summary>
 public class SqlIndex
 {
     /// <summary> Gets or sets a value indicating whether is primary key. </summary>

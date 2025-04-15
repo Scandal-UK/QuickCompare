@@ -8,13 +8,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
-/// <summary>
-/// Tests for the comparison of synonym differences.
-/// </summary>
 public class SynonymCompareTests
 {
-    /// <summary> Test synonym difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task SynonymMissingFromDatabase1_IsReported()
     {
@@ -36,8 +31,6 @@ public class SynonymCompareTests
         diff.ToString().Should().Be("does not exist in database 1\r\n");
     }
 
-    /// <summary> Test synonym difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task SynonymMissingFromDatabase2_IsReported()
     {
@@ -59,8 +52,6 @@ public class SynonymCompareTests
         diff.ToString().Should().Be("does not exist in database 2\r\n");
     }
 
-    /// <summary> Test synonym difference is not reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task SynonymsInBothDatabases_AreNotReported()
     {

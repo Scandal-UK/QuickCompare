@@ -8,11 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-/// <summary>
-/// Model to represent an element that belongs to a table.
-/// </summary>
-/// <param name="existsInDatabase1">Value indicating whether the item exists in database 1.</param>
-/// <param name="existsInDatabase2">Value indicating whether the item exists in database 2.</param>
+/// <summary> Model to represent an element that belongs to a table. </summary>
 public class ItemDifference(bool existsInDatabase1, bool existsInDatabase2) : BaseDifference(existsInDatabase1, existsInDatabase2)
 {
     /// <summary> Gets or sets a list of tracked difference strings. </summary>
