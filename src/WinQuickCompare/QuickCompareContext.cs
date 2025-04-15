@@ -9,9 +9,7 @@ using System.Windows;
 using Microsoft.Extensions.Options;
 using QuickCompareModel.Models;
 
-/// <summary>
-/// View model class which uses application properties to persist form input between restarts.
-/// </summary>
+/// <summary> View model class which uses application properties to persist form input between restarts. </summary>
 public class QuickCompareContext
 {
     /// <summary> Delegate for <see cref="INotifyPropertyChanged"/>. </summary>

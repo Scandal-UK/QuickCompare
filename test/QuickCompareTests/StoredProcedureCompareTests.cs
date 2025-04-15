@@ -9,16 +9,11 @@ using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
 
-/// <summary>
-/// Tests for the comparison of stored procedure differences.
-/// </summary>
 public class StoredProcedureCompareTests
 {
     private const string StoredProcedureName = "[dbo].[StoredProcedure1]";
     private const string StoredProcedureRoutineType = "PROCEDURE";
 
-    /// <summary> Test stored procedure difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task StoredProcedureMissingFromDatabase1_IsReported()
     {
@@ -38,8 +33,6 @@ public class StoredProcedureCompareTests
         diff.ToString().Should().Contain("does not exist in database 1");
     }
 
-    /// <summary> Test stored procedure difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task StoredProcedureMissingFromDatabase2_IsReported()
     {
@@ -59,8 +52,6 @@ public class StoredProcedureCompareTests
         diff.ToString().Should().Contain("does not exist in database 2");
     }
 
-    /// <summary> Test stored procedure difference is not reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task StoredProceduresInBothDatabases_AreNotReported()
     {
@@ -80,8 +71,6 @@ public class StoredProcedureCompareTests
         diff.IsDifferent.Should().BeFalse();
     }
 
-    /// <summary> Test stored procedure difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task StoredProcedureDefinitionDifference_IsReported()
     {
@@ -101,8 +90,6 @@ public class StoredProcedureCompareTests
         diff.IsDifferent.Should().BeTrue();
     }
 
-    /// <summary> Test stored procedure difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task StoredProcedurePropertyMissingFromDatabase1_IsReported()
     {
@@ -132,8 +119,6 @@ public class StoredProcedureCompareTests
         diff.ExtendedPropertyDifferences["Key1"].ExistsInDatabase1.Should().BeFalse();
     }
 
-    /// <summary> Test stored procedure difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task StoredProcedurePropertyMissingFromDatabase2_IsReported()
     {
@@ -163,8 +148,6 @@ public class StoredProcedureCompareTests
         diff.ExtendedPropertyDifferences["Key1"].ExistsInDatabase2.Should().BeFalse();
     }
 
-    /// <summary> Test stored procedure difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task StoredProcedurePropertyDifference_IsReported()
     {

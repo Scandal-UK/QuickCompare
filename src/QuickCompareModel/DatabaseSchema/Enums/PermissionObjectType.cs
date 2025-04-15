@@ -4,9 +4,7 @@
 
 namespace QuickCompareModel.DatabaseSchema.Enums;
 
-/// <summary>
-/// Object type that permission applies to.
-/// </summary>
+/// <summary> Object type that permission applies to. </summary>
 public enum PermissionObjectType
 {
     /// <summary> Unknown. </summary>

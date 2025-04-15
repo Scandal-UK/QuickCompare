@@ -6,9 +6,7 @@ namespace QuickCompareModel.DatabaseSchema;
 
 using System.Collections.Generic;
 
-/// <summary>
-/// Class to represent a table in the database.
-/// </summary>
+/// <summary> Class to represent a table in the database. </summary>
 public class SqlTable
 {
     /// <summary> Gets or sets the column details. </summary>

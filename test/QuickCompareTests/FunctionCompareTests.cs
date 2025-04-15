@@ -9,16 +9,11 @@ using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
 
-/// <summary>
-/// Tests for the comparison of function differences.
-/// </summary>
 public class FunctionCompareTests
 {
     private const string FunctionName = "[dbo].[Function1]";
     private const string FunctionRoutineType = "FUNCTION";
 
-    /// <summary> Test function difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task FunctionMissingFromDatabase1_IsReported()
     {
@@ -38,8 +33,6 @@ public class FunctionCompareTests
         diff.ToString().Should().Contain("does not exist in database 1");
     }
 
-    /// <summary> Test function difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task FunctionMissingFromDatabase2_IsReported()
     {
@@ -59,8 +52,6 @@ public class FunctionCompareTests
         diff.ToString().Should().Contain("does not exist in database 2");
     }
 
-    /// <summary> Test function difference is not reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task FunctionsInBothDatabases_AreNotReported()
     {
@@ -80,8 +71,6 @@ public class FunctionCompareTests
         diff.IsDifferent.Should().BeFalse();
     }
 
-    /// <summary> Test function difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task FunctionDefinitionDifference_IsReported()
     {

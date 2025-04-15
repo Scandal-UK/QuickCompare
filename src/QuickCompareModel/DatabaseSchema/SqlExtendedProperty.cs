@@ -6,9 +6,7 @@ namespace QuickCompareModel.DatabaseSchema;
 
 using QuickCompareModel.DatabaseSchema.Enums;
 
-/// <summary>
-/// Class representing SQL extended property.
-/// </summary>
+/// <summary> Class representing SQL extended property. </summary>
 public class SqlExtendedProperty
 {
     /// <summary> Gets or sets the property type. </summary>

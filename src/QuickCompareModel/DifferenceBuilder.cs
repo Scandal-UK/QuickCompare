@@ -15,7 +15,6 @@ using QuickCompareModel.DatabaseSchema.Enums;
 using QuickCompareModel.Models;
 
 /// <summary> Class responsible for building a set of differences between two database instances. </summary>
-/// <param name="options">Option settings for the database comparison.</param>
 public class DifferenceBuilder(IOptions<QuickCompareOptions> options) : IDifferenceBuilder
 {
     /// <summary>

@@ -4,9 +4,7 @@
 
 namespace QuickCompareModel.DatabaseSchema;
 
-/// <summary>
-/// Class to represent a trigger in the database.
-/// </summary>
+/// <summary> Class to represent a trigger in the database. </summary>
 public class SqlTrigger
 {
     /// <summary> Gets or sets the file group. </summary>

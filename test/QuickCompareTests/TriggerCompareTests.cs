@@ -9,13 +9,8 @@ using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
 
-/// <summary>
-/// Tests for the comparison of trigger differences.
-/// </summary>
 public class TriggerCompareTests
 {
-    /// <summary> Test trigger difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task TriggerMissingFromDatabase1_IsReported()
     {
@@ -43,8 +38,6 @@ public class TriggerCompareTests
             .ToString().Should().Contain($"Trigger: {triggerName} does not exist in database 1");
     }
 
-    /// <summary> Test trigger difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task TriggerMissingFromDatabase2_IsReported()
     {
@@ -72,8 +65,6 @@ public class TriggerCompareTests
             .ToString().Should().Contain($"Trigger: {triggerName} does not exist in database 2");
     }
 
-    /// <summary> Test trigger difference is not reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task TriggerInBothDatabases_IsNotReported()
     {

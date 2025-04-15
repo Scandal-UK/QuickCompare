@@ -4,11 +4,9 @@
 
 namespace QuickCompareModel.DatabaseSchema;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
-/// <summary>
-/// Set of extensions to improve cognitive complexity when dealing with DBNull to null conversions.
-/// </summary>
+/// <summary> Set of extensions to improve cognitive complexity when dealing with DBNull to null conversions. </summary>
 public static class DataReaderExtensions
 {
     /// <summary>Gets the value of the specified column as a string or a null.</summary>

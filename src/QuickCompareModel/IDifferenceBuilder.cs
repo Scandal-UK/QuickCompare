@@ -11,9 +11,7 @@ using QuickCompareModel.DatabaseDifferences;
 using QuickCompareModel.DatabaseSchema;
 using QuickCompareModel.Models;
 
-/// <summary>
-/// Class responsible for building a set of differences between two database instances.
-/// </summary>
+/// <summary> Class responsible for building a set of differences between two database instances. </summary>
 public interface IDifferenceBuilder
 {
     /// <summary> Handler for when the status message changes. </summary>

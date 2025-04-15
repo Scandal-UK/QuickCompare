@@ -5,8 +5,6 @@
 namespace QuickCompareModel.DatabaseDifferences;
 
 /// <summary> Model to represent an extended property and track the differences across two databases. </summary>
-/// <param name="existsInDatabase1">Value indicating whether the item exists in database 1.</param>
-/// <param name="existsInDatabase2">Value indicating whether the item exists in database 2.</param>
 public class ExtendedPropertyDifference(bool existsInDatabase1, bool existsInDatabase2) : BaseDifference(existsInDatabase1, existsInDatabase2)
 {
     /// <summary> Gets or sets the property value for database 1. </summary>

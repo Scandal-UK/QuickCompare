@@ -9,13 +9,8 @@ using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
 
-/// <summary>
-/// Tests for the comparison of user-type differences.
-/// </summary>
 public class UserTypeCompareTests
 {
-    /// <summary> Test user type difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task UserTypeMissingFromDatabase1_IsReported()
     {
@@ -37,8 +32,6 @@ public class UserTypeCompareTests
         diff.ToString().Should().Contain("does not exist in database 1");
     }
 
-    /// <summary> Test user type difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task UserTypeMissingFromDatabase2_IsReported()
     {
@@ -60,8 +53,6 @@ public class UserTypeCompareTests
         diff.ToString().Should().Contain("does not exist in database 2");
     }
 
-    /// <summary> Test user type difference is not reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task UserTypeInBothDatabases_IsNotReported()
     {
@@ -84,8 +75,6 @@ public class UserTypeCompareTests
         diff.ToString().Should().Be(string.Empty);
     }
 
-    /// <summary> Test user type difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task UnderlyingTypeName_Difference_IsReported()
     {
@@ -93,8 +82,6 @@ public class UserTypeCompareTests
         result.Should().BeTrue();
     }
 
-    /// <summary> Test user type difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task Precision_Difference_IsReported()
     {
@@ -102,8 +89,6 @@ public class UserTypeCompareTests
         result.Should().BeTrue();
     }
 
-    /// <summary> Test user type difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task Scale_Difference_IsReported()
     {
@@ -111,8 +96,6 @@ public class UserTypeCompareTests
         result.Should().BeTrue();
     }
 
-    /// <summary> Test user type difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task MaxLength_Difference_IsReported()
     {
@@ -120,8 +103,6 @@ public class UserTypeCompareTests
         result.Should().BeTrue();
     }
 
-    /// <summary> Test user type difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task IsNullable_Difference_IsReported()
     {
@@ -129,8 +110,6 @@ public class UserTypeCompareTests
         result.Should().BeTrue();
     }
 
-    /// <summary> Test user type difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task CollationName_Difference_IsReported()
     {
@@ -138,8 +117,6 @@ public class UserTypeCompareTests
         result.Should().BeTrue();
     }
 
-    /// <summary> Test user type difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task IsAssemblyType_Difference_IsReported()
     {

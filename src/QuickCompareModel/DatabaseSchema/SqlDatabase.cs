@@ -7,22 +7,15 @@ namespace QuickCompareModel.DatabaseSchema;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using QuickCompareModel.Models;
 
-/// <summary>
-/// Class for running database queries and building lists that detail the content of the database schema.
-/// </summary>
-/// <remarks>
-/// Initialises a new instance of the <see cref="SqlDatabase"/> class with a connection string and setting options.
-/// </remarks>
-/// <param name="connectionString">The database connection string for the current instance being inspected.</param>
-/// <param name="options">Collection of configuration settings.</param>
+/// <summary> Class for running database queries and building lists that detail the content of the database schema. </summary>
 public partial class SqlDatabase(string connectionString, QuickCompareOptions options = null)
 {
     private readonly string connectionString = connectionString;
@@ -31,9 +24,7 @@ public partial class SqlDatabase(string connectionString, QuickCompareOptions op
     /// <summary> Handler for when the status message changes. </summary>
     public event EventHandler<StatusChangedEventArgs> LoaderStatusChanged;
 
-    /// <summary>
-    /// Gets a friendly name for the database instance, including both server name and database name.
-    /// </summary>
+    /// <summary> Gets a friendly name for the database instance, including both server name and database name. </summary>
     public string FriendlyName
     {
         get
@@ -65,9 +56,7 @@ public partial class SqlDatabase(string connectionString, QuickCompareOptions op
     /// <summary> Gets or sets a list of <see cref="SqlExtendedProperty"/> instances for the database itself. </summary>
     public List<SqlExtendedProperty> ExtendedProperties { get; set; } = [];
 
-    /// <summary>
-    /// Helper method to return embedded SQL resource by filename.
-    /// </summary>
+    /// <summary> Helper method to return embedded SQL resource by filename. </summary>
     /// <param name="queryName">Name of the SQL file without the extension.</param>
     /// <returns>SQL query text.</returns>
     public static string LoadQueryFromResource(string queryName)
@@ -77,9 +66,7 @@ public partial class SqlDatabase(string connectionString, QuickCompareOptions op
         return stream != null ? StreamToString(stream) : string.Empty;
     }
 
-    /// <summary>
-    /// Populate the models based on the supplied connection string.
-    /// </summary>
+    /// <summary> Populate the models based on the supplied connection string. </summary>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public async Task PopulateSchemaModelAsync()
     {
@@ -92,9 +79,7 @@ public partial class SqlDatabase(string connectionString, QuickCompareOptions op
         this.RaiseStatusChanged("Done");
     }
 
-    /// <summary>
-    /// Raises the status changed event.
-    /// </summary>
+    /// <summary> Raises the status changed event. </summary>
     /// <param name="message">Status message.</param>
     protected virtual void RaiseStatusChanged(string message) =>
         this.LoaderStatusChanged?.Invoke(this, new StatusChangedEventArgs(message));

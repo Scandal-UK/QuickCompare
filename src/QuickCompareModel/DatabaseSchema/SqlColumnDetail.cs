@@ -4,9 +4,7 @@
 
 namespace QuickCompareModel.DatabaseSchema;
 
-/// <summary>
-/// Class representing properties of a table column.
-/// </summary>
+/// <summary> Class representing properties of a table column. </summary>
 public class SqlColumnDetail
 {
     /// <summary> Gets or sets the table schema. </summary>

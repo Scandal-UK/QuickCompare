@@ -4,9 +4,7 @@
 
 namespace QuickCompareModel.DatabaseSchema;
 
-/// <summary>
-/// Class to represent a user function or procedure in the database.
-/// </summary>
+/// <summary> Class to represent a user function or procedure in the database. </summary>
 public class SqlUserRoutine
 {
     /// <summary> Gets or sets the routine type. </summary>

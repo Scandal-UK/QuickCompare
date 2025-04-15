@@ -9,11 +9,8 @@ using FluentAssertions;
 using QuickCompareModel.DatabaseSchema;
 using Xunit;
 
-/// <summary> Tests for the comparison of index differences. </summary>
 public class IndexCompareTests
 {
-    /// <summary> Test index difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task Index_MissingFromDatabase1_IsReported()
     {
@@ -40,8 +37,6 @@ public class IndexCompareTests
             .ToString().Should().Contain($"Index: {indexName} does not exist in database 1");
     }
 
-    /// <summary> Test index difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task Index_MissingFromDatabase2_IsReported()
     {
@@ -68,8 +63,6 @@ public class IndexCompareTests
             .ToString().Should().Contain($"Index: {indexName} does not exist in database 2");
     }
 
-    /// <summary> Test index difference is not reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task Index_InBothDatabases_IsNotReported()
     {
@@ -95,8 +88,6 @@ public class IndexCompareTests
         diff.IsDifferent.Should().BeFalse();
     }
 
-    /// <summary> Test index difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task IndexType_PrimaryKey_MissingFromDatabase1_IsReported()
     {
@@ -120,8 +111,6 @@ public class IndexCompareTests
         diff.ToString().Should().Contain($"Primary key: {indexName} does not exist in database 1");
     }
 
-    /// <summary> Test index difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task IndexType_PrimaryKey_MissingFromDatabase2_IsReported()
     {
@@ -145,8 +134,6 @@ public class IndexCompareTests
         diff.ToString().Should().Contain($"Primary key: {indexName} does not exist in database 2");
     }
 
-    /// <summary> Test index difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task IndexType_UniqueKey_MissingFromDatabase1_IsReported()
     {
@@ -170,8 +157,6 @@ public class IndexCompareTests
         diff.ToString().Should().Contain($"Unique key: {indexName} does not exist in database 1");
     }
 
-    /// <summary> Test index difference is reported. </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task IndexType_UniqueKey_MissingFromDatabase2_IsReported()
     {
