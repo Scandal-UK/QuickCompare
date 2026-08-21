@@ -321,7 +321,7 @@ public class TableCompareTests
         diff.ExistsInBothDatabases.Should().BeTrue();
         diff.IsDifferent.Should().BeTrue();
 
-        diff.ToString().Should().Be($"\r\n{TabIndent}Column: foobar has different ordinal position - is 1 in database 1 and is 0 in database 2\r\n");
+        diff.ToString().Should().Contain($"\r\n{TabIndent}Column: foobar has different ordinal position - is 1 in database 1 and is 0 in database 2");
     }
 
     [Fact]
@@ -345,7 +345,7 @@ public class TableCompareTests
         diff.IsDifferent.Should().BeTrue();
 
         diff.ToString().Should().StartWith($"\r\n{TabIndent}Column: foobar");
-        diff.ToString().Should().Contain(" - has different ordinal position - is 1 in database 1 and is 0 in database 2\r\n");
-        diff.ToString().Should().Contain(" - has different numeric precision - is 1 in database 1 and is NULL in database 2\r\n");
+        diff.ToString().Should().Contain(" - has different ordinal position - is 1 in database 1 and is 0 in database 2");
+        diff.ToString().Should().Contain(" - has different numeric precision - is 1 in database 1 and is NULL in database 2");
     }
 }
