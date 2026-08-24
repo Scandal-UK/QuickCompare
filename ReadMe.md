@@ -7,47 +7,30 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=security_rating)](https://sonarcloud.io/dashboard?id=Scandal-UK_QuickCompare)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Scandal-UK_QuickCompare&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Scandal-UK_QuickCompare)
 
-> __A simple, fast, free SQL database schema comparison library/app written in C#__
+> A simple, fast and free SQL Server schema comparison library for .NET.
 
-- [QuickCompareModel](/src/QuickCompareModel) - the core library and NuGet package source code
-- [ConsoleTestQuickCompare](/src/ConsoleTestQuickCompare) - sample dotnet console application
-- [WinQuickCompare](/src/WinQuickCompare) - sample dotnet Windows application
+QuickCompare compares the schemas of two Microsoft SQL Server databases and reports the differences between them.
 
-This package interrogates the schema of two Microsoft SQL Server databases and reports on the differences between them. There is a front-end for Windows users and a NuGet package for .NET developers and DevOps engineers.
+It can be used programmatically from .NET applications and CI/CD pipelines, or through the included Windows application. Comparisons use `INFORMATION_SCHEMA` views and are designed to have minimal impact on the databases being inspected.
 
-It is free to use _without any restrictions_ (and always will be) and everyone is encouraged to contribute improvements to the project and raise issues as appropriate. If you find this project useful, consider clicking the star to add to your favourites!
+![QuickCompare Windows application](win-preview1.png)
 
-![demo-screenshot](./win-preview1.png)
+## Features
 
-## How it works
+- Compare Microsoft SQL Server database schemas
+- Ignore insignificant differences such as whitespace and comments
+- Use directly from C# or automated CI/CD pipelines
+- Low-impact asynchronous database queries
+- Progress reporting through status events
+- Backwards-compatible SQL queries
+- Fully unit tested
+- Free and open source
 
-Using some SQL queries (mainly targeting the INFORMATION_SCHEMA views), the solution uses low-level asynchronous DataReader instances to populate models in the DatabaseSchema namespace.
+## Usage
 
-Next the engine inspects models of both databases, building a set of Difference objects for each database element.
+The `DifferenceBuilder` compares the databases configured through `QuickCompareOptions`:
 
-The Difference objects also act as a report generator, with overridden `ToString()` methods a generated report will list all database differences.
-
-Input parameters are accepted via the `IOptions` implementation; `QuickCompareOptions`. This aids automation because it allows the application to be easily run by anything that can provide application settings (such as Azure Pipelines).
-
-## Purpose
-
-Many paid solutions are very expensive and still return large numbers of false-positive results or even miss important differences that are not detected at all.
-
-False-positive results from other solutions might also include differences in remarks/comments, line-breaks or whitespace - all of which can be time-consuming to check but can be ignored in QuickCompare. If these differences do not affect the schema or functionality of the database, then you should be able to choose to ignore them.
-
-Finally, nobody seems to offer a _simple database comparison solution_ that meets these needs for free - even less so if you want to use them programmatically with C#.
-
-So here is a __free alternative__ that will remain open-source and fully unit-tested for anyone to use.
-
-It is lean enough to be used in CI/CD pipelines and as it targets information schema views, it does not negatively impact the performance of the databases under interrogation.
-
-Please contribute to the source code if you have the time/knowledge to spare!
-
-### Example usage
-
-The `DifferenceBuilder` class builds the report from the `Differences` collection as shown in this example.
-
-```C#
+```csharp
 var settings = new QuickCompareOptions
 {
     ConnectionString1 = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=Northwind1;Integrated Security=True",
@@ -57,32 +40,24 @@ var settings = new QuickCompareOptions
 IOptions<QuickCompareOptions> options = Options.Create(settings);
 
 var builder = new DifferenceBuilder(options);
+
 await builder.BuildDifferencesAsync();
+
 string outputText = builder.Differences.ToString();
 ```
 
-_The options are usually injected from the configuration, but are explicitly created in this example for clarity._
+In a normal application, `QuickCompareOptions` would usually be supplied through dependency injection and application configuration.
 
-### Status event handling
+## Projects
 
-Inspecting two databases for differences is quick, but it is far from instantaneous. You can measure progress by handling status changes.
+- **QuickCompareModel** — core comparison library and NuGet package source
+- **ConsoleTestQuickCompare** — sample console application
+- **WinQuickCompare** — sample Windows application
 
-The `DifferenceBuilder` class raises an event when the status changes - subscribe to `ComparisonStatusChanged` to return an instance of `StatusChangedEventArgs`. This EventArgs instance has a property named `StatusMessage` which could be presented in a UI layer or used to measure timing of steps.
+## Contributing
 
-An example of consuming this event can be found in both [WinQuickCompare](/src/WinQuickCompare) and the [sample console application](/src/ConsoleTestQuickCompare).
+Issues and pull requests are welcome. If you find QuickCompare useful, consider starring the repository.
 
-### Database SQL queries
+## Licence
 
-The SQL queries are located in the folder DatabaseSchema/Queries. These have been written for backwards-compatibility with SQL Server 2000, while also utilising the features of new versions.
-
-The queries do not require special permission for the master database and have minimal impact on database performance, even during busy periods.
-
----
-
-_Consider this a pre-release version until the first release appears on the GitHub project page!_
-
-#### To-Do:
-- Compare System-Versioned table properties
-- Compare Database properties (e.g. compatibility version)
-- Add "upload report" feature for DevOps (XML/JSON?)
-- Change Windows UI to display a tree view or similar(?)
+Licensed under the Apache License 2.0.
