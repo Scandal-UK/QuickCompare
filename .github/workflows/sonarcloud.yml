@@ -42,9 +42,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          echo "$SONAR_TOKEN"
-          echo ""$SONAR_TOKEN""
-          echo \""$SONAR_TOKEN"\"
-          ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"Scandal-UK_QuickCompare" /o:"dan-ware" /d:sonar.token="$SONAR_TOKEN"
+          ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"Scandal-UK_QuickCompare" /o:"dan-ware" /d:sonar.token="${SONAR_TOKEN}"
           dotnet build
-          ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+          ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
